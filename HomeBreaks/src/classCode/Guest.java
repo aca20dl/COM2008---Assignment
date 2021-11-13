@@ -1,3 +1,4 @@
+package classCode;
 public class Guest extends User{
 	//variables specific for guest here, guest name is public
 	private String guestName;

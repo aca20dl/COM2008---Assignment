@@ -1,3 +1,4 @@
+package classCode;
 public class User{
 	// variables for confidential details here
 	private String title;

@@ -1,3 +1,4 @@
+package classCode;
 //can be used for confidential address of user or property
 public class Address{
 	//this is either number or name of house

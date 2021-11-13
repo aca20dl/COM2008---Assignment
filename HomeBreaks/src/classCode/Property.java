@@ -1,3 +1,4 @@
+package classCode;
 import java.util.*;
 
 public class Property{
@@ -82,9 +83,9 @@ public class Property{
 				sum5 = sum5 + r.get(i).value;
 			}
 		}
-		double totalSum = sum/5 + sum1/5 + sum2/5 + sum3/5 + sum4/5 + sum5/5;
+		double totalSum = sum/size + sum1/size + sum2/size + sum3/size + sum4/size + sum5/size;
 		
-		return totalSum/size;
+		return totalSum/5;
 	}
 	
 	

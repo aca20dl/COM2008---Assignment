@@ -1,3 +1,4 @@
+package classCode;
 public class Review{
 	//variables for each review
 	//description of satisfaction
