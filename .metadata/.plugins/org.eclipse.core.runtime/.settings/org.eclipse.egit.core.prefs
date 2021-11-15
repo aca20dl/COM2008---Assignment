@@ -1,3 +1,5 @@
 GitRepositoriesView.GitDirectories=/home/david/Documents/Git/COM2008---Assignment/.git\:
 GitRepositoriesView.GitDirectories.relative=.git\:
+RepositorySearchDialogDeepSearch=false
+RepositorySearchDialogSearchPath=/home/david/Documents/Git/COM2008---Assignment
 eclipse.preferences.version=1

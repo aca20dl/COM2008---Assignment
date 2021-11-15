@@ -9,4 +9,10 @@
 			<item value="/home/david/Documents/Git/COM2008---Assignment"/>
 		</list>
 	</section>
+	<section name="NewWizardAction">
+	</section>
+	<section name="ChooseWorkspaceDialogSettings">
+		<item key="DIALOG_X_ORIGIN" value="572"/>
+		<item key="DIALOG_Y_ORIGIN" value="322"/>
+	</section>
 </section>
