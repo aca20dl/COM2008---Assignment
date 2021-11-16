@@ -19,7 +19,7 @@ import java.awt.Window;
 import java.awt.Button;
 
 public class login  {
-	private JFrame frmLoginPage;
+	JFrame frmLoginPage;
 	private JPasswordField password;
 	private JTextField Email;
 

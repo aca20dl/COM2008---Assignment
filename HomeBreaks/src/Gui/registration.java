@@ -151,6 +151,7 @@ public class registration {
 		panel_1.add(next1Button);
 		
 		JPanel panel2 = new JPanel();
+		panel2.setBackground(Color.WHITE);
 		layeredPane.setLayer(panel2, 1);
 		panel2.setBounds(0, 0, 865, 765);
 		layeredPane.add(panel2);
@@ -266,6 +267,7 @@ public class registration {
 		
 		
 		
+		
 		JPanel panel3 = new JPanel();
 		layeredPane.setLayer(panel3, 0);
 		panel3.setBounds(0, 0, 855, 765);
@@ -315,7 +317,7 @@ public class registration {
 					//usedEmail.setVisible(false);
 					errorMsg.setVisible(false);
 					// add method to insert this host into host table
-				
+						
 					System.out.println(host);
 				}
 			}
