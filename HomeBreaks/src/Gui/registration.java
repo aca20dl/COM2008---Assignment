@@ -21,6 +21,8 @@ import java.util.*;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.ImageIcon;
+import javax.swing.JLayeredPane;
+import java.awt.SystemColor;
 
 public class registration {
 
@@ -38,6 +40,7 @@ public class registration {
 	private JTextField tCity;
 	private JTextField tPostCode;
 	private final JPanel panel = new JPanel();
+	private final JLayeredPane layeredPane = new JLayeredPane();
 	/**
 	 * Launch the application.
 	 */
@@ -72,72 +75,129 @@ public class registration {
 		frmRegistration.setBounds(100, 100, 1171, 793);
 		frmRegistration.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmRegistration.getContentPane().setLayout(null);
+		layeredPane.setBounds(510, 2, 869, 765);
+		frmRegistration.getContentPane().add(layeredPane);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBounds(0, 0, 865, 765);
+		layeredPane.add(panel_1);
+		panel_1.setLayout(null);
+		
+		JLabel lEmail = new JLabel("Email");
+		lEmail.setHorizontalAlignment(SwingConstants.CENTER);
+		lEmail.setBounds(140, 230, 305, 37);
+		panel_1.add(lEmail);
+		lEmail.setFont(new Font("Dialog", Font.BOLD, 25));
+		
+		tEmail = new JTextField();
+		tEmail.setBounds(141, 270, 305, 37);
+		panel_1.add(tEmail);
+		tEmail.setColumns(10);
+		
+		JLabel lUsername = new JLabel("Username");
+		lUsername.setHorizontalAlignment(SwingConstants.CENTER);
+		lUsername.setBounds(144, 310, 305, 37);
+		panel_1.add(lUsername);
+		lUsername.setForeground(Color.BLACK);
+		lUsername.setFont(new Font("Dialog", Font.BOLD, 25));
+		
+		tUsername = new JTextField();
+		tUsername.setBounds(141, 350, 305, 37);
+		panel_1.add(tUsername);
+		tUsername.setColumns(10);
+		
+		JLabel lPassword = new JLabel("Password:  ");
+		lPassword.setHorizontalAlignment(SwingConstants.CENTER);
+		lPassword.setBounds(145, 390, 305, 37);
+		panel_1.add(lPassword);
+		lPassword.setFont(new Font("Dialog", Font.BOLD, 25));
+		
+		tPassword = new JPasswordField();
+		tPassword.setBounds(141, 430, 305, 37);
+		panel_1.add(tPassword);
+		
+		JLabel usedEmail = new JLabel("That email has already been used");
+		usedEmail.setBounds(17, 7, 331, 29);
+		panel_1.add(usedEmail);
+		usedEmail.setEnabled(false);
+		usedEmail.setFont(new Font("Arial", Font.BOLD, 20));
+		usedEmail.setForeground(Color.RED);
+		
+		JLabel errorMsg = new JLabel("Fill out all fields to register");
+		errorMsg.setBounds(18, 2, 331, 47);
+		panel_1.add(errorMsg);
+		errorMsg.setEnabled(false);
+		errorMsg.setForeground(Color.RED);
+		errorMsg.setFont(new Font("Arial", Font.BOLD, 20));
 		
 		JLabel formTitle = new JLabel("Register");
-		formTitle.setBounds(665, 22, 346, 47);
+		formTitle.setBounds(140, 133, 310, 47);
+		panel_1.add(formTitle);
 		formTitle.setFont(new Font("Arial", Font.BOLD, 40));
 		formTitle.setHorizontalAlignment(SwingConstants.CENTER);
-		frmRegistration.getContentPane().add(formTitle);
 		
-		JLabel lTitle = new JLabel("Title");
-		lTitle.setFont(new Font("Arial", Font.BOLD, 20));
-		lTitle.setBounds(527, 96, 53, 29);
-		frmRegistration.getContentPane().add(lTitle);
 		
-		JLabel lFirstname = new JLabel("First Name: ");
+		//initially hidden
+		errorMsg.setVisible(false);
+		usedEmail.setVisible(false);
+		
+		JButton next1Button = new JButton("Next");
+		
+		next1Button.setForeground(Color.WHITE);
+		next1Button.setBackground(Color.BLACK);
+		next1Button.setFont(new Font("Dialog", Font.BOLD, 25));
+		next1Button.setBounds(141, 490, 305, 37);
+		panel_1.add(next1Button);
+		
+		JPanel panel2 = new JPanel();
+		panel2.setBounds(0, 0, 865, 765);
+		layeredPane.add(panel2);
+		panel2.setLayout(null);
+		
+		JButton next2Button = new JButton("Next");
+		next2Button.setForeground(Color.WHITE);
+		next2Button.setFont(new Font("Dialog", Font.BOLD, 25));
+		next2Button.setBackground(Color.BLACK);
+		next2Button.setBounds(142, 364, 305, 37);
+		panel2.add(next2Button);
+		
+		JLabel lFirstname = new JLabel("First Name");
+		lFirstname.setHorizontalAlignment(SwingConstants.CENTER);
+		lFirstname.setBounds(56, 170, 200, 33);
+		panel2.add(lFirstname);
 		lFirstname.setFont(new Font("Arial", Font.BOLD, 20));
-		lFirstname.setBounds(941, 152, 165, 22);
-		frmRegistration.getContentPane().add(lFirstname);
 		
-		JRadioButton rbMrs = new JRadioButton("Mrs");
-		rbMrs.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(rbMrs.isSelected())
-					title = rbMrs.getText();
-			}
-		});
-		buttonGroup.add(rbMrs);
-		rbMrs.setFont(new Font("Arial", Font.PLAIN, 15));
-		rbMrs.setBounds(589, 101, 58, 23);
-		frmRegistration.getContentPane().add(rbMrs);
+		JLabel lSurname = new JLabel("Surname");
+		lSurname.setHorizontalAlignment(SwingConstants.CENTER);
+		lSurname.setBounds(284, 170, 280, 33);
+		panel2.add(lSurname);
+		lSurname.setFont(new Font("Arial", Font.BOLD, 20));
 		
-		JRadioButton rbMr = new JRadioButton("Mr");
-		rbMr.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(rbMr.isSelected())
-					title = rbMr.getText();
-			}
-		});
-		buttonGroup.add(rbMr);
-		rbMr.setFont(new Font("Arial", Font.PLAIN, 15));
-		rbMr.setBounds(651, 101, 58, 23);
-		frmRegistration.getContentPane().add(rbMr);
+		tSurname = new JTextField();
+		tSurname.setBounds(284, 210, 280, 33);
+		panel2.add(tSurname);
+		tSurname.setColumns(10);
 		
-		JRadioButton rbDr = new JRadioButton("Dr");
-		rbDr.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(rbDr.isSelected())
-					title = rbDr.getText();
-			}
-		});
-		buttonGroup.add(rbDr);
-		rbDr.setFont(new Font("Arial", Font.PLAIN, 15));
-		rbDr.setBounds(713, 101, 47, 23);
-		frmRegistration.getContentPane().add(rbDr);
+		tFirstname = new JTextField();
+		tFirstname.setHorizontalAlignment(SwingConstants.CENTER);
+		tFirstname.setBounds(56, 210, 200, 33);
+		panel2.add(tFirstname);
+		tFirstname.setColumns(10);
 		
-		JRadioButton rbMiss = new JRadioButton("Miss");
-		rbMiss.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(rbMiss.isSelected())
-					title = rbMiss.getText();
-			}
-		});
-		buttonGroup.add(rbMiss);
-		rbMiss.setFont(new Font("Arial", Font.PLAIN, 15));
-		rbMiss.setBounds(772, 101, 58, 23);
-		frmRegistration.getContentPane().add(rbMiss);
+		tMobile = new JTextField();
+		tMobile.setBounds(56, 289, 200, 33);
+		panel2.add(tMobile);
+		tMobile.setColumns(10);
+		
+		JLabel lMobile = new JLabel("Mobile");
+		lMobile.setHorizontalAlignment(SwingConstants.CENTER);
+		lMobile.setBounds(56, 255, 200, 33);
+		panel2.add(lMobile);
+		lMobile.setFont(new Font("Arial", Font.BOLD, 20));
 		
 		JRadioButton rbOther = new JRadioButton("Other");
+		rbOther.setBounds(389, 100, 103, 26);
+		panel2.add(rbOther);
 		rbOther.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(rbOther.isSelected())
@@ -145,122 +205,75 @@ public class registration {
 			}
 		});
 		buttonGroup.add(rbOther);
-		rbOther.setFont(new Font("Arial", Font.PLAIN, 15));
-		rbOther.setBounds(844, 101, 79, 23);
-		frmRegistration.getContentPane().add(rbOther);
+		rbOther.setFont(new Font("Dialog", Font.PLAIN, 20));
 		
-		tFirstname = new JTextField();
-		tFirstname.setBounds(901, 180, 205, 29);
-		frmRegistration.getContentPane().add(tFirstname);
-		tFirstname.setColumns(10);
-		
-		JLabel lSurname = new JLabel("Surname: ");
-		lSurname.setFont(new Font("Arial", Font.BOLD, 20));
-		lSurname.setBounds(951, 217, 165, 22);
-		frmRegistration.getContentPane().add(lSurname);
-		
-		tSurname = new JTextField();
-		tSurname.setColumns(10);
-		tSurname.setBounds(901, 241, 205, 29);
-		frmRegistration.getContentPane().add(tSurname);
-		
-		JLabel lEmail = new JLabel("Email:  ");
-		lEmail.setFont(new Font("Arial", Font.BOLD, 20));
-		lEmail.setBounds(670, 210, 194, 29);
-		frmRegistration.getContentPane().add(lEmail);
-		
-		tEmail = new JTextField();
-		tEmail.setColumns(10);
-		tEmail.setBounds(607, 241, 205, 29);
-		frmRegistration.getContentPane().add(tEmail);
-		
-		JLabel lMobile = new JLabel("Mobile:  ");
-		lMobile.setFont(new Font("Arial", Font.BOLD, 20));
-		lMobile.setBounds(965, 282, 165, 22);
-		frmRegistration.getContentPane().add(lMobile);
-		
-		tMobile = new JTextField();
-		tMobile.setColumns(10);
-		tMobile.setBounds(901, 304, 205, 29);
-		frmRegistration.getContentPane().add(tMobile);
-		
-		JLabel lUsername = new JLabel("Username:  ");
-		lUsername.setForeground(UIManager.getColor("OptionPane.errorDialog.border.background"));
-		lUsername.setFont(new Font("Arial", Font.BOLD, 20));
-		lUsername.setBounds(647, 147, 165, 32);
-		frmRegistration.getContentPane().add(lUsername);
-		
-		tUsername = new JTextField();
-		tUsername.setColumns(10);
-		tUsername.setBounds(607, 180, 205, 29);
-		frmRegistration.getContentPane().add(tUsername);
-		
-		JLabel lPassword = new JLabel("Password:  ");
-		lPassword.setFont(new Font("Arial", Font.BOLD, 20));
-		lPassword.setBounds(647, 282, 165, 22);
-		frmRegistration.getContentPane().add(lPassword);
-		
-		tPassword = new JPasswordField();
-		tPassword.setBounds(607, 304, 205, 29);
-		frmRegistration.getContentPane().add(tPassword);
-		
-		JLabel errorMsg = new JLabel("Fill out all fields to register");
-		errorMsg.setEnabled(false);
-		errorMsg.setForeground(Color.RED);
-		errorMsg.setFont(new Font("Arial", Font.BOLD, 20));
-		errorMsg.setBounds(607, 655, 331, 47);
-		//initially hidden
-		errorMsg.setVisible(false);
-		frmRegistration.getContentPane().add(errorMsg);
-		
-		JButton guestReg = new JButton("Register as a Guest");
-		guestReg.addActionListener(new ActionListener() {
+		JRadioButton rbMrs = new JRadioButton("Mrs");
+		rbMrs.setBounds(182, 100, 67, 26);
+		panel2.add(rbMrs);
+		rbMrs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//collects address info
-				String house = tHouse.getText();
-				String street = tStreet.getText();
-				String city = tCity.getText();
-				String postCode = tPostCode.getText();
-				//collects user info
-				String name = tFirstname.getText();
-				String surname = tSurname.getText();
-				String email = tEmail.getText();
-				String mobile = tMobile.getText();
-				String username = tUsername.getText();
-				char[] password = tPassword.getPassword();
-				String pass = "";
-				for(int i = 0; i < password.length; i++) {
-					pass = pass + password[i];
-					}
-				//checks if any section is empty
-				if(name.isBlank() || surname.isBlank() || email.isBlank()
-						|| mobile.isBlank() || house.isBlank() || street.isBlank() ||
-						city.isBlank() || postCode.isBlank() || username.isBlank() ||
-						pass.isBlank() || title == null)  {
-					errorMsg.setVisible(true);
-				}
-				else {
-					//method to check this guest doesn't already exist in db, so email not used b4
-					
-					// if email is used do usedEmail.setVisible(true)
-					//creates address
-					Address ad = new Address(house,street,city,postCode);
-					//creates new guest if no fields are empty and email is not used
-					Guest guest = new Guest(title,name,surname,email,mobile,ad,username,pass);
-					// add method to insert this guest into guest table
-					
-					
-					//remove error messages
-					errorMsg.setVisible(false);
-					System.out.println(guest);
-				}
+				if(rbMrs.isSelected())
+					title = rbMrs.getText();
 			}
 		});
-		guestReg.setFont(new Font("Arial", Font.BOLD, 12));
-		guestReg.setBounds(598, 599, 165, 29);
-		frmRegistration.getContentPane().add(guestReg);
+		buttonGroup.add(rbMrs);
+		rbMrs.setFont(new Font("Dialog", Font.PLAIN, 20));
 		
-		JButton hostReg = new JButton("Register as a Host");
+		JRadioButton rbMr = new JRadioButton("Mr");
+		rbMr.setBounds(122, 100, 85, 26);
+		panel2.add(rbMr);
+		rbMr.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(rbMr.isSelected())
+					title = rbMr.getText();
+			}
+		});
+		buttonGroup.add(rbMr);
+		rbMr.setFont(new Font("Dialog", Font.PLAIN, 20));
+		
+		JRadioButton rbMiss = new JRadioButton("Miss");
+		rbMiss.setBounds(253, 100, 76, 26);
+		panel2.add(rbMiss);
+		rbMiss.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(rbMiss.isSelected())
+					title = rbMiss.getText();
+			}
+		});
+		buttonGroup.add(rbMiss);
+		rbMiss.setFont(new Font("Dialog", Font.PLAIN, 20));
+		
+		JRadioButton rbDr = new JRadioButton("Dr");
+		rbDr.setBounds(333, 100, 67, 26);
+		panel2.add(rbDr);
+		rbDr.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(rbDr.isSelected())
+					title = rbDr.getText();
+			}
+		});
+		buttonGroup.add(rbDr);
+		rbDr.setFont(new Font("Dialog", Font.PLAIN, 20));
+		
+		JLabel lTitle = new JLabel("Title");
+		lTitle.setBounds(56, 100, 52, 24);
+		panel2.add(lTitle);
+		lTitle.setFont(new Font("Arial", Font.BOLD, 20));
+		
+		
+		
+		
+		
+		JPanel panel3 = new JPanel();
+		panel3.setBounds(0, 0, 855, 765);
+		layeredPane.add(panel3);
+		panel3.setLayout(null);
+		
+		JButton hostReg = new JButton("HOST");
+		hostReg.setForeground(Color.WHITE);
+		hostReg.setBackground(Color.BLACK);
+		hostReg.setBounds(180, 545, 130, 25);
+		panel3.add(hostReg);
 		hostReg.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//collects address info
@@ -283,10 +296,7 @@ public class registration {
 				ArrayList<Property> properties = new ArrayList<>();
 				
 				//checks if any section is empty
-				if(name.isBlank() || surname.isBlank() || email.isBlank()
-						|| mobile.isBlank() || house.isBlank() || street.isBlank() ||
-						city.isBlank() || postCode.isBlank() || username.isBlank() ||
-						pass.isBlank() || title == null) {
+				if( house.isBlank() || street.isBlank() || city.isBlank() || postCode.isBlank() || title == null) {
 					errorMsg.setVisible(true);
 				}
 				else {
@@ -307,64 +317,136 @@ public class registration {
 				}
 			}
 		});
-		hostReg.setFont(new Font("Arial", Font.BOLD, 12));
-		hostReg.setBounds(794, 599, 165, 29);
-		frmRegistration.getContentPane().add(hostReg);
-		
-		JLabel usedEmail = new JLabel("That email has already been used");
-		usedEmail.setEnabled(false);
-		usedEmail.setFont(new Font("Arial", Font.BOLD, 20));
-		usedEmail.setForeground(Color.RED);
-		usedEmail.setBounds(607, 716, 331, 29);
-		usedEmail.setVisible(false);
-		frmRegistration.getContentPane().add(usedEmail);
+		hostReg.setFont(new Font("Dialog", Font.BOLD, 20));
 		
 		JLabel lAddress = new JLabel("Address details");
-		lAddress.setFont(new Font("Arial", Font.BOLD, 20));
-		lAddress.setBounds(768, 375, 230, 29);
-		frmRegistration.getContentPane().add(lAddress);
+		lAddress.setBounds(180, 187, 301, 59);
+		panel3.add(lAddress);
+		lAddress.setFont(new Font("Dialog", Font.BOLD, 30));
 		
 		JLabel lHouse = new JLabel("House No. ");
+		lHouse.setBounds(180, 285, 124, 24);
+		panel3.add(lHouse);
 		lHouse.setFont(new Font("Arial", Font.BOLD, 20));
-		lHouse.setBounds(647, 416, 165, 22);
-		frmRegistration.getContentPane().add(lHouse);
 		
 		tHouse = new JTextField();
+		tHouse.setBounds(180, 310, 124, 33);
+		panel3.add(tHouse);
 		tHouse.setColumns(10);
-		tHouse.setBounds(607, 437, 205, 29);
-		frmRegistration.getContentPane().add(tHouse);
-		
-		JLabel lStreet = new JLabel("Street:  ");
-		lStreet.setFont(new Font("Arial", Font.BOLD, 20));
-		lStreet.setBounds(665, 484, 165, 22);
-		frmRegistration.getContentPane().add(lStreet);
 		
 		tStreet = new JTextField();
+		tStreet.setBounds(180, 380, 280, 33);
+		panel3.add(tStreet);
 		tStreet.setColumns(10);
-		tStreet.setBounds(607, 505, 205, 29);
-		frmRegistration.getContentPane().add(tStreet);
 		
-		JLabel lCity = new JLabel("City: ");
+		JLabel lStreet = new JLabel("Street");
+		lStreet.setBounds(180, 355, 94, 24);
+		panel3.add(lStreet);
+		lStreet.setFont(new Font("Arial", Font.BOLD, 20));
+		
+		JLabel lCity = new JLabel("City");
+		lCity.setBounds(180, 425, 60, 24);
+		panel3.add(lCity);
 		lCity.setFont(new Font("Arial", Font.BOLD, 20));
-		lCity.setBounds(965, 416, 165, 22);
-		frmRegistration.getContentPane().add(lCity);
+		
+		JButton guestReg = new JButton("GUEST");
+		guestReg.setBackground(Color.BLACK);
+		guestReg.setForeground(Color.WHITE);
+		guestReg.setBounds(330, 545, 130, 25);
+		panel3.add(guestReg);
+		guestReg.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//collects address info
+				String house = tHouse.getText();
+				String street = tStreet.getText();
+				String city = tCity.getText();
+				String postCode = tPostCode.getText();
+				//collects user info
+				String name = tFirstname.getText();
+				String surname = tSurname.getText();
+				String email = tEmail.getText();
+				char [] password = tPassword.getPassword();
+				String username = tUsername.getText();
+				String pass = "";
+				String mobile = tMobile.getText();
+				
+				//checks if any section is empty
+				if(house.isBlank() || street.isBlank() || city.isBlank() || postCode.isBlank() || title == null)  {
+					errorMsg.setVisible(true);
+				}
+				else {
+					//method to check this guest doesn't already exist in db, so email not used b4
+					
+					// if email is used do usedEmail.setVisible(true)
+					//creates address
+					Address ad = new Address(house,street,city,postCode);
+					//creates new guest if no fields are empty and email is not used
+					Guest guest = new Guest(title,name,surname,email,mobile,ad,username,pass);
+					// add method to insert this guest into guest table
+					
+					
+					//remove error messages
+					errorMsg.setVisible(false);
+					System.out.println(guest);
+				}
+			}
+		});
+		
+		
+		next1Button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String email = tEmail.getText();
+				char [] password = tPassword.getPassword();
+				String pass = "";
+				for(int i = 0; i < password.length; i++) {
+					pass = pass + password[i];
+					}
+				String username = tUsername.getText();
+				if(email.isBlank() || username.isBlank() || pass.isBlank()) {
+					errorMsg.setVisible(true);
+				}
+				else {
+					layeredPane.removeAll();
+					layeredPane.add(panel2);
+					layeredPane.repaint();
+					layeredPane.revalidate();
+					errorMsg.setVisible(false);
+				}
+			}
+		});
+		next2Button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String name = tFirstname.getText();
+				String surname = tSurname.getText();
+				String email = tEmail.getText();
+				char [] password = tPassword.getPassword();
+				String username = tUsername.getText();
+				String pass = "";
+				String mobile = tMobile.getText();
+				if (name.isBlank() || surname.isBlank() || mobile.isBlank()) {
+					errorMsg.setVisible(true);
+				}
+				else {
+					layeredPane.removeAll();
+					layeredPane.add(panel3);
+					layeredPane.repaint();
+					layeredPane.revalidate();
+					errorMsg.setVisible(false);
+				}
+			}
+		});
+		
+		guestReg.setFont(new Font("Dialog", Font.BOLD, 20));
 		
 		tCity = new JTextField();
+		tCity.setBounds(180, 450, 280, 33);
+		panel3.add(tCity);
 		tCity.setColumns(10);
-		tCity.setBounds(901, 437, 205, 29);
-		frmRegistration.getContentPane().add(tCity);
-		
-		JLabel lPostCode = new JLabel("Post Code:  ");
-		lPostCode.setFont(new Font("Arial", Font.BOLD, 20));
-		lPostCode.setBounds(931, 484, 147, 22);
-		frmRegistration.getContentPane().add(lPostCode);
-		
-		tPostCode = new JTextField();
-		tPostCode.setColumns(10);
-		tPostCode.setBounds(901, 505, 205, 29);
-		frmRegistration.getContentPane().add(tPostCode);
 		
 		JButton clear = new JButton("Clear all fields");
+		clear.setEnabled(false);
+		clear.setBounds(500, 683, 135, 25);
+		panel3.add(clear);
 		clear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// clears all text from text fields
@@ -382,8 +464,21 @@ public class registration {
 			}
 		});
 		clear.setFont(new Font("Arial", Font.BOLD, 12));
-		clear.setBounds(991, 599, 165, 29);
-		frmRegistration.getContentPane().add(clear);
+		
+		tPostCode = new JTextField();
+		tPostCode.setBounds(320, 310, 140, 33);
+		panel3.add(tPostCode);
+		tPostCode.setColumns(10);
+		
+		JLabel lPostCode = new JLabel("Post Code");
+		lPostCode.setBounds(320, 285, 137, 24);
+		panel3.add(lPostCode);
+		lPostCode.setFont(new Font("Arial", Font.BOLD, 20));
+		
+		JLabel lblRegisterAs = new JLabel("Register as:");
+		lblRegisterAs.setFont(new Font("Dialog", Font.BOLD, 25));
+		lblRegisterAs.setBounds(232, 500, 204, 33);
+		panel3.add(lblRegisterAs);
 		panel.setBackground(UIManager.getColor("OptionPane.questionDialog.border.background"));
 		panel.setBounds(0, -15, 509, 911);
 		frmRegistration.getContentPane().add(panel);

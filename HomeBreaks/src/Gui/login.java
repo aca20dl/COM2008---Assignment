@@ -55,7 +55,7 @@ public class login  {
 		frmLoginPage.setResizable(false);
 		frmLoginPage.setIconImage(Toolkit.getDefaultToolkit().getImage(login.class.getResource("/Images/chalet.jpg")));
 		frmLoginPage.setTitle("Login Page");
-		frmLoginPage.setBounds(100, 100, 1171, 793);
+		frmLoginPage.setBounds(100, 100, 1200, 800);
 		frmLoginPage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmLoginPage.getContentPane().setLayout(null);
 		
@@ -106,7 +106,7 @@ public class login  {
 		
 		JLabel label = new JLabel("");
 		label.setBackground(new Color(0, 0, 0));
-		label.setBounds(0, -15, 1171, 782);
+		label.setBounds(0, -15, 1200, 800);
 		frmLoginPage.getContentPane().add(label);
 		label.setIcon(new ImageIcon(login.class.getResource("/Images/costa.jpg")));
 		
