@@ -79,6 +79,7 @@ public class registration {
 		frmRegistration.getContentPane().add(layeredPane);
 		
 		JPanel panel_1 = new JPanel();
+		layeredPane.setLayer(panel_1, 2);
 		panel_1.setBounds(0, 0, 865, 765);
 		layeredPane.add(panel_1);
 		panel_1.setLayout(null);
@@ -150,6 +151,7 @@ public class registration {
 		panel_1.add(next1Button);
 		
 		JPanel panel2 = new JPanel();
+		layeredPane.setLayer(panel2, 1);
 		panel2.setBounds(0, 0, 865, 765);
 		layeredPane.add(panel2);
 		panel2.setLayout(null);
@@ -265,6 +267,7 @@ public class registration {
 		
 		
 		JPanel panel3 = new JPanel();
+		layeredPane.setLayer(panel3, 0);
 		panel3.setBounds(0, 0, 855, 765);
 		layeredPane.add(panel3);
 		panel3.setLayout(null);
