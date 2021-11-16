@@ -267,6 +267,7 @@ public class registration {
 		
 		
 		JPanel panel3 = new JPanel();
+		layeredPane.setLayer(panel3, 0);
 		panel3.setBounds(0, 0, 855, 765);
 		layeredPane.add(panel3);
 		panel3.setLayout(null);
