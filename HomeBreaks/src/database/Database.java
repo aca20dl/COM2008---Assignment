@@ -32,47 +32,76 @@ public class Database{
 	          System.out.println(ex.getMessage());
 	      }
 	}
-	//gets id from email in Pdetails table
-	public static int getID(String column, String value, String table) {
-		Statement stmt = null;
-		String query = "select * from " + table + " where " + column + " = \"" + value + "\";"; 
-		int id = 0;
+	//gets results from a query 
+	//Constructs the query SELECT target FROM table WHERE column = value;
+	public static ResultSet getValue(String target, String table, String column, String value) {
+		ResultSet result = null;
 		try {
-			stmt = con.createStatement();
-			ResultSet result = stmt.executeQuery(query);
-			while(result.next()) {
-				id = result.getInt(1);
-			}
-			result.close();
+			Statement getValue = con.createStatement();
+			String query = "Select " + target + " FROM " + table + " WHERE " + column + " = \"" + value + "\";"; 
+			result = getValue.executeQuery(query);
 		}catch (SQLException exx) {
 			exx.printStackTrace();
-		}finally {
-			if (stmt != null)
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
 		}
-		return id;
+		return result;
 	}
+	
+	//returns true if given email is guest - checks IsGuest value in table
+	public static boolean isGuest(String email) {
+		int isGuest = 0;
+		ResultSet result = getValue("IsGuest","Pdetails","Email",email);
+		try {
+			while(result.next()) {
+				isGuest=result.getInt(1);
+			}
+			result.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return isGuest == 1;
+	}
+	
+	//returns true if given email is host - checks IsHost value in table
+	public static boolean isHost(String email) {
+		int isHost = 0;
+		ResultSet result = getValue("IsHost","Pdetails","Email",email);
+		try {
+			while(result.next()) {
+				isHost=result.getInt(1);
+			}
+			result.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return isHost == 1;
+	}
+	
+	// returns true if email already exists in Pdetails table
+	public static boolean exists(String email) {
+		int count = 0;
+		//if result set not empty when searching for email then user exists
+		try {
+			ResultSet result = getValue("*","Pdetails","Email",email);
+			if(result.next()) {
+				count = 1;
+			}
+			result.close();
+		}catch(SQLException e2) {
+			e2.printStackTrace();
+		}
+		return count > 0;
+	}
+	
+	// adds user to the Address and Pdetails table
 	public static void addUser(User user) {
-		String username = "";
-		String password = "";
-		String table = "";
 		
-		if(user.getClass().getName() == "Host") {
-			username = ((Host) user).getHostName();
-			password = ((Host) user).getPassword();
-			table = "Hosts";
-		}
-		else {
-			username = ((Guest) user).getGuestName();
-			password = ((Guest) user).getPassword();
-			table = "Guests";
-		}
+		int isHost=0;
+		int isGuest=0;
 		
-		
+		if(user.getClass().getName() == "classCode.Host") 
+			isHost = 1;
+		else
+			isGuest = 1;
 		//get all info from user
 		String title = user.getTitle();
 		String name = user.getForename();
@@ -86,11 +115,15 @@ public class Database{
 		String place = ad.getPlace();
 		String postCode = ad.getPostCode();
 		
-		//make 3 instances of prepared statement: address, pdetails and user
+		//make 2 instances of prepared statement: address, pdetails
 		try {
-			adStat = con.prepareStatement("INSERT INTO Addresses (House,Street,place,PostCode) VALUES (?,?,?,?)");
-			pdStat = con.prepareStatement("INSERT INTO Pdetails (Title,Firstname,Surname,Email,Mobile,AdID) VALUES(?,?,?,?,?,?)");
-			userStat = con.prepareStatement("INSERT INTO " + table + " (Username,Password,PdID) VALUES (?,?,?)");
+			adStat = con.prepareStatement("INSERT INTO Addresses "
+					+ "(House,Street,place,PostCode) VALUES "
+					+ "(?,?,?,?)");
+			pdStat = con.prepareStatement("INSERT INTO Pdetails "
+					+ "(Title,Firstname,Surname,Email,Mobile,"
+					+ "IsHost,IsGuest,AdID) VALUES(?,?,?,?,?,?,?,?)");
+			
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
@@ -104,22 +137,22 @@ public class Database{
 			int count = adStat.executeUpdate();
 			
 			//execute addition to personal details table
-			int AdID = getID("PostCode",postCode,"Addresses");
+			ResultSet result = getValue("AdID", "Addresses","PostCode",postCode);
+			int adID = 0;
+			while(result.next())
+				adID = result.getInt(1);
+			result.close();
+			
 			pdStat.setString(1, title);
 			pdStat.setString(2, name);
 			pdStat.setString(3, surname);
 			pdStat.setString(4, email);
 			pdStat.setString(5, mobile);
-			pdStat.setString(6, String.valueOf(AdID));
+			pdStat.setString(6, String.valueOf(isHost));
+			pdStat.setString(7, String.valueOf(isGuest));
+			pdStat.setString(8, String.valueOf(adID));
 			int count1 = pdStat.executeUpdate();
 			
-			// execute addition to either guest/host table
-			int pdID = getID("Email",email,"Pdetails");
-			userStat.setString(1, username);
-			userStat.setString(2, password);
-			userStat.setString(3, String.valueOf(pdID));
-			
-			int count2 = userStat.executeUpdate();
 		}catch (SQLException exx) {
 			exx.printStackTrace();
 		}finally {
@@ -128,12 +161,75 @@ public class Database{
 						adStat.close();
 					if(pdStat != null)
 						pdStat.close();
-					if(userStat != null)
-						userStat.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
 		}
 		
+	}
+	
+	//adds the user to either the Guest/host table
+	public static void addUserType(User user) {
+		String username = "";
+		String password = "";
+		String table = "";
+		String email = user.getEmail();
+		
+		if(user.getClass().getName() == "classCode.Host") {
+			username = ((Host) user).getHostName();
+			password = ((Host) user).getPassword();
+			table = "Hosts";
+		}
+		else {
+			username = ((Guest) user).getGuestName();
+			password = ((Guest) user).getPassword();
+			table = "Guests";
+		}
+		
+		try {
+			
+			ResultSet result = getValue("PdID","Pdetails","Email",email);
+			int pdID = 0;
+			while(result.next()) {
+				pdID = result.getInt(1);
+			}
+			result.close();
+			userStat = con.prepareStatement("INSERT INTO " + table + " (Username,Password,PdID) VALUES (?,?,?)");
+			userStat.setString(1, username);
+			userStat.setString(2, password);
+			userStat.setString(3, String.valueOf(pdID));
+			int count = userStat.executeUpdate();
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}finally {
+			try {
+				if(userStat != null)
+					userStat.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	//when registering again sets either isHost/isGuest to 1
+	public static void setUserType(User user) {
+		String type = "";
+		if(user.getClass().getName() == "classCode.Host") {
+			type = "isHost";
+		}
+		else {
+			type = "IsGuest";
+		}
+		
+		try {
+			Statement setType = con.createStatement();
+			String query = "UPDATE Pdetails SET " + type + "= 1 WHERE Email = \"" + user.getEmail() + "\";"; 
+			int count = setType.executeUpdate(query);
+			setType.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }

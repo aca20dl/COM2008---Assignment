@@ -2,6 +2,7 @@ package Gui;
 
 import java.awt.EventQueue;
 import classCode.*;
+import database.*;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -303,20 +304,34 @@ public class registration {
 					errorMsg.setVisible(true);
 				}
 				else {
-					//method to check this host doesn't already exist in db, so email not used b4
+					// creates the Address and Host objects if all fields not empty
+					Address ad = new Address(house,street,city,postCode); 
+					User host = new Host(title,name,surname,email,mobile,ad,username,pass,properties);
+					
+					Database.connectDB();
+					//if user doesn't exist, add the user to all the tables
+					 if(!Database.exists(email)) {
+						 Database.addUser(host);
+						 Database.addUserType(host);
+					 }
+					 else {
+						 //if user exists and not already host add them to host table
+						 if(!Database.isHost(email)) {
+							 Database.addUserType(host);
+							 Database.setUserType(host);
+						 }
+						 else { // this means isHost == 1 so already registered as host
+							 System.out.println("User already registered as host!");
+						 }
+					 }
+					Database.disconnectDB();
+						
 					
 					// if email is used do usedEmail.setVisible(true)
-					// creates new address
-					Address ad = new Address(house,street,city,postCode); 
-					//creates new host if no fields are empty and email is unused
-					Host host = new Host(title,name,surname,email,mobile,ad,username,pass,properties);
 					
 					//remove error messages
 					//usedEmail.setVisible(false);
 					errorMsg.setVisible(false);
-					// add method to insert this host into host table
-				
-					System.out.println(host);
 				}
 			}
 		});
@@ -378,19 +393,36 @@ public class registration {
 					errorMsg.setVisible(true);
 				}
 				else {
-					//method to check this guest doesn't already exist in db, so email not used b4
+					
+					// creates the Address and Host objects if all fields not empty
+					Address ad = new Address(house,street,city,postCode);
+					User guest = new Guest(title,name,surname,email,mobile,ad,username,pass);
+					
+					//if user doesn't exist, add them to all the tables
+					Database.connectDB();
+					 if(!Database.exists(email)) {
+						 Database.addUser(guest);
+						 Database.addUserType(guest);
+					 }
+					 else {
+						 //if user exists and not already guest add them to host table
+						 if(!Database.isGuest(email)) {
+							 Database.addUserType(guest);
+							 Database.setUserType(guest);
+						 }
+						 else { // this means isGuest == 1 so already registered as host
+							 System.out.println("User already registered as guest");
+						 }
+					 }
+					 Database.disconnectDB();
 					
 					// if email is used do usedEmail.setVisible(true)
-					//creates address
-					Address ad = new Address(house,street,city,postCode);
-					//creates new guest if no fields are empty and email is not used
-					Guest guest = new Guest(title,name,surname,email,mobile,ad,username,pass);
+
 					// add method to insert this guest into guest table
 					
 					
 					//remove error messages
 					errorMsg.setVisible(false);
-					System.out.println(guest);
 				}
 			}
 		});
