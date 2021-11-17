@@ -27,7 +27,7 @@ import java.awt.SystemColor;
 
 public class registration {
 
-	JFrame frmRegistration;
+	private JFrame frmRegistration;
 	private JTextField tFirstname;
 	private JTextField tSurname;
 	private JTextField tEmail;
@@ -63,6 +63,10 @@ public class registration {
 	 */
 	public registration() {
 		initialize();
+	}
+	
+	public JFrame getFrame() {
+		return frmRegistration;
 	}
 
 	/**
@@ -313,16 +317,33 @@ public class registration {
 					 if(!Database.exists(email)) {
 						 Database.addUser(host);
 						 Database.addUserType(host);
+						 
+						 //takes user to login page
+						 login log = new login();
+						 JFrame login = log.getFrame();
+						 login.setVisible(true);
+						 frmRegistration.setVisible(false);
 					 }
 					 else {
-						 //if user exists and not already host add them to host table
-						 if(!Database.isHost(email)) {
-							 Database.addUserType(host);
-							 Database.setUserType(host);
+						//check if given pdetails match the pdetails existing for that email
+						 if(Database.matchPdetails(host)) {
+							//if user exists and not already host add them to host table
+							 if(!Database.isHost(email)) {
+								 Database.addUserType(host);
+								 Database.setUserType(host);
+								 
+								 //take user to login page
+								 login log = new login();
+								 JFrame login = log.getFrame();
+								 login.setVisible(true);
+								 frmRegistration.setVisible(false);
+							 }
+							 else { // this means isHost == 1 so already registered as host
+								 System.out.println("User already registered as host!");
+							 }
 						 }
-						 else { // this means isHost == 1 so already registered as host
-							 System.out.println("User already registered as host!");
-						 }
+						 else
+							 System.out.println("Details do not match given email");
 					 }
 					Database.disconnectDB();
 						
@@ -386,6 +407,9 @@ public class registration {
 				char [] password = tPassword.getPassword();
 				String username = tUsername.getText();
 				String pass = "";
+				for(int i = 0; i < password.length; i++) {
+					pass = pass + password[i];
+				}
 				String mobile = tMobile.getText();
 				
 				//checks if any section is empty
@@ -403,16 +427,33 @@ public class registration {
 					 if(!Database.exists(email)) {
 						 Database.addUser(guest);
 						 Database.addUserType(guest);
+						 
+						//take user to login page
+						 login log = new login();
+						 JFrame login = log.getFrame();
+						 login.setVisible(true);
+						 frmRegistration.setVisible(false);
 					 }
 					 else {
-						 //if user exists and not already guest add them to host table
-						 if(!Database.isGuest(email)) {
-							 Database.addUserType(guest);
-							 Database.setUserType(guest);
+						 //check if given pdetails match the pdetails existing for that email
+						 if(Database.matchPdetails(guest)) {
+							//if user exists and not already guest add them to host table
+							 if(!Database.isGuest(email)) {
+								 Database.addUserType(guest);
+								 Database.setUserType(guest);
+								 
+								//take user to login page
+								 login log = new login();
+								 JFrame login = log.getFrame();
+								 login.setVisible(true);
+								 frmRegistration.setVisible(false);
+							 }
+							 else { // this means isGuest == 1 so already registered as host
+								 System.out.println("User already registered as guest");
+							 }
 						 }
-						 else { // this means isGuest == 1 so already registered as host
-							 System.out.println("User already registered as guest");
-						 }
+						 else
+							 System.out.println("Details do not match given email");
 					 }
 					 Database.disconnectDB();
 					

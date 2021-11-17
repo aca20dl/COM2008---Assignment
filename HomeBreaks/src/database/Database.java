@@ -232,4 +232,52 @@ public class Database{
 			e.printStackTrace();
 		}
 	}
+	
+	//given a user it checks if the entered personal details match
+	//the personal details in the database
+	//this will be used if a registered user is trying to register again as either guest/host
+	public static boolean matchPdetails(User user) {
+		String title = "";
+		String firstname = "";
+		String surname = "";
+		String email = "";
+		String mobile = "";
+		boolean matches = false;
+		
+		try {
+			ResultSet result = getValue("*","Pdetails","Email",user.getEmail());
+			while(result.next()) {
+				title = result.getString(2);
+				firstname = result.getString(3);
+				surname = result.getString(4);
+				email = result.getString(5);
+				mobile = result.getString(6);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		if(title.equals(user.getTitle()) && firstname.equals(user.getForename()) 
+				&& surname.equals(user.getSurname()) && email.equals(user.getEmail())
+				&& mobile.equals(user.getMobile()))
+			matches = true;
+		return matches;
+	}
+	//login with email and password, must have login as host/ login as register button
+	public static boolean loginUser(String email, String password, String table) {
+		String actualPass = "";
+		try {
+			Statement getUser = con.createStatement();
+			//gets the password from Guets/host table where the users email is the email given
+			String query = "SELECT " + table + ".* FROM " + table + " INNER JOIN Pdetails ON " + table + ".PdID=Pdetails.PdID WHERE Pdetails.Email=\"" + email +  "\";"; 
+			ResultSet result = getUser.executeQuery(query);
+			while(result.next()) {
+				actualPass = result.getString(3);
+			}
+			getUser.close();
+			result.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return actualPass.equals(password);
+	}
 }
