@@ -30,6 +30,12 @@ public class Guest extends User{
 		password = p;
 	}
 	
+	public void cleanInputs() {
+		super.cleanInputs();
+		guestName = removeSemiColon(guestName.strip());
+		password = removeSemiColon(password.strip());		
+	}
+	
 	//create methods for req2book, browse + review
 	
 	public String toString() {

@@ -76,6 +76,13 @@ public class Host extends User{
 		}
 		return names +"]";
 	}
+	
+	public void cleanInputs() {
+		super.cleanInputs();
+		HostName = removeSemiColon(HostName.strip());
+		password = removeSemiColon(password.strip());		
+	}
+	
 	//create methods for listing property, accept req
 	
 	public String toString() {

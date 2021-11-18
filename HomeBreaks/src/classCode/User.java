@@ -66,15 +66,39 @@ public class User{
 		address = a;
 	}
 	
+	//removes section after semi colon in a given inpu
+	public String removeSemiColon(String input) {
+		String [] out = input.split(";");
+		String output = out[0];
+		return output;
+	}
+	public void cleanInputs() {
+		String house = removeSemiColon(address.getHouse());
+		String place = removeSemiColon(address.getPlace());
+		String street = removeSemiColon(address.getStreet());
+		String postCode = removeSemiColon(address.getPostCode());
+		
+		address = new Address(house,place,street,postCode);
+		
+		title = removeSemiColon(title.strip());
+		forename = removeSemiColon(forename.strip());
+		surname = removeSemiColon(surname.strip());
+		email = removeSemiColon(email);
+		mobile = removeSemiColon(mobile.strip());		
+	}
+	
+	
 	public String toString() {
 		return "Title: " + title + "\nForename: " + forename + 
 				"\nSurname: " + surname + "\nEmail: " + email
 				+ "\nMobile Number: " + mobile + "\n" + address;
 	}
 	public static void main (String [] args) {
-		Address ad = new Address("25","Green ln", "Sheffield", "s109ju");
-		User salma = new User("Miss","Salma","Hassan","s.h@email.com",
+		Address ad = new Address("25","Green ln;Drop table Guests", "Sheffield", "s109ju");
+		User salma = new User("Miss","Salma;Drop table Hosts;","Hassan","s.h@email.com",
 				"07946658987",ad);
+		System.out.println(salma);
+		salma.cleanInputs();
 		System.out.println(salma);
 	}
 }

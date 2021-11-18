@@ -311,10 +311,12 @@ public class registration {
 					// creates the Address and Host objects if all fields not empty
 					Address ad = new Address(house,street,city,postCode); 
 					User host = new Host(title,name,surname,email,mobile,ad,username,pass,properties);
+					//removes any possible SQL injection
+					host.cleanInputs();
 					
 					Database.connectDB();
 					//if user doesn't exist, add the user to all the tables
-					 if(!Database.exists(email)) {
+					 if(!Database.exists(host.getEmail())) {
 						 Database.addUser(host);
 						 Database.addUserType(host);
 						 
@@ -328,7 +330,7 @@ public class registration {
 						//check if given pdetails match the pdetails existing for that email
 						 if(Database.matchPdetails(host)) {
 							//if user exists and not already host add them to host table
-							 if(!Database.isHost(email)) {
+							 if(!Database.isHost(host.getEmail())) {
 								 Database.addUserType(host);
 								 Database.setUserType(host);
 								 
@@ -422,9 +424,12 @@ public class registration {
 					Address ad = new Address(house,street,city,postCode);
 					User guest = new Guest(title,name,surname,email,mobile,ad,username,pass);
 					
+					//removes any possible SQL injection
+					guest.cleanInputs();
+					
 					//if user doesn't exist, add them to all the tables
 					Database.connectDB();
-					 if(!Database.exists(email)) {
+					 if(!Database.exists(guest.getEmail())) {
 						 Database.addUser(guest);
 						 Database.addUserType(guest);
 						 
@@ -438,7 +443,7 @@ public class registration {
 						 //check if given pdetails match the pdetails existing for that email
 						 if(Database.matchPdetails(guest)) {
 							//if user exists and not already guest add them to host table
-							 if(!Database.isGuest(email)) {
+							 if(!Database.isGuest(guest.getEmail())) {
 								 Database.addUserType(guest);
 								 Database.setUserType(guest);
 								 
