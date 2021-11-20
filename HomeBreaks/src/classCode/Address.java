@@ -39,6 +39,14 @@ public class Address{
 		postCode = pc;
 	}
 	
+	public boolean equals(Address other) {
+		boolean equal = this.house.equals(house) && 
+				this.place.equals(other.place) &&
+				this.street.equals(other.street) && 
+				this.postCode.equals(other.postCode);
+		return equal;
+	}
+	
 	//constructor for address
 	public Address(String h, String s, String p, String pc) {
 		house = h;
@@ -54,6 +62,6 @@ public class Address{
 	public static void main (String [] args) {
 		Address ad = new Address("25","Green ln", "Sheffield", "s109ju");
 		Address ad2 = new Address("25","Green ln", "Sheffield", "s109ju");
-		System.out.println(ad);
+		System.out.println(ad.equals(ad2));
 	}
 }

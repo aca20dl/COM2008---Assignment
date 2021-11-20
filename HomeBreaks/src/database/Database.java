@@ -242,10 +242,16 @@ public class Database{
 		String surname = "";
 		String email = "";
 		String mobile = "";
+		// address details
+		String home = "";
+		String street = "";
+		String city = "";
+		String postCode = "";
 		boolean matches = false;
 		
+		// get personal info from database
+		ResultSet result = getValue("*","Pdetails","Email",user.getEmail());
 		try {
-			ResultSet result = getValue("*","Pdetails","Email",user.getEmail());
 			while(result.next()) {
 				title = result.getString(2);
 				firstname = result.getString(3);
@@ -253,12 +259,21 @@ public class Database{
 				email = result.getString(5);
 				mobile = result.getString(6);
 			}
+			result = getValue("*","Addresses", "PostCode",user.getAddress().getPostCode());
+			while(result.next()) {
+				home = result.getString(2);
+				street = result.getString(3);
+				city = result.getString(4);
+				postCode = result.getString(5);
+			}
+			result.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		Address ad = new Address(home,street,city,postCode);
 		if(title.equals(user.getTitle()) && firstname.equals(user.getForename()) 
 				&& surname.equals(user.getSurname()) && email.equals(user.getEmail())
-				&& mobile.equals(user.getMobile()))
+				&& mobile.equals(user.getMobile()) && ad.equals(user.getAddress()))
 			matches = true;
 		return matches;
 	}
