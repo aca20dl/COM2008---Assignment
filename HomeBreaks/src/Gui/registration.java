@@ -422,6 +422,7 @@ public class registration {
 					
 					// creates the Address and Host objects if all fields not empty
 					Address ad = new Address(house,street,city,postCode);
+					//initially guest has zero bookings
 					User guest = new Guest(title,name,surname,email,mobile,ad,username,pass);
 					
 					//removes any possible SQL injection

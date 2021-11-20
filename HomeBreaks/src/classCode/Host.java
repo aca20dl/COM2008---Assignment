@@ -94,36 +94,4 @@ public class Host extends User{
 		}
 		return output;
 	}
-	
-	public static void main(String [] args) {
-		Address ad = new Address("25","Green ln", "Sheffield", "s109ju");
-		
-		Review myRev = new Review("Happy",4,4,5,2,5,4);
-		Review myRev2 = new Review("Upset",1,2,1,1,1,2);
-		
-		Review myRev3 = new Review("Happy",3,3,5,2,5,7);
-		Review myRev4 = new Review("Upset",1,4,1,1,3,2);
-		
-		ArrayList<Review> reviews = new ArrayList<>();
-		reviews.add(myRev);
-		reviews.add(myRev2);
-		
-		ArrayList<Review> reviews2 = new ArrayList<>();
-		reviews2.add(myRev3);
-		reviews2.add(myRev4);
-		
-		Property myProp = new Property(ad,"small house", "long description",
-				"sheffield",false,6,2,3,2,reviews);
-		Property myProp2 = new Property(ad,"big house", "long description",
-				"sheffield",true,4,2,3,2,reviews2);
-		
-		ArrayList<Property> props = new ArrayList<>();
-		props.add(myProp);
-		props.add(myProp2);
-		
-		Host salma = new Host ("Miss","Salma","Hassan","s.h@email.com",
-				"0114",ad,"Sal","password",props);
-		System.out.println(salma);
-		System.out.println();
-	}
 }
