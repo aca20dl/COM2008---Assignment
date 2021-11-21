@@ -9,18 +9,18 @@ public class Property{
 	private String description;
 	private String genLoc;
 	boolean breakfast;
-	int maxGuest;
-	int numBed;
-	int numBedroom;
-	int numBathroom;
-	Sleeping sleeping;
-	Bathing bathing;
-	Kitchen kitchen;
-	Living living;
-	Utility utility;
-	Outdoor outdoor;
-	ArrayList<ChargeBand> bands; // list of charge bands, maybe for different periods in the year?
-	ArrayList<Review> reviews; // list of reviews for each property
+	private int maxGuest;
+	private int numBed;
+	private int numBedroom;
+	private int numBathroom;
+	private Sleeping sleeping;
+	private Bathing bathing;
+	private Kitchen kitchen;
+	private Living living;
+	private Utility utility;
+	private Outdoor outdoor;
+	private ArrayList<ChargeBand> bands; // list of charge bands, maybe for different periods in the year?
+	private ArrayList<Review> reviews; // list of reviews for each property
 	
 	//get methods for variables
 	public String getName() {
