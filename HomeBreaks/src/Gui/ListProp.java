@@ -862,6 +862,7 @@ public class ListProp {
 				case 8: goToPanel(outdoorP);
 				break;
 				case 9: goToPanel(addressP); // change when u make chargeband page
+				break;
 				}
 			}
 		});
