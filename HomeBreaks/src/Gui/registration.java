@@ -2,6 +2,7 @@ package Gui;
 
 import java.awt.EventQueue;
 import classCode.*;
+import database.*;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -26,7 +27,7 @@ import java.awt.SystemColor;
 
 public class registration {
 
-	JFrame frmRegistration;
+	private JFrame frmRegistration;
 	private JTextField tFirstname;
 	private JTextField tSurname;
 	private JTextField tEmail;
@@ -62,6 +63,10 @@ public class registration {
 	 */
 	public registration() {
 		initialize();
+	}
+	
+	public JFrame getFrame() {
+		return frmRegistration;
 	}
 
 	/**
@@ -305,20 +310,54 @@ public class registration {
 					errorMsg.setVisible(true);
 				}
 				else {
-					//method to check this host doesn't already exist in db, so email not used b4
+					// creates the Address and Host objects if all fields not empty
+					Address ad = new Address(house,street,city,postCode); 
+					User host = new Host(title,name,surname,email,mobile,ad,username,pass,properties);
+					//removes any possible SQL injection
+					host.cleanInputs();
+					
+					Database.connectDB();
+					//if user doesn't exist, add the user to all the tables
+					 if(!Database.exists(host.getEmail())) {
+						 Database.addUser(host);
+						 Database.addUserType(host);
+						 
+						 //takes user to login page
+						 login log = new login();
+						 JFrame login = log.getFrame();
+						 login.setVisible(true);
+						 frmRegistration.setVisible(false);
+					 }
+					 else {
+						//check if given pdetails match the pdetails existing for that email
+						 if(Database.matchPdetails(host)) {
+							//if user exists and not already host add them to host table
+							 if(!Database.isHost(host.getEmail())) {
+								 Database.addUserType(host);
+								 Database.setUserType(host);
+								 
+								 //take user to login page
+								 login log = new login();
+								 JFrame login = log.getFrame();
+								 login.setVisible(true);
+								 frmRegistration.setVisible(false);
+							 }
+							 else { // this means isHost == 1 so already registered as host
+								 System.out.println("User already registered as host!");
+							 }
+						 }
+						 else
+							 System.out.println("Details do not match given email");
+					 }
+					Database.disconnectDB();
+						
 					
 					// if email is used do usedEmail.setVisible(true)
-					// creates new address
-					Address ad = new Address(house,street,city,postCode); 
-					//creates new host if no fields are empty and email is unused
-					Host host = new Host(title,name,surname,email,mobile,ad,username,pass,properties);
 					
 					//remove error messages
 					//usedEmail.setVisible(false);
 					errorMsg.setVisible(false);
-					// add method to insert this host into host table
-						
-					System.out.println(host);
+
 				}
 			}
 		});
@@ -373,6 +412,9 @@ public class registration {
 				char [] password = tPassword.getPassword();
 				String username = tUsername.getText();
 				String pass = "";
+				for(int i = 0; i < password.length; i++) {
+					pass = pass + password[i];
+				}
 				String mobile = tMobile.getText();
 				
 				//checks if any section is empty
@@ -380,19 +422,57 @@ public class registration {
 					errorMsg.setVisible(true);
 				}
 				else {
-					//method to check this guest doesn't already exist in db, so email not used b4
+					
+					// creates the Address and Host objects if all fields not empty
+					Address ad = new Address(house,street,city,postCode);
+					//initially guest has zero bookings
+					User guest = new Guest(title,name,surname,email,mobile,ad,username,pass);
+					
+					//removes any possible SQL injection
+					guest.cleanInputs();
+					
+					//if user doesn't exist, add them to all the tables
+					Database.connectDB();
+					 if(!Database.exists(guest.getEmail())) {
+						 Database.addUser(guest);
+						 Database.addUserType(guest);
+						 
+						//take user to login page
+						 login log = new login();
+						 JFrame login = log.getFrame();
+						 login.setVisible(true);
+						 frmRegistration.setVisible(false);
+					 }
+					 else {
+						 //check if given pdetails match the pdetails existing for that email
+						 if(Database.matchPdetails(guest)) {
+							//if user exists and not already guest add them to host table
+							 if(!Database.isGuest(guest.getEmail())) {
+								 Database.addUserType(guest);
+								 Database.setUserType(guest);
+								 
+								//take user to login page
+								 login log = new login();
+								 JFrame login = log.getFrame();
+								 login.setVisible(true);
+								 frmRegistration.setVisible(false);
+							 }
+							 else { // this means isGuest == 1 so already registered as host
+								 System.out.println("User already registered as guest");
+							 }
+						 }
+						 else
+							 System.out.println("Details do not match given email");
+					 }
+					 Database.disconnectDB();
 					
 					// if email is used do usedEmail.setVisible(true)
-					//creates address
-					Address ad = new Address(house,street,city,postCode);
-					//creates new guest if no fields are empty and email is not used
-					Guest guest = new Guest(title,name,surname,email,mobile,ad,username,pass);
+
 					// add method to insert this guest into guest table
 					
 					
 					//remove error messages
 					errorMsg.setVisible(false);
-					System.out.println(guest);
 				}
 			}
 		});

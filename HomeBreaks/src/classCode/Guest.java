@@ -1,4 +1,7 @@
 package classCode;
+
+import java.util.*;
+
 public class Guest extends User{
 	//variables specific for guest here, guest name is public
 	private String guestName;
@@ -12,6 +15,7 @@ public class Guest extends User{
 	public String getPassword() {
 		return password;
 	}
+	
 	
 	// set methods
 	public void setGuestName(String gn) {
@@ -28,6 +32,12 @@ public class Guest extends User{
 		super(t,f,s,e,m,ad);
 		guestName = gn;
 		password = p;
+	}
+	
+	public void cleanInputs() {
+		super.cleanInputs();
+		guestName = removeSemiColon(guestName.strip());
+		password = removeSemiColon(password.strip());		
 	}
 	
 	//create methods for req2book, browse + review
