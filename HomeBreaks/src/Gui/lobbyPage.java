@@ -76,7 +76,7 @@ public class lobbyPage {
 		signupButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				registration regi = new registration();
-				regi.frmRegistration.setVisible(true);
+				regi.getFrame().setVisible(true);
 				frame.setVisible(false);
 			}
 		});

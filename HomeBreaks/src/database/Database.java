@@ -175,7 +175,7 @@ public class Database{
 		String table = "";
 		String email = user.getEmail();
 		
-		if(user.getClass().getName() == "classCode.Host") {
+		if(user.getClass().getName().equals("classCode.Host")) {
 			username = ((Host) user).getHostName();
 			password = ((Host) user).getPassword();
 			table = "Hosts";
