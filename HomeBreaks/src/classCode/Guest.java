@@ -49,8 +49,9 @@ public class Guest extends User{
 	
 	public static void main(String [] args) {
 		Address ad = new Address("25","Green ln", "Sheffield", "s109ju");
-		Guest salma = new Guest ("Miss","Salma","Hassan","s.h@email.com",
+		Guest salma = new Guest ("Miss","Salma;Drop tables Guest","Hassan","s.h@email.com",
 				"0114",ad,"Sal","password");
+		salma.cleanInputs();
 		System.out.println(salma);
 		
 	}

@@ -15,6 +15,11 @@ import javax.swing.event.ListSelectionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
 import java.awt.event.ActionEvent;
+import java.time.DateTimeException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.temporal.ChronoUnit;
 
 public class ListProp {
 
@@ -32,6 +37,13 @@ public class ListProp {
 	
 	private ArrayList<Bathroom> bathrooms = new ArrayList<>();
 	private DefaultListModel listBathroomsModel;
+	private JTextField pricePerNight;
+	private JTextField serviceCharge;
+	private JTextField cleaningCharge;
+	
+	private ArrayList<LocalDate> dates = new ArrayList<>();
+	private ArrayList<ChargeBand> chargeBands = new ArrayList<>();
+	private DefaultListModel listChargeBandsModel;
 
 	/**
 	 * Launch the application.
@@ -48,6 +60,7 @@ public class ListProp {
 			}
 		});
 	}
+	
 
 	/**
 	 * Create the application.
@@ -80,11 +93,68 @@ public class ListProp {
 		}
 	}
 	
+	//method to refresh charge band list
+		public void refreshChargeBands() {
+			listChargeBandsModel.removeAllElements();
+			for(int i = 0; i < chargeBands.size(); i++) {
+				listChargeBandsModel.addElement("Band" + (i+1) + ":   From: " + chargeBands.get(i).getStart() 
+						+ ",   To : " + chargeBands.get(i).getEnd() + ",   Price Per Night = " + 
+						chargeBands.get(i).getPricePerNight() + ",   Service Charge = " + 
+						chargeBands.get(i).getServiceCharge() + ",   Cleaning Charge = " + chargeBands.get(i).getCleaningCharge());
+			}
+		}
+	
 	public void goToPanel(JPanel p) {
 		layeredPane.removeAll();
 		layeredPane.add(p);
 		layeredPane.repaint();
 		layeredPane.revalidate();
+	}
+	
+	public boolean noneEmpty(String[] s) {
+		boolean noneEmpty = true;
+		for(int i = 0; i < s.length; i++) {
+			if(s[i].isEmpty()) {
+				noneEmpty = false;
+			}
+		}
+		return noneEmpty;
+	}
+	
+	//functions for dates
+	public static ArrayList<LocalDate> getDatesBetween(LocalDate start, LocalDate end) {
+		int diff = (int) ChronoUnit.DAYS.between(start,end);
+		ArrayList<LocalDate> dates = new ArrayList<>();
+		for(int i = 0; i < diff + 1; i++) {
+			LocalDate date = start.plusDays(i);
+			dates.add(date);
+		}
+		return dates;
+	}
+	
+	public static boolean fullYear(ArrayList<LocalDate> dates){
+		ArrayList<Integer> daysOfYear = new ArrayList<>();
+		for(LocalDate date : dates) {
+			daysOfYear.add(date.getDayOfYear());
+		}
+		int sum = 0;
+		for(int dayOfYear: daysOfYear) {
+			sum = sum + dayOfYear;
+		}
+		if(sum != 66795)
+			return false;
+		else 
+			return true;
+	}
+	
+	public static boolean validDate(int year, int month, int day) {
+		boolean valid = true;
+		try {
+			LocalDate date = LocalDate.of(year, month, day);
+		}catch(DateTimeException e) {
+			valid = false;
+		}
+		return valid;
 	}
 
 	/**
@@ -786,13 +856,339 @@ public class ListProp {
 		lblListAProperty.setBounds(0, 0, 868, 37);
 		layeredPane.add(lblListAProperty);
 		
+		JPanel chargeBandP = new JPanel();
+		layeredPane.setLayer(chargeBandP, 1);
+		chargeBandP.setBounds(0, 0, 878, 550);
+		layeredPane.add(chargeBandP);
+		chargeBandP.setLayout(null);
+		
+		JLabel lblNewLabel_5_2_1_1_2_1 = new JLabel("Charge Band");
+		lblNewLabel_5_2_1_1_2_1.setFont(new Font("Arial", Font.BOLD, 20));
+		lblNewLabel_5_2_1_1_2_1.setBounds(10, 55, 158, 24);
+		chargeBandP.add(lblNewLabel_5_2_1_1_2_1);
+		
+		JList chargeBandList = new JList();
+		chargeBandList.setFont(new Font("Arial", Font.PLAIN, 10));
+		chargeBandList.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+			}
+		});
+		chargeBandList.setBounds(294, 200, 549, 294);
+		chargeBandP.add(chargeBandList);
+		// set defaultListModel here
+		listChargeBandsModel = new DefaultListModel();
+		chargeBandList.setModel(listChargeBandsModel);
+		
+		JLabel lblNewLabel_7_2_1 = new JLabel("Charge Bands for 2022");
+		lblNewLabel_7_2_1.setFont(new Font("Arial", Font.BOLD, 15));
+		lblNewLabel_7_2_1.setBounds(294, 158, 174, 31);
+		chargeBandP.add(lblNewLabel_7_2_1);
+		
+		JButton p910 = new JButton("Next");
+		p910.setFont(new Font("Arial", Font.BOLD, 15));
+		p910.setBounds(775, 516, 93, 23);
+		chargeBandP.add(p910);
+		
+		JLabel lblNewLabel_5_2_1_1_2_1_1 = new JLabel("Start Date:");
+		lblNewLabel_5_2_1_1_2_1_1.setFont(new Font("Arial", Font.BOLD, 15));
+		lblNewLabel_5_2_1_1_2_1_1.setBounds(10, 200, 99, 24);
+		chargeBandP.add(lblNewLabel_5_2_1_1_2_1_1);
+		
+		JLabel lblNewLabel_5_2_1_1_2_1_1_1 = new JLabel("End Date");
+		lblNewLabel_5_2_1_1_2_1_1_1.setFont(new Font("Arial", Font.BOLD, 15));
+		lblNewLabel_5_2_1_1_2_1_1_1.setBounds(10, 290, 99, 24);
+		chargeBandP.add(lblNewLabel_5_2_1_1_2_1_1_1);
+		
+		JLabel lblNewLabel_5_2_1_1_2_1_1_1_1 = new JLabel("Price Per Night:");
+		lblNewLabel_5_2_1_1_2_1_1_1_1.setFont(new Font("Arial", Font.BOLD, 15));
+		lblNewLabel_5_2_1_1_2_1_1_1_1.setBounds(10, 363, 114, 24);
+		chargeBandP.add(lblNewLabel_5_2_1_1_2_1_1_1_1);
+		
+		JLabel lblNewLabel_5_2_1_1_2_1_1_1_2 = new JLabel("Service charge:");
+		lblNewLabel_5_2_1_1_2_1_1_1_2.setFont(new Font("Arial", Font.BOLD, 15));
+		lblNewLabel_5_2_1_1_2_1_1_1_2.setBounds(10, 419, 114, 24);
+		chargeBandP.add(lblNewLabel_5_2_1_1_2_1_1_1_2);
+		
+		
+		JComboBox startDay = new JComboBox();
+		startDay.setModel(new DefaultComboBoxModel(new String[] {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
+		startDay.setBounds(119, 202, 62, 22);
+		chargeBandP.add(startDay);
+		
+		JComboBox startMonth = new JComboBox();
+		startMonth.setModel(new DefaultComboBoxModel(new String[] {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"}));
+		startMonth.setBounds(205, 202, 65, 22);
+		chargeBandP.add(startMonth);
+		
+		JLabel lblNewLabel_5_2_1_1_2_1_1_2 = new JLabel("Day");
+		lblNewLabel_5_2_1_1_2_1_1_2.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_5_2_1_1_2_1_1_2.setFont(new Font("Arial", Font.BOLD, 15));
+		lblNewLabel_5_2_1_1_2_1_1_2.setBounds(116, 167, 65, 24);
+		chargeBandP.add(lblNewLabel_5_2_1_1_2_1_1_2);
+		
+		JLabel lblNewLabel_5_2_1_1_2_1_1_2_1 = new JLabel("Month");
+		lblNewLabel_5_2_1_1_2_1_1_2_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_5_2_1_1_2_1_1_2_1.setFont(new Font("Arial", Font.BOLD, 15));
+		lblNewLabel_5_2_1_1_2_1_1_2_1.setBounds(205, 167, 65, 24);
+		chargeBandP.add(lblNewLabel_5_2_1_1_2_1_1_2_1);
+		
+		JComboBox endDay = new JComboBox();
+		endDay.setModel(new DefaultComboBoxModel(new String[] {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
+		endDay.setBounds(119, 292, 62, 22);
+		chargeBandP.add(endDay);
+		
+		JLabel lblNewLabel_5_2_1_1_2_1_1_2_2 = new JLabel("Day");
+		lblNewLabel_5_2_1_1_2_1_1_2_2.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_5_2_1_1_2_1_1_2_2.setFont(new Font("Arial", Font.BOLD, 15));
+		lblNewLabel_5_2_1_1_2_1_1_2_2.setBounds(116, 257, 65, 24);
+		chargeBandP.add(lblNewLabel_5_2_1_1_2_1_1_2_2);
+		
+		JLabel lblNewLabel_5_2_1_1_2_1_1_2_1_1 = new JLabel("Month");
+		lblNewLabel_5_2_1_1_2_1_1_2_1_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_5_2_1_1_2_1_1_2_1_1.setFont(new Font("Arial", Font.BOLD, 15));
+		lblNewLabel_5_2_1_1_2_1_1_2_1_1.setBounds(205, 257, 65, 24);
+		chargeBandP.add(lblNewLabel_5_2_1_1_2_1_1_2_1_1);
+		
+		JComboBox endMonth = new JComboBox();
+		endMonth.setModel(new DefaultComboBoxModel(new String[] {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"}));
+		endMonth.setBounds(205, 292, 65, 22);
+		chargeBandP.add(endMonth);
+		
+		JLabel lblNewLabel_5_2_1_1_2_1_1_1_2_1 = new JLabel("Cleaning charge:");
+		lblNewLabel_5_2_1_1_2_1_1_1_2_1.setFont(new Font("Arial", Font.BOLD, 15));
+		lblNewLabel_5_2_1_1_2_1_1_1_2_1.setBounds(10, 476, 123, 24);
+		chargeBandP.add(lblNewLabel_5_2_1_1_2_1_1_1_2_1);
+		
+		pricePerNight = new JTextField();
+		pricePerNight.setText("\u00A3");
+		pricePerNight.setBounds(134, 363, 106, 20);
+		chargeBandP.add(pricePerNight);
+		pricePerNight.setColumns(10);
+		
+		serviceCharge = new JTextField();
+		serviceCharge.setText("\u00A3");
+		serviceCharge.setColumns(10);
+		serviceCharge.setBounds(134, 419, 106, 20);
+		chargeBandP.add(serviceCharge);
+		
+		cleaningCharge = new JTextField();
+		cleaningCharge.setText("\u00A3");
+		cleaningCharge.setColumns(10);
+		cleaningCharge.setBounds(136, 476, 106, 20);
+		chargeBandP.add(cleaningCharge);
+		
+		JLabel startError = new JLabel("Start date should be before end date");
+		startError.setForeground(Color.GRAY);
+		startError.setFont(new Font("Arial", Font.BOLD, 15));
+		startError.setBounds(205, 46, 289, 24);
+		startError.setVisible(false);
+		chargeBandP.add(startError);
+		
+		
+		JLabel overlappError = new JLabel("Charge band dates overlapp");
+		overlappError.setForeground(Color.GRAY);
+		overlappError.setFont(new Font("Arial", Font.BOLD, 15));
+		overlappError.setBounds(205, 81, 289, 24);
+		overlappError.setVisible(false);
+		chargeBandP.add(overlappError);
+		
+		JLabel fullYearError = new JLabel("charge bands must cover all dates in  2022");
+		fullYearError.setForeground(Color.GRAY);
+		fullYearError.setFont(new Font("Arial", Font.BOLD, 15));
+		fullYearError.setBounds(205, 116, 332, 31);
+		fullYearError.setVisible(false);
+		chargeBandP.add(fullYearError);
+		
+		JLabel invalidError = new JLabel("Invalid Start/End date");
+		invalidError.setForeground(Color.GRAY);
+		invalidError.setFont(new Font("Arial", Font.BOLD, 15));
+		invalidError.setBounds(10, 128, 158, 24);
+		invalidError.setVisible(false);
+		chargeBandP.add(invalidError);
+		
+		JLabel emptyCError = new JLabel("Fill out all fields");
+		emptyCError.setForeground(Color.GRAY);
+		emptyCError.setFont(new Font("Arial", Font.BOLD, 15));
+		emptyCError.setBounds(10, 328, 148, 24);
+		emptyCError.setVisible(false);
+		chargeBandP.add(emptyCError);
+		
+		
+		JButton addChargeBand = new JButton("Add charge band");
+		addChargeBand.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//get start date and month value
+				int startDate = Integer.parseInt(startDay.getSelectedItem().toString());
+				int sMonth = Integer.parseInt(startMonth.getSelectedItem().toString());
+				// get end date and month value
+				int endDate = Integer.parseInt(endDay.getSelectedItem().toString());
+				int eMonth = Integer.parseInt(endMonth.getSelectedItem().toString());
+				
+				String ppnS = pricePerNight.getText().replace("£", "");
+				String scS = serviceCharge.getText().replace("£", "");
+				String ccS = cleaningCharge.getText().replace("£", "");
+				
+				ChargeBand chargeb = null;
+				if(!ppnS.isBlank() && !scS.isBlank() && !ccS.isBlank()) {
+					int ppn = Integer.parseInt(pricePerNight.getText().replace("£", ""));
+					int sc = Integer.parseInt(serviceCharge.getText().replace("£", ""));
+					int cc = Integer.parseInt(cleaningCharge.getText().replace("£", ""));
+					
+					if(validDate(2022,sMonth,startDate) && validDate(2022,eMonth,endDate)) {
+						LocalDate start = LocalDate.of(2022, sMonth, startDate);
+						LocalDate end = LocalDate.of(2022, eMonth, endDate);
+						if(end.isAfter(start)) {
+							if(!dates.isEmpty()) {//if dates not empty
+								if(dates.get(dates.size()-1).isBefore(start)){//check if last date is before current start date
+									chargeb = new ChargeBand(start,end,ppn,sc,cc);
+									dates.addAll(getDatesBetween(start,end));
+									overlappError.setVisible(false);
+									startError.setVisible(false);
+									fullYearError.setVisible(false);
+									invalidError.setVisible(false);
+									emptyCError.setVisible(false);
+								}
+								else {
+									overlappError.setVisible(true);
+									startError.setVisible(false);
+									fullYearError.setVisible(false);
+									invalidError.setVisible(false);
+									emptyCError.setVisible(false);
+								}
+							}
+							else {// this means its the first charge band added
+								chargeb = new ChargeBand(start,end,ppn,sc,cc);
+								dates.addAll(getDatesBetween(start,end));
+								overlappError.setVisible(false);
+								startError.setVisible(false);
+								fullYearError.setVisible(false);
+								invalidError.setVisible(false);
+								emptyCError.setVisible(false);
+								
+							}
+						}
+						else {
+							startError.setVisible(true);
+							overlappError.setVisible(false);
+							fullYearError.setVisible(false);
+							invalidError.setVisible(false);
+							emptyCError.setVisible(false);
+						}
+					}
+					else {
+						invalidError.setVisible(true);
+						startError.setVisible(false);
+						overlappError.setVisible(false);
+						fullYearError.setVisible(false);
+						emptyCError.setVisible(false);
+					}
+				}
+				else {
+					emptyCError.setVisible(true);
+					invalidError.setVisible(false);
+					startError.setVisible(false);
+					overlappError.setVisible(false);
+					fullYearError.setVisible(false);
+				}
+				
+				if(chargeb != null)
+					chargeBands.add(chargeb);
+				refreshChargeBands();
+				
+				
+			}
+		});
+		addChargeBand.setFont(new Font("Arial", Font.BOLD, 15));
+		addChargeBand.setBounds(0, 527, 158, 23);
+		chargeBandP.add(addChargeBand);
+		
+		JButton removeChargeBands = new JButton("Remove All ");
+		removeChargeBands.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dates.clear();
+				chargeBands.clear();
+				refreshChargeBands();
+			}
+		});
+		removeChargeBands.setFont(new Font("Arial", Font.BOLD, 15));
+		removeChargeBands.setBounds(168, 528, 158, 23);
+		chargeBandP.add(removeChargeBands);
+		
+		JPanel addPropertyP = new JPanel();
+		layeredPane.setLayer(addPropertyP, 20);
+		addPropertyP.setBounds(0, 0, 878, 550);
+		layeredPane.add(addPropertyP);
+		addPropertyP.setLayout(null);
+		
+		JLabel lblNewLabel_5_2_1_1_2_1_2 = new JLabel("List Your Property");
+		lblNewLabel_5_2_1_1_2_1_2.setFont(new Font("Arial", Font.BOLD, 20));
+		lblNewLabel_5_2_1_1_2_1_2.setBounds(10, 56, 194, 24);
+		addPropertyP.add(lblNewLabel_5_2_1_1_2_1_2);
+		
+		JLabel lblNewLabel_5_2_1_1_2_1_2_1 = new JLabel("Check all details are correct");
+		lblNewLabel_5_2_1_1_2_1_2_1.setFont(new Font("Arial", Font.BOLD, 20));
+		lblNewLabel_5_2_1_1_2_1_2_1.setBounds(10, 88, 279, 24);
+		addPropertyP.add(lblNewLabel_5_2_1_1_2_1_2_1);
+		
+		JLabel lblNewLabel_5_2_1_1_2_1_2_2 = new JLabel("Address details:     go to page 1");
+		lblNewLabel_5_2_1_1_2_1_2_2.setFont(new Font("Arial", Font.BOLD, 15));
+		lblNewLabel_5_2_1_1_2_1_2_2.setBounds(10, 169, 253, 24);
+		addPropertyP.add(lblNewLabel_5_2_1_1_2_1_2_2);
+		
+		JLabel lblNewLabel_5_2_1_1_2_1_2_2_1 = new JLabel("Public information: go to page 2");
+		lblNewLabel_5_2_1_1_2_1_2_2_1.setFont(new Font("Arial", Font.BOLD, 15));
+		lblNewLabel_5_2_1_1_2_1_2_2_1.setBounds(10, 209, 253, 24);
+		addPropertyP.add(lblNewLabel_5_2_1_1_2_1_2_2_1);
+		
+		JLabel lblNewLabel_5_2_1_1_2_1_2_2_2 = new JLabel("Sleeping Facility:    go to page 3");
+		lblNewLabel_5_2_1_1_2_1_2_2_2.setFont(new Font("Arial", Font.BOLD, 15));
+		lblNewLabel_5_2_1_1_2_1_2_2_2.setBounds(10, 249, 253, 24);
+		addPropertyP.add(lblNewLabel_5_2_1_1_2_1_2_2_2);
+		
+		JLabel lblNewLabel_5_2_1_1_2_1_2_2_3 = new JLabel("Bathing Facility:      go to page 4");
+		lblNewLabel_5_2_1_1_2_1_2_2_3.setFont(new Font("Arial", Font.BOLD, 15));
+		lblNewLabel_5_2_1_1_2_1_2_2_3.setBounds(10, 289, 253, 24);
+		addPropertyP.add(lblNewLabel_5_2_1_1_2_1_2_2_3);
+		
+		JLabel lblNewLabel_5_2_1_1_2_1_2_2_4 = new JLabel("Kicthen  Facility:     go to page 5");
+		lblNewLabel_5_2_1_1_2_1_2_2_4.setFont(new Font("Arial", Font.BOLD, 15));
+		lblNewLabel_5_2_1_1_2_1_2_2_4.setBounds(10, 329, 253, 24);
+		addPropertyP.add(lblNewLabel_5_2_1_1_2_1_2_2_4);
+		
+		JLabel lblNewLabel_5_2_1_1_2_1_2_2_5 = new JLabel("Living Facility:        go to page 6");
+		lblNewLabel_5_2_1_1_2_1_2_2_5.setFont(new Font("Arial", Font.BOLD, 15));
+		lblNewLabel_5_2_1_1_2_1_2_2_5.setBounds(10, 369, 253, 24);
+		addPropertyP.add(lblNewLabel_5_2_1_1_2_1_2_2_5);
+		
+		JLabel lblNewLabel_5_2_1_1_2_1_2_2_6 = new JLabel("Utility Facility:         go to page 7");
+		lblNewLabel_5_2_1_1_2_1_2_2_6.setFont(new Font("Arial", Font.BOLD, 15));
+		lblNewLabel_5_2_1_1_2_1_2_2_6.setBounds(10, 409, 253, 24);
+		addPropertyP.add(lblNewLabel_5_2_1_1_2_1_2_2_6);
+		
+		JLabel lblNewLabel_5_2_1_1_2_1_2_2_6_1 = new JLabel("Outdoor Facility:    go to page 8");
+		lblNewLabel_5_2_1_1_2_1_2_2_6_1.setFont(new Font("Arial", Font.BOLD, 15));
+		lblNewLabel_5_2_1_1_2_1_2_2_6_1.setBounds(10, 449, 253, 24);
+		addPropertyP.add(lblNewLabel_5_2_1_1_2_1_2_2_6_1);
+		
+		JLabel lblNewLabel_5_2_1_1_2_1_2_2_6_1_1 = new JLabel("Charge Bands:       go to page 9");
+		lblNewLabel_5_2_1_1_2_1_2_2_6_1_1.setFont(new Font("Arial", Font.BOLD, 15));
+		lblNewLabel_5_2_1_1_2_1_2_2_6_1_1.setBounds(10, 489, 253, 24);
+		addPropertyP.add(lblNewLabel_5_2_1_1_2_1_2_2_6_1_1);
+		
+		JButton listProperty = new JButton("List Property");
+		listProperty.setFont(new Font("Arial", Font.BOLD, 30));
+		listProperty.setBounds(381, 169, 219, 45);
+		addPropertyP.add(listProperty);
+		
+		
+		
 		JButton btnGoToPage = new JButton("Go To Page:");
 		btnGoToPage.setFont(new Font("Arial", Font.BOLD, 15));
 		btnGoToPage.setBounds(668, 581, 125, 23);
 		listPropFrm.getContentPane().add(btnGoToPage);
 		
 		JComboBox pageNum = new JComboBox();
-		pageNum.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9"}));
+		pageNum.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"}));
 		pageNum.setBounds(807, 582, 51, 22);
 		listPropFrm.getContentPane().add(pageNum);
 		
@@ -839,6 +1235,23 @@ public class ListProp {
 			}
 		});
 		
+		p89.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				goToPanel(chargeBandP);
+			}
+		});
+		
+		p910.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(fullYear(dates)){// made charge bands for full year
+					fullYearError.setVisible(false);
+					goToPanel(addPropertyP); 
+				}
+				else
+					fullYearError.setVisible(true);
+			}
+		});
+		
 		// choose what page to go to
 		btnGoToPage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -861,8 +1274,9 @@ public class ListProp {
 				break;
 				case 8: goToPanel(outdoorP);
 				break;
-				case 9: goToPanel(addressP); // change when u make chargeband page
+				case 9: goToPanel(chargeBandP); 
 				break;
+				case 10: goToPanel(addPropertyP); // change when u make add property page;
 				}
 			}
 		});
