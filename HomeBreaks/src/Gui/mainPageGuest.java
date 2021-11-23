@@ -60,7 +60,7 @@ public class mainPageGuest {
 	 */
 	private void initialize(User user) {
 		guestFrame = new JFrame();
-		guestFrame.setBounds(100, 100, 751, 579);
+		guestFrame.setBounds(100, 100, 1200, 800);
 		guestFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		guestFrame.getContentPane().setLayout(null);
 		
