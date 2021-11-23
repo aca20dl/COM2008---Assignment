@@ -1115,7 +1115,7 @@ public class ListProp {
 		chargeBandP.add(removeChargeBands);
 		
 		JPanel addPropertyP = new JPanel();
-		layeredPane.setLayer(addPropertyP, 20);
+		layeredPane.setLayer(addPropertyP, 0);
 		addPropertyP.setBounds(0, 0, 878, 550);
 		layeredPane.add(addPropertyP);
 		addPropertyP.setLayout(null);
