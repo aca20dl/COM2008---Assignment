@@ -136,8 +136,8 @@ public class Property{
 	public String toString() {
 		return address + "\nName: " + name + "\nDescription: " + description + 
 				"\nGeneral location: " + genLoc + "\nBreakfast incl: " + 
-				breakfast + "\nMax Guests: " + maxGuest + "No. beds: " + 
-				numBed +" No. bedrooms: " + numBedroom + " + No. bathrooms: " 
+				breakfast + "\nMax Guests: " + maxGuest + " No. beds: " + 
+				numBed +" No. bedrooms: " + numBedroom + "  No. bathrooms: " 
 				+ numBathroom + "\nNo. reviews:" + reviews.size();
 	}
 	

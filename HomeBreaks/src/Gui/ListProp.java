@@ -44,6 +44,19 @@ public class ListProp {
 	private ArrayList<LocalDate> dates = new ArrayList<>();
 	private ArrayList<ChargeBand> chargeBands = new ArrayList<>();
 	private DefaultListModel listChargeBandsModel;
+	
+	//property values
+	private Address ad;
+	private String sName;
+	private String des;
+	private String genL;
+	private boolean bf;
+	private Sleeping sleeping;
+	private Bathing bathing;
+	private Kitchen kitchen;
+	private Living living;
+	private Utility utility;
+	private Outdoor outdoor;
 
 	/**
 	 * Launch the application.
@@ -234,6 +247,15 @@ public class ListProp {
 		p12.setBounds(408, 424, 106, 23);
 		addressP.add(p12);
 		
+		JLabel emptyError1 = new JLabel("Fill out all Fields");
+		emptyError1.setForeground(Color.GRAY);
+		emptyError1.setVerticalAlignment(SwingConstants.TOP);
+		emptyError1.setHorizontalAlignment(SwingConstants.LEFT);
+		emptyError1.setFont(new Font("Arial", Font.BOLD, 18));
+		emptyError1.setBounds(548, 157, 154, 20);
+		emptyError1.setVisible(false);
+		addressP.add(emptyError1);
+		
 		JPanel publicInfoP = new JPanel();
 		layeredPane.setLayer(publicInfoP, 8);
 		publicInfoP.setBounds(0, 0, 878, 550);
@@ -289,6 +311,15 @@ public class ListProp {
 		breakfast.setBounds(560, 238, 101, 23);
 		publicInfoP.add(breakfast);
 		
+		JLabel emptyError2 = new JLabel("Fill out all Fields");
+		emptyError2.setVerticalAlignment(SwingConstants.TOP);
+		emptyError2.setHorizontalAlignment(SwingConstants.LEFT);
+		emptyError2.setForeground(Color.GRAY);
+		emptyError2.setFont(new Font("Arial", Font.BOLD, 18));
+		emptyError2.setBounds(549, 92, 154, 20);
+		emptyError2.setVisible(false);
+		publicInfoP.add(emptyError2);
+		
 		JPanel sleepingP = new JPanel();
 		layeredPane.setLayer(sleepingP, 7);
 		sleepingP.setBounds(0, 0, 878, 550);
@@ -310,15 +341,15 @@ public class ListProp {
 		hasBedLinen.setBounds(177, 121, 65, 23);
 		sleepingP.add(hasBedLinen);
 		
-		JLabel hasTowels = new JLabel("Has Towels:");
-		hasTowels.setFont(new Font("Arial", Font.BOLD, 20));
-		hasTowels.setBounds(515, 121, 145, 24);
-		sleepingP.add(hasTowels);
+		JLabel label_towels = new JLabel("Has Towels:");
+		label_towels.setFont(new Font("Arial", Font.BOLD, 20));
+		label_towels.setBounds(515, 121, 145, 24);
+		sleepingP.add(label_towels);
 		
-		JCheckBox chckbxNewCheckBox_1 = new JCheckBox("Yes");
-		chckbxNewCheckBox_1.setFont(new Font("Arial", Font.BOLD, 15));
-		chckbxNewCheckBox_1.setBounds(682, 121, 65, 23);
-		sleepingP.add(chckbxNewCheckBox_1);
+		JCheckBox hasTowels = new JCheckBox("Yes");
+		hasTowels.setFont(new Font("Arial", Font.BOLD, 15));
+		hasTowels.setBounds(682, 121, 65, 23);
+		sleepingP.add(hasTowels);
 		
 		JPanel AddBedroom = new JPanel();
 		AddBedroom.setBounds(10, 156, 858, 379);
@@ -400,6 +431,15 @@ public class ListProp {
 		p34.setBounds(765, 358, 93, 23);
 		AddBedroom.add(p34);
 		p34.setFont(new Font("Arial", Font.BOLD, 15));
+		
+		JLabel emptyBedrooms = new JLabel("Must have at least 1 bedroom");
+		emptyBedrooms.setVerticalAlignment(SwingConstants.TOP);
+		emptyBedrooms.setHorizontalAlignment(SwingConstants.LEFT);
+		emptyBedrooms.setForeground(Color.GRAY);
+		emptyBedrooms.setFont(new Font("Arial", Font.BOLD, 18));
+		emptyBedrooms.setBounds(515, 63, 266, 20);
+		emptyBedrooms.setVisible(false);
+		sleepingP.add(emptyBedrooms);
 		
 		JPanel bathingP = new JPanel();
 		layeredPane.setLayer(bathingP, 6);
@@ -535,6 +575,15 @@ public class ListProp {
 		hasToiletPaper.setBounds(486, 109, 65, 23);
 		bathingP.add(hasToiletPaper);
 		
+		JLabel emptyBathroom = new JLabel("Must have at least 1 bathroom");
+		emptyBathroom.setVerticalAlignment(SwingConstants.TOP);
+		emptyBathroom.setHorizontalAlignment(SwingConstants.LEFT);
+		emptyBathroom.setForeground(Color.GRAY);
+		emptyBathroom.setFont(new Font("Arial", Font.BOLD, 18));
+		emptyBathroom.setBounds(486, 59, 274, 20);
+		emptyBathroom.setVisible(false);
+		bathingP.add(emptyBathroom);
+		
 		JPanel kitchenP = new JPanel();
 		layeredPane.setLayer(kitchenP, 5);
 		kitchenP.setBounds(0, 0, 878, 550);
@@ -616,14 +665,14 @@ public class ListProp {
 		hasCookware.setBounds(688, 207, 91, 23);
 		kitchenP.add(hasCookware);
 		
-		JCheckBox hasDishware = new JCheckBox("Yes");
-		hasDishware.setFont(new Font("Arial", Font.BOLD, 15));
-		hasDishware.setBounds(688, 127, 91, 23);
-		kitchenP.add(hasDishware);
+		JCheckBox hasDishWasher = new JCheckBox("Yes");
+		hasDishWasher.setFont(new Font("Arial", Font.BOLD, 15));
+		hasDishWasher.setBounds(688, 127, 91, 23);
+		kitchenP.add(hasDishWasher);
 		
-		JLabel lblNewLabel_8_1 = new JLabel("Has Dishware:");
+		JLabel lblNewLabel_8_1 = new JLabel("Has Dishwasher:");
 		lblNewLabel_8_1.setFont(new Font("Arial", Font.BOLD, 20));
-		lblNewLabel_8_1.setBounds(524, 120, 158, 32);
+		lblNewLabel_8_1.setBounds(524, 120, 168, 32);
 		kitchenP.add(lblNewLabel_8_1);
 		
 		JButton p56 = new JButton("Next");
@@ -1180,63 +1229,133 @@ public class ListProp {
 		listProperty.setBounds(381, 169, 219, 45);
 		addPropertyP.add(listProperty);
 		
-		
-		
 		JButton btnGoToPage = new JButton("Go To Page:");
 		btnGoToPage.setFont(new Font("Arial", Font.BOLD, 15));
-		btnGoToPage.setBounds(668, 581, 125, 23);
-		listPropFrm.getContentPane().add(btnGoToPage);
+		btnGoToPage.setBounds(678, 503, 125, 23);
+		addPropertyP.add(btnGoToPage);
 		
 		JComboBox pageNum = new JComboBox();
-		pageNum.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"}));
-		pageNum.setBounds(807, 582, 51, 22);
-		listPropFrm.getContentPane().add(pageNum);
+		pageNum.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9"}));
+		pageNum.setBounds(817, 504, 51, 22);
+		addPropertyP.add(pageNum);
 		
 		//next button action listeners
 		p12.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				goToPanel(publicInfoP);
+				String houseN = houseNum.getText().trim().toLowerCase();
+				String streetN = street.getText().trim().toLowerCase();
+				String cityN = city.getText().trim().toLowerCase();
+				String pc = postCode.getText().trim().toLowerCase();
+				String [] inputs = {houseN,streetN,cityN,pc};
+				if(noneEmpty(inputs)) {
+					emptyError1.setVisible(false);
+					ad = new Address(houseN,streetN,cityN,pc);
+					goToPanel(publicInfoP);
+				}
+				else {
+					emptyError1.setVisible(true);
+				}
+					
 			}
 		});
 		
 		p23.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				goToPanel(sleepingP);
+				sName = shortName.getText().trim().toLowerCase();
+				des = description.getText().trim().toLowerCase();
+				genL = genLoc.getText().trim().toLowerCase();
+				bf = breakfast.isSelected();
+				String [] inputs = {sName,des,genL}; 
+				if(noneEmpty(inputs)) {
+					emptyError2.setVisible(false);
+					goToPanel(sleepingP);
+				}
+				else {
+					emptyError2.setVisible(true);
+				}
 			}
 		});
 		
 		p34.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				goToPanel(bathingP);
+				if(bedrooms.isEmpty()) {
+					emptyBedrooms.setVisible(true);
+				}
+				else {
+					emptyBedrooms.setVisible(false);
+					boolean hasBL = hasBedLinen.isSelected();
+					boolean hasT = hasTowels.isSelected();
+					sleeping = new Sleeping(hasBL,hasT,bedrooms);
+					goToPanel(bathingP);
+				}
 			}
 		});
 		
 		p45.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				goToPanel(kitchenP);
+				if(bathrooms.isEmpty()) {
+					emptyBathroom.setVisible(true);
+				}
+				else {
+					emptyBathroom.setVisible(false);
+					boolean hhd = hasHairDryer.isSelected();
+					boolean tp = hasToiletPaper.isSelected();
+					boolean hs = hasShampoo.isSelected();
+					bathing = new Bathing(hhd,tp,hs,bathrooms);
+					goToPanel(kitchenP);
+				}
 			}
 		});
 		
 		p56.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				boolean f = hasFridge.isSelected();
+				boolean m = hasMicrowave.isSelected();
+				boolean o = hasOven.isSelected();
+				boolean s = hasStove.isSelected();
+				boolean d = hasDishWasher.isSelected();
+				boolean t = hasTableware.isSelected();
+				boolean c = hasCookware.isSelected();
+				boolean bp = hasBasicProv.isSelected();
+				kitchen = new Kitchen(f,m,o,s,d,t,c,bp);
 				goToPanel(livingP);
 			}
 		});
 		
 		p67.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				boolean w = hasWifi.isSelected();
+				boolean t = hasTv.isSelected();
+				boolean sat = hasSat.isSelected();
+				boolean str = hasStreaming.isSelected();
+				boolean d = hasDvdPlayer.isSelected();
+				boolean b = hasBoardGames.isSelected();
+				living = new Living(w,t,sat,str,d,b);
 				goToPanel(utilityP);
 			}
 		});
 		
 		p78.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				boolean h = hasHeating.isSelected();
+				boolean w = hasWashingMachine.isSelected();
+				boolean d = hasDryingMachine.isSelected();
+				boolean fe = hasFireExtinguisher.isSelected();
+				boolean s = hasSmokeAlarm.isSelected();
+				boolean fak = hasFirstAidKit.isSelected();
+				utility = new Utility(h,w,d,fe,s,fak);
 				goToPanel(outdoorP);
 			}
 		});
 		
 		p89.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				boolean fp = hasFreeParking.isSelected();
+				boolean rp = hasRoadParking.isSelected();
+				boolean pcp = hasPaidParking.isSelected();
+				boolean p = hasPatio.isSelected();
+				boolean b = hasBarbeque.isSelected();
+				outdoor = new Outdoor(fp,rp,pcp,p,b);
 				goToPanel(chargeBandP);
 			}
 		});
@@ -1252,7 +1371,18 @@ public class ListProp {
 			}
 		});
 		
-		// choose what page to go to
+		listProperty.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// make property 
+				
+				ArrayList<Review> reviews = new ArrayList<>();
+				Property property = new Property(ad,sName,des,genL,
+						bf,sleeping,bathing,kitchen,living,utility,
+						outdoor,chargeBands,reviews);
+				System.out.println(property);
+			}
+		});
+		
 		btnGoToPage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String p = pageNum.getSelectedItem().toString();
@@ -1281,4 +1411,6 @@ public class ListProp {
 			}
 		});
 	}
+	
+	
 }
