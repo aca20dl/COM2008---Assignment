@@ -287,16 +287,16 @@ public class registration {
 		hostReg.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//collects address info
-				String house = tHouse.getText();
-				String street = tStreet.getText();
-				String city = tCity.getText();
-				String postCode = tPostCode.getText();
+				String house = tHouse.getText().toLowerCase();
+				String street = tStreet.getText().toLowerCase();
+				String city = tCity.getText().toLowerCase();
+				String postCode = tPostCode.getText().toLowerCase();
 				//collects user info
-				String name = tFirstname.getText();
-				String surname = tSurname.getText();
-				String email = tEmail.getText();
-				String mobile = tMobile.getText();
-				String username = tUsername.getText();
+				String name = tFirstname.getText().toLowerCase();
+				String surname = tSurname.getText().toLowerCase();
+				String email = tEmail.getText().toLowerCase();
+				String mobile = tMobile.getText().toLowerCase();
+				String username = tUsername.getText().toLowerCase();
 				char[] password = tPassword.getPassword();
 				String pass = "";
 				for(int i = 0; i < password.length; i++) {
@@ -401,21 +401,21 @@ public class registration {
 		guestReg.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//collects address info
-				String house = tHouse.getText();
-				String street = tStreet.getText();
-				String city = tCity.getText();
-				String postCode = tPostCode.getText();
+				String house = tHouse.getText().toLowerCase();
+				String street = tStreet.getText().toLowerCase();
+				String city = tCity.getText().toLowerCase();
+				String postCode = tPostCode.getText().toLowerCase();
 				//collects user info
-				String name = tFirstname.getText();
-				String surname = tSurname.getText();
-				String email = tEmail.getText();
+				String name = tFirstname.getText().toLowerCase();
+				String surname = tSurname.getText().toLowerCase();
+				String email = tEmail.getText().toLowerCase();
 				char [] password = tPassword.getPassword();
-				String username = tUsername.getText();
+				String username = tUsername.getText().toLowerCase();
 				String pass = "";
 				for(int i = 0; i < password.length; i++) {
 					pass = pass + password[i];
 				}
-				String mobile = tMobile.getText();
+				String mobile = tMobile.getText().toLowerCase();
 				
 				//checks if any section is empty
 				if(house.isBlank() || street.isBlank() || city.isBlank() || postCode.isBlank() || title == null)  {

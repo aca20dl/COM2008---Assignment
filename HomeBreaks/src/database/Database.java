@@ -8,9 +8,6 @@ public class Database{
 	private static Connection con = null; // connection object
 	private static String username = "team035";
 	private static String password = "a0d11805" ;
-	private static PreparedStatement adStat;
-	private static PreparedStatement pdStat;
-	private static PreparedStatement userStat;
 			
 	//gets connection to database
 	public static Connection connectDB(){
@@ -44,6 +41,20 @@ public class Database{
 			exx.printStackTrace();
 		}
 		return result;
+	}
+	
+	public static void insertValues(String table, String columnNames, String columnValues) {
+		try {
+			//INSERT INTO Guests(Username,Password,PdID) VALUES("firstUser","pass",1);
+			Statement insert = con.createStatement();
+			String query = "INSERT INTO " + table + "(" + columnNames + ") VALUES(" +
+			columnValues + ");";
+			int count = insert.executeUpdate(query);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	//returns true if given email is guest - checks IsGuest value in table
@@ -92,7 +103,20 @@ public class Database{
 		return count > 0;
 	}
 	
-	// adds user to the Address and Pdetails table
+	// add address
+	
+	public static void addAddress(Address ad) {
+		String house = ad.getHouse();
+		String street = ad.getStreet();
+		String place = ad.getPlace();
+		String postCode = ad.getPostCode();
+		
+		// execute addition to address table query
+					insertValues("Addresses","House,Street,place,PostCode","'" + house +
+							"','" + street + "','" + place + "','" + postCode + "'");
+	}
+	
+	// adds user to the Pdetails table
 	public static void addUser(User user) {
 		
 		int isHost=0;
@@ -110,60 +134,27 @@ public class Database{
 		String mobile = user.getMobile();
 		//getting address details
 		Address ad = user.getAddress();
-		String house = ad.getHouse();
-		String street = ad.getStreet();
-		String place = ad.getPlace();
-		String postCode = ad.getPostCode();
 		
 		//make 2 instances of prepared statement: address, pdetails
-		try {
-			adStat = con.prepareStatement("INSERT INTO Addresses "
-					+ "(House,Street,place,PostCode) VALUES "
-					+ "(?,?,?,?)");
-			pdStat = con.prepareStatement("INSERT INTO Pdetails "
-					+ "(Title,Firstname,Surname,Email,Mobile,"
-					+ "IsHost,IsGuest,AdID) VALUES(?,?,?,?,?,?,?,?)");
-			
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
 		
 		try {
 			// execute addition to address table query
-			adStat.setString(1, house);
-			adStat.setString(2, street);
-			adStat.setString(3, place);
-			adStat.setString(4, postCode);
-			int count = adStat.executeUpdate();
+			addAddress(ad);
 			
 			//execute addition to personal details table
-			ResultSet result = getValue("AdID", "Addresses","PostCode",postCode);
+			ResultSet result = getValue("AdID", "Addresses","PostCode",ad.getPostCode());
 			int adID = 0;
 			while(result.next())
 				adID = result.getInt(1);
 			result.close();
 			
-			pdStat.setString(1, title);
-			pdStat.setString(2, name);
-			pdStat.setString(3, surname);
-			pdStat.setString(4, email);
-			pdStat.setString(5, mobile);
-			pdStat.setString(6, String.valueOf(isHost));
-			pdStat.setString(7, String.valueOf(isGuest));
-			pdStat.setString(8, String.valueOf(adID));
-			int count1 = pdStat.executeUpdate();
+			insertValues("Pdetails","Title,Firstname,Surname,Email,Mobile,IsHost,IsGuest,AdID",
+					"'" + title + "','" + name + "','" + surname + "','" + email + "','" + mobile +
+					"'," + isHost + "," + isGuest + "," + adID);
+
 			
 		}catch (SQLException exx) {
 			exx.printStackTrace();
-		}finally {
-				try {
-					if(adStat != null)
-						adStat.close();
-					if(pdStat != null)
-						pdStat.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
 		}
 		
 	}
@@ -194,22 +185,10 @@ public class Database{
 				pdID = result.getInt(1);
 			}
 			result.close();
-			userStat = con.prepareStatement("INSERT INTO " + table + " (Username,Password,PdID) VALUES (?,?,?)");
-			userStat.setString(1, username);
-			userStat.setString(2, password);
-			userStat.setString(3, String.valueOf(pdID));
-			int count = userStat.executeUpdate();
+			insertValues(table,"Username,Password,pdID","'" + username + "','" + password + "','" + pdID + "'");
 			
 		} catch (SQLException e) {
-			
 			e.printStackTrace();
-		}finally {
-			try {
-				if(userStat != null)
-					userStat.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 		}
 	}
 	
@@ -232,6 +211,7 @@ public class Database{
 			e.printStackTrace();
 		}
 	}
+	
 	
 	//given a user it checks if the entered personal details match
 	//the personal details in the database
@@ -282,7 +262,7 @@ public class Database{
 		String actualPass = "";
 		try {
 			Statement getUser = con.createStatement();
-			//gets the password from Guets/host table where the users email is the email given
+			//gets the password from Guest/host table where the users email is the email given
 			String query = "SELECT " + table + ".* FROM " + table + " INNER JOIN Pdetails ON " + table + ".PdID=Pdetails.PdID WHERE Pdetails.Email=\"" + email +  "\";"; 
 			ResultSet result = getUser.executeQuery(query);
 			while(result.next()) {
@@ -294,5 +274,20 @@ public class Database{
 			e.printStackTrace();
 		}
 		return actualPass.equals(password);
+	}
+	
+	// functions to add facilities to their tables in database
+	 public static void addSleeping(Sleeping s) {
+		 
+	 }
+	
+	public static void main (String [] args) {
+		//INSERT INTO Guests(Username,Password,PdID) VALUES("firstUser","pass",1);
+		connectDB();
+		String table = "Guests";
+		String columnNames = "Username,Password,PdID";
+		String columnValues = "'method','method',1";
+		insertValues(table,columnNames,columnValues);
+		disconnectDB();
 	}
 }
