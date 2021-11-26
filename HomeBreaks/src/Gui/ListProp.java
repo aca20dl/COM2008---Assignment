@@ -9,6 +9,7 @@ import java.awt.Color;
 import javax.swing.*;
 
 import classCode.*;
+import database.Database;
 
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
@@ -1380,6 +1381,8 @@ public class ListProp {
 						bf,sleeping,bathing,kitchen,living,utility,
 						outdoor,chargeBands,reviews);
 				System.out.println(property);
+				//add add property function here
+				
 			}
 		});
 		
@@ -1406,7 +1409,7 @@ public class ListProp {
 				break;
 				case 9: goToPanel(chargeBandP); 
 				break;
-				case 10: goToPanel(addPropertyP); // change when u make add property page;
+				case 10: goToPanel(addPropertyP); ;
 				}
 			}
 		});

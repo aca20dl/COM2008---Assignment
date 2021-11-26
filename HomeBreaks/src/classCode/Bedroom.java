@@ -11,7 +11,11 @@ public class Bedroom{
 	}
 	
 	public Bed getBed2() {
-		return bed2;
+		if(bed2 != null) {
+			return bed2;
+		}
+		else
+			return null;
 	}
 	
 	public int getNumBeds() {
@@ -42,7 +46,7 @@ public class Bedroom{
 	}
 	
 	public static void main (String [] args) {
-		Bedroom room1 = new Bedroom(new Bed("Double"),new Bed("Single"));
-		System.out.println(room1);
+		Bedroom room1 = new Bedroom(new Bed("Double"),null);
+		System.out.println(room1.getBed1().getType().toString());
 	}
 }

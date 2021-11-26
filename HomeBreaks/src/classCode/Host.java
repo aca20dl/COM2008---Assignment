@@ -85,6 +85,10 @@ public class Host extends User{
 	
 	//create methods for listing property, accept req
 	
+	public void addProperty(Property p) {
+		properties.add(p);
+	}
+	
 	public String toString() {
 		String output = super.toString() + "\nHost Name: " + HostName + 
 				"\nPassword: " + password + "\nSuper Host: " + isSuperHost;

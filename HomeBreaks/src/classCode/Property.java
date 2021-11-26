@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Property{
 	//variables for each property - public stuff
-	Address address;
+	private Address address;
 	private String name;
 	private String description;
 	private String genLoc;
@@ -23,6 +23,10 @@ public class Property{
 	private ArrayList<Review> reviews; // list of reviews for each property
 	
 	//get methods for variables
+	public Address getAddress() {
+		return address;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -130,6 +134,10 @@ public class Property{
 		double totalSum = sum/size + sum1/size + sum2/size + sum3/size + sum4/size + sum5/size;
 		
 		return totalSum/5;
+	}
+	
+	public void addReview(Review r) {
+		reviews.add(r);
 	}
 	
 	
