@@ -137,15 +137,6 @@ public class ListProp {
 	}
 	
 	//functions for dates
-	public static ArrayList<LocalDate> getDatesBetween(LocalDate start, LocalDate end) {
-		int diff = (int) ChronoUnit.DAYS.between(start,end);
-		ArrayList<LocalDate> dates = new ArrayList<>();
-		for(int i = 0; i < diff + 1; i++) {
-			LocalDate date = start.plusDays(i);
-			dates.add(date);
-		}
-		return dates;
-	}
 	
 	public static boolean fullYear(ArrayList<LocalDate> dates){
 		ArrayList<Integer> daysOfYear = new ArrayList<>();
@@ -1096,7 +1087,7 @@ public class ListProp {
 							if(!dates.isEmpty()) {//if dates not empty
 								if(dates.get(dates.size()-1).isBefore(start)){//check if last date is before current start date
 									chargeb = new ChargeBand(start,end,ppn,sc,cc);
-									dates.addAll(getDatesBetween(start,end));
+									dates.addAll(ChargeBand.getDatesBetween(start,end));
 									overlappError.setVisible(false);
 									startError.setVisible(false);
 									fullYearError.setVisible(false);
@@ -1113,7 +1104,7 @@ public class ListProp {
 							}
 							else {// this means its the first charge band added
 								chargeb = new ChargeBand(start,end,ppn,sc,cc);
-								dates.addAll(getDatesBetween(start,end));
+								dates.addAll(ChargeBand.getDatesBetween(start,end));
 								overlappError.setVisible(false);
 								startError.setVisible(false);
 								fullYearError.setVisible(false);
