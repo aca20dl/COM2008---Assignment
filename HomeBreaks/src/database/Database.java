@@ -73,6 +73,19 @@ public class Database{
 		
 	}
 	
+	//remove items
+	public static void removeValues(String table,String conditions) {
+		try {
+			Statement remove = con.createStatement();
+			String query = "DELETE FROM " + table + " WHERE " + conditions + " ;";
+			int count = remove.executeUpdate(query);
+			remove.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public static void setValue(String table, String targetColumn, String newValue, String column,String value) {
 		try {
 			Statement setType =  con.createStatement();

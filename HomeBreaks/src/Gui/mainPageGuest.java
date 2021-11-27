@@ -1,33 +1,43 @@
 package Gui;
 import classCode.*;
+import database.Database;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.UIManager;
 import java.awt.Color;
 import java.awt.Window.Type;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
-import javax.swing.JLabel;
 import java.awt.Font;
-import javax.swing.JPanel;
-import javax.swing.JList;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
-import javax.swing.AbstractListModel;
+
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+
+import businessLogic.*;
 
 public class mainPageGuest {
 
 	private JFrame guestFrame;
+	private JTable bookingsTable;
+	private JTable hostTable;
+	private DefaultTableModel hostsModel;
+	private DefaultTableModel bookingsModel;
 
 	/**
 	 * Launch the application.
 	 */
+	
+	public void refreshHosts() {
+		hostsModel.setRowCount(0);
+	}
+	
+	public void refreshBookings() {
+		bookingsModel.setRowCount(0);
+	}
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -43,7 +53,40 @@ public class mainPageGuest {
 			}
 		});
 	}
-
+	
+	//shows and hides columns
+	public void showHide(TableColumn t, int min, int max, int pref) {
+		t.setMinWidth(min);
+		t.setMaxWidth(max);
+		t.setPreferredWidth(pref);
+	}
+	
+	//generates booking table 
+	public static void showBookings(User user, DefaultTableModel bookingsModel ) {
+		Database.connectDB();
+		try {
+			ResultSet result = guestActions.showBookings(user);
+			while(result.next()) {
+			String id = String.valueOf(result.getInt("BookingID"));
+			String numNights =String.valueOf(result.getInt("NumNights"));
+			String ppn = String.valueOf(result.getInt("PricePerNight"));
+			String sc =String.valueOf(result.getInt("ServiceCharge"));
+			String cc = String.valueOf(result.getInt("CleaningCharge"));
+			String tc = String.valueOf(result.getInt("TotalCharge"));
+			String guestID = String.valueOf(result.getInt("GuestID"));
+			String propertyID = String.valueOf(result.getInt("PropertyID"));
+			
+			String booking [] = {id,numNights,ppn,sc,cc,tc,guestID,propertyID};
+			
+			bookingsModel.addRow(booking);
+			
+			}
+			result.close();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		Database.disconnectDB();
+	}
 	/**
 	 * Create the application.
 	 */
@@ -70,20 +113,115 @@ public class mainPageGuest {
 		guestFrame.getContentPane().add(lblNewLabel);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 83, 719, 230);
+		scrollPane.setBounds(46, 113, 642, 198);
 		guestFrame.getContentPane().add(scrollPane);
 		
-		JList list = new JList();
-		list.setModel(new AbstractListModel() {
-			String[] values = new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "1", "2", "3", "4", "5"};
-			public int getSize() {
-				return values.length;
+		bookingsTable = new JTable();
+		bookingsTable.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Booking ID", "No. Nights", "Cost per night", "Service Cost", "Cleaning Cost", "Total Charge", "GuestID", "PropertyID"
 			}
-			public Object getElementAt(int index) {
-				return values[index];
+		) {
+			Class[] columnTypes = new Class[] {
+				Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
 			}
 		});
-		scrollPane.setViewportView(list);
+		bookingsTable.getColumnModel().getColumn(2).setPreferredWidth(76);
+		scrollPane.setViewportView(bookingsTable);
+		bookingsModel = (DefaultTableModel) bookingsTable.getModel(); 
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(46, 412, 642, 198);
+		guestFrame.getContentPane().add(scrollPane_1);
+		
+		hostTable = new JTable();
+		hostTable.setModel(new DefaultTableModel(
+				new Object[][] {
+				},
+				new String[] {
+					"Title", "Forename", "Surname", "Email", "Mobile", "Username"
+				}
+			) {
+				Class[] columnTypes = new Class[] {
+					Object.class, Object.class, Object.class, Object.class, Object.class, String.class
+				};
+				public Class getColumnClass(int columnIndex) {
+					return columnTypes[columnIndex];
+				}
+			});
+		scrollPane_1.setViewportView(hostTable);
+		hostsModel = (DefaultTableModel) hostTable.getModel(); 
+		//hide confidential details columns
+		 //hide confidential details columns
+		showHide(hostTable.getColumn("Title"),0,0,0);
+		showHide(hostTable.getColumn("Forename"),0,0,0);
+		showHide(hostTable.getColumn("Surname"),0,0,0);
+		showHide(hostTable.getColumn("Email"),0,0,0);
+		showHide(hostTable.getColumn("Mobile"),0,0,0);
+		
+		JLabel lblHostInformation = new JLabel("Host information:");
+		lblHostInformation.setFont(new Font("Arial", Font.BOLD, 20));
+		lblHostInformation.setBounds(10, 321, 189, 47);
+		guestFrame.getContentPane().add(lblHostInformation);
+		
+		JButton showHost = new JButton("show Host for selected booking");
+		showHost.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int rowIndex = bookingsTable.getSelectedRow();
+				if(rowIndex >= 0) {
+					int propertyID = (int) Integer.parseInt(String.valueOf(bookingsTable.getValueAt(rowIndex, 7)));	
+					int guestID = (int) Integer.parseInt(String.valueOf(bookingsTable.getValueAt(rowIndex, 6)));
+					
+					Database.connectDB();
+					if(HostActions.isAccepted(guestID)) {
+						showHide(hostTable.getColumn("Title"),0,700,90);
+						showHide(hostTable.getColumn("Forename"),0,700,90);
+						showHide(hostTable.getColumn("Surname"),0,700,90);
+						showHide(hostTable.getColumn("Email"),0,700,90);
+						showHide(hostTable.getColumn("Mobile"),0,700,90);
+					}
+					refreshHosts();
+					try {
+						ResultSet result = guestActions.showHostDetails(propertyID);
+						while(result.next()) {
+							String t = result.getString("Title");
+							String f = result.getString("Firstname");
+							String s = result.getString("Surname");
+							String em = result.getString("Email");
+							String m = result.getString("Mobile");
+							String u = result.getString("Username");
+							
+							String [] guests = {t,f,s,em,m,u};
+							hostsModel.addRow(guests);
+						}
+						result.close();
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
+					Database.disconnectDB();
+				}
+			}
+		});
+		showHost.setBounds(44, 379, 197, 23);
+		guestFrame.getContentPane().add(showHost);
+		
+		JButton showBooking = new JButton("Show all bookings");
+		showBooking.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				refreshBookings();
+				Database.connectDB();
+				showBookings(user,bookingsModel);
+				Database.disconnectDB();
+			}
+		});
+		showBooking.setBounds(698, 288, 132, 23);
+		guestFrame.getContentPane().add(showBooking);
+		
 		
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBackground(Color.GRAY);

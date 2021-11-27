@@ -91,7 +91,7 @@ public class Accounts{
 			else {
 				type = "IsGuest";
 			}
-			Database.setValue("Pdetails", type, String.valueOf(1), "Email", user.getEmail() );
+			Database.setValue("Pdetails", type, String.valueOf(1), "Email","'" +  user.getEmail() + "'" );
 		}
 		
 		// returns true if email already exists in Pdetails table
