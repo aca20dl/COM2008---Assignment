@@ -77,6 +77,8 @@ public class mainPageHost {
 			ResultSet result = HostActions.showBookings(user);
 			while(result.next()) {
 			String id = String.valueOf(result.getInt("BookingID"));
+			String sDate = result.getDate("StartDate").toString();
+			String eDate = result.getDate("EndDate").toString();
 			String numNights =String.valueOf(result.getInt("NumNights"));
 			String ppn = String.valueOf(result.getInt("PricePerNight"));
 			String sc =String.valueOf(result.getInt("ServiceCharge"));
@@ -85,7 +87,7 @@ public class mainPageHost {
 			String guestID = String.valueOf(result.getInt("GuestID"));
 			String propertyID = String.valueOf(result.getInt("PropertyID"));
 			
-			String booking [] = {id,numNights,ppn,sc,cc,tc,guestID,propertyID};
+			String booking [] = {id,sDate,eDate,numNights,ppn,sc,cc,tc,guestID,propertyID};
 			
 			bookingsModel.addRow(booking);
 			
@@ -119,7 +121,7 @@ public class mainPageHost {
 		hostFrame.getContentPane().add(lblNewLabel);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(20, 81, 610, 218);
+		scrollPane.setBounds(20, 81, 767, 218);
 		hostFrame.getContentPane().add(scrollPane);
 		
 		bookingsTable = new JTable();
@@ -127,11 +129,11 @@ public class mainPageHost {
 			new Object[][] {
 			},
 			new String[] {
-				"Booking ID", "No. Nights", "Cost per night", "Service Cost", "Cleaning Cost", "Total Charge", "GuestID", "PropertyID"
+				"Booking ID", "Start Date", "End Date", "No. Nights", "Cost per night", "Service Cost", "Cleaning Cost", "Total Charge", "GuestID", "PropertyID"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class
+				Integer.class, Object.class, Object.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
@@ -142,7 +144,7 @@ public class mainPageHost {
 		bookingsModel = (DefaultTableModel) bookingsTable.getModel(); 
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(20, 353, 610, 146);
+		scrollPane_1.setBounds(10, 410, 610, 146);
 		hostFrame.getContentPane().add(scrollPane_1);
 		
 		guestTable = new JTable();
@@ -176,16 +178,16 @@ public class mainPageHost {
 			public void actionPerformed(ActionEvent e) {
 				int rowIndex = bookingsTable.getSelectedRow();
 				if(rowIndex >= 0) {
-					int propertyID = (int) Integer.parseInt(String.valueOf(bookingsTable.getValueAt(rowIndex, 0)));
+					int bookingID = (int) Integer.parseInt(String.valueOf(bookingsTable.getValueAt(rowIndex, 0)));
 					refreshBookings();
 					Database.connectDB();
-					HostActions.acceptBooking(propertyID);
+					HostActions.acceptBooking(bookingID);
 					showBookings(user,bookingsModel);
 					Database.disconnectDB();
 				}
 			}
 		});
-		accept.setBounds(640, 243, 213, 23);
+		accept.setBounds(574, 344, 213, 23);
 		hostFrame.getContentPane().add(accept);
 		
 		JButton showGuest = new JButton("show Guest Details");
@@ -193,7 +195,7 @@ public class mainPageHost {
 			public void actionPerformed(ActionEvent e) {
 				int rowIndex = bookingsTable.getSelectedRow();
 				if(rowIndex >= 0) {
-					int guestID = (int) Integer.parseInt(String.valueOf(bookingsTable.getValueAt(rowIndex, 6)));	
+					int guestID = (int) Integer.parseInt(String.valueOf(bookingsTable.getValueAt(rowIndex, 8)));	
 					//show confidential details if paired
 					Database.connectDB();
 					if(HostActions.isAccepted(guestID)) {
@@ -226,7 +228,7 @@ public class mainPageHost {
 				}
 			}
 		});
-		showGuest.setBounds(20, 326, 129, 23);
+		showGuest.setBounds(10, 376, 129, 23);
 		hostFrame.getContentPane().add(showGuest);
 		
 		JButton showBooking = new JButton("Show All Bookings");
@@ -238,7 +240,7 @@ public class mainPageHost {
 				Database.disconnectDB();
 			}
 		});
-		showBooking.setBounds(640, 209, 213, 23);
+		showBooking.setBounds(574, 310, 213, 23);
 		hostFrame.getContentPane().add(showBooking);
 		
 		

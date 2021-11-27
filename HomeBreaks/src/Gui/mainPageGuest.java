@@ -68,6 +68,8 @@ public class mainPageGuest {
 			ResultSet result = guestActions.showBookings(user);
 			while(result.next()) {
 			String id = String.valueOf(result.getInt("BookingID"));
+			String sDate = result.getDate("StartDate").toString();
+			String eDate = result.getDate("EndDate").toString();
 			String numNights =String.valueOf(result.getInt("NumNights"));
 			String ppn = String.valueOf(result.getInt("PricePerNight"));
 			String sc =String.valueOf(result.getInt("ServiceCharge"));
@@ -76,7 +78,7 @@ public class mainPageGuest {
 			String guestID = String.valueOf(result.getInt("GuestID"));
 			String propertyID = String.valueOf(result.getInt("PropertyID"));
 			
-			String booking [] = {id,numNights,ppn,sc,cc,tc,guestID,propertyID};
+			String booking [] = {id,sDate,eDate,numNights,ppn,sc,cc,tc,guestID,propertyID};
 			
 			bookingsModel.addRow(booking);
 			
@@ -113,7 +115,7 @@ public class mainPageGuest {
 		guestFrame.getContentPane().add(lblNewLabel);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(46, 113, 642, 198);
+		scrollPane.setBounds(46, 113, 802, 198);
 		guestFrame.getContentPane().add(scrollPane);
 		
 		bookingsTable = new JTable();
@@ -121,17 +123,17 @@ public class mainPageGuest {
 			new Object[][] {
 			},
 			new String[] {
-				"Booking ID", "No. Nights", "Cost per night", "Service Cost", "Cleaning Cost", "Total Charge", "GuestID", "PropertyID"
+				"Booking ID", "Start Date", "End Date", "No. Nights", "Cost per night", "Service Cost", "Cleaning Cost", "Total Charge", "GuestID", "PropertyID"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class
+				Integer.class, Object.class, Object.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 		});
-		bookingsTable.getColumnModel().getColumn(2).setPreferredWidth(76);
+		bookingsTable.getColumnModel().getColumn(4).setPreferredWidth(76);
 		scrollPane.setViewportView(bookingsTable);
 		bookingsModel = (DefaultTableModel) bookingsTable.getModel(); 
 		
@@ -174,8 +176,8 @@ public class mainPageGuest {
 			public void actionPerformed(ActionEvent e) {
 				int rowIndex = bookingsTable.getSelectedRow();
 				if(rowIndex >= 0) {
-					int propertyID = (int) Integer.parseInt(String.valueOf(bookingsTable.getValueAt(rowIndex, 7)));	
-					int guestID = (int) Integer.parseInt(String.valueOf(bookingsTable.getValueAt(rowIndex, 6)));
+					int propertyID = (int) Integer.parseInt(String.valueOf(bookingsTable.getValueAt(rowIndex, 9)));	
+					int guestID = (int) Integer.parseInt(String.valueOf(bookingsTable.getValueAt(rowIndex, 8)));
 					
 					Database.connectDB();
 					if(HostActions.isAccepted(guestID)) {
@@ -219,7 +221,7 @@ public class mainPageGuest {
 				Database.disconnectDB();
 			}
 		});
-		showBooking.setBounds(698, 288, 132, 23);
+		showBooking.setBounds(716, 310, 132, 23);
 		guestFrame.getContentPane().add(showBooking);
 		
 		
