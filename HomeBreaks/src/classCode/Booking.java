@@ -4,11 +4,21 @@ import java.time.LocalDate;
 import java.util.*;
 
 public class Booking{
+	private LocalDate start;
+	private LocalDate end;
 	private int numNights;
 	private int pricePerNight;
 	private int serviceCharge;
 	private int cleaningCharge;
 	private int totalCharge;
+	
+	public LocalDate getStart() {
+		return start;
+	}
+	
+	public LocalDate getEnd() {
+		return end;
+	}
 	
 	public int getNumNights() {
 		return numNights;
@@ -51,26 +61,28 @@ public class Booking{
 			ppn = ChargeBand.getMain(dates.get(i), dates.get(i), c).pricePerNight;
 		}
 		ppn = ppn/c.size();
-		return new Booking(numNights,ppn,sc,cc);
+		return new Booking(start,end,ppn,sc,cc);
 	}
 	
-	public Booking(int n, int ppn, int sc, int cc) {
-		numNights = n;
+	public Booking(LocalDate s, LocalDate e, int ppn, int sc, int cc) {
+		start = s;
+		end = e;
+		numNights = ChargeBand.getDatesBetween(s, e).size();
 		pricePerNight = ppn;
 		serviceCharge = sc;
 		cleaningCharge = cc;
-		totalCharge = ppn * n + sc + cc;
+		totalCharge = ppn * numNights + sc + cc;
 	}
 	
 	public String toString() {
-		return "Number of Nights: " + numNights + "\nPricePerNight: " +
+		return "Start: " + start.toString() + "\nEnd: " + end.toString() + "\nNumber of Nights: " + numNights + "\nPricePerNight: " +
 	            pricePerNight + "\nServiceCharge: " + serviceCharge +
 	            "\nCleaning Charge: " + cleaningCharge + "\nTotal Charge: " 
 	            + totalCharge;
 	}
 	
 	public static void main (String [] args) {
-		Booking booking = new Booking(14,12,10,10);
+		Booking booking = new Booking(LocalDate.of(2021, 10, 01),LocalDate.of(2021, 10, 20),12,10,10);
 		System.out.println(booking);
 	}
 }

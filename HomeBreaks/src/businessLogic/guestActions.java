@@ -14,6 +14,8 @@ public class guestActions{
 		int pdID = Database.getID("PdID","Pdetails","Email",user.getEmail());
 		int guestID = Database.getID("GuestID", "Guests", "PdID", String.valueOf(pdID));
 		
+		String start = b.getStart().toString();
+		String end = b.getEnd().toString();
 		int nn = b.getNumNights();
 		int ppn = b.getPricePerNight();
 		int sc = b.getServiceCharge();
@@ -21,9 +23,9 @@ public class guestActions{
 		int total = b.getTotalCharge();
 		
 		//insert into bookings table
-		String columns = "NumNights,PricePerNight,ServiceCharge,"
+		String columns = "StartDate,EndDate,NumNights,PricePerNight,ServiceCharge,"
 				+ "CleaningCharge,TotalCharge,GuestID,PropertyID";
-		String values = nn + "," + ppn + "," + sc + ","+ cc + "," +
+		String values = "'" + start + "','" + end + "'," + nn + "," + ppn + "," + sc + ","+ cc + "," +
 				total + "," + guestID + "," + propertyID;
 		Database.insertValues("Booking", columns, values);
 	}
