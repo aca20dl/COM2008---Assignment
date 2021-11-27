@@ -126,19 +126,28 @@ public class Profile {
 		mobile.setBounds(10, 99, 109, 20);
 		panel.add(mobile);
 		
-		//
-		if(user.getClass().getName() == "classCode.Host")
+		// differenced between host and guest
+		String username1 = "";
+		String password1 = "";
+		
+		if(user.getClass().getName() == "classCode.Host") {
 			host = (Host) user;
-		else
+			username1 = host.getHostName();
+			password1 = host.getPassword();
+		}
+		else {
 			guest = (Guest) user;
+			username1 = guest.getGuestName();
+			password1 = guest.getPassword();
+		}
 		
 		
-		JLabel username = new JLabel(guest.getGuestName());
+		JLabel username = new JLabel(username1);
 		username.setFont(new Font("Arial", Font.BOLD, 15));
 		username.setBounds(240, 99, 109, 20);
 		panel.add(username);
 		
-		JLabel password = new JLabel(guest.getPassword());
+		JLabel password = new JLabel(password1);
 		password.setFont(new Font("Arial", Font.BOLD, 15));
 		password.setBounds(485, 99, 109, 20);
 		panel.add(password);
@@ -203,7 +212,8 @@ public class Profile {
 			public void actionPerformed(ActionEvent e) {
 				//if guest, go back to home page
 				if(user.getClass().getName().equals("classCode.Host")) {
-					// go to host page
+					mainPageHost hostPage = new mainPageHost(user);
+					hostPage.getFrame().setVisible(true);
 				}
 				else {
 					mainPageGuest guestPage = new mainPageGuest(user);

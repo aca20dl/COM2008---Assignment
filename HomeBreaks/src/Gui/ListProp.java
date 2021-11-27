@@ -1,5 +1,6 @@
 package Gui;
 
+import businessLogic.*;
 import java.awt.EventQueue;
 import java.awt.Font;
 
@@ -66,8 +67,8 @@ public class ListProp {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ListProp window = new ListProp();
-					window.listPropFrm.setVisible(true);
+					//ListProp window = new ListProp();
+					//window.listPropFrm.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -79,8 +80,8 @@ public class ListProp {
 	/**
 	 * Create the application.
 	 */
-	public ListProp() {
-		initialize();
+	public ListProp(User user) {
+		initialize(user);
 	}
 	
 	// method to refresh bedroom list
@@ -170,11 +171,15 @@ public class ListProp {
 		}
 		return valid;
 	}
+	
+	public JFrame getFrame() {
+		return listPropFrm;
+	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize(User user) {
 		listPropFrm = new JFrame();
 		listPropFrm.setTitle("List Property");
 		listPropFrm.setBounds(100, 100, 1200, 800);
@@ -1378,11 +1383,17 @@ public class ListProp {
 				
 				ArrayList<Review> reviews = new ArrayList<>();
 				Property property = new Property(ad,sName,des,genL,
-						bf,sleeping,bathing,kitchen,living,utility,
-						outdoor,chargeBands,reviews);
-				System.out.println(property);
+						bf,sleeping.getTotalSleepers(),sleeping.getTotalBeds()
+						,sleeping.getTotalBedrooms(),bathing.getTotalBathrooms());
 				//add add property function here
+				Database.connectDB();
+				Houses.addProperty((Host)user,property, sleeping, bathing, kitchen, living, utility, outdoor, chargeBands);
+				Database.disconnectDB();
 				
+				//back to home page
+				mainPageHost hostPage =  new mainPageHost(user);
+				hostPage.getFrame().setVisible(true);
+				listPropFrm.setVisible(false);
 			}
 		});
 		

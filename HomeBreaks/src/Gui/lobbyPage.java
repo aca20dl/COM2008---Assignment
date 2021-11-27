@@ -16,7 +16,7 @@ import java.awt.event.ActionListener;
 
 public class lobbyPage {
 
-	private JFrame frame;
+	private JFrame lobbyFrame;
 
 	/**
 	 * Launch the application.
@@ -26,7 +26,7 @@ public class lobbyPage {
 			public void run() {
 				try {
 					lobbyPage window = new lobbyPage();
-					window.frame.setVisible(true);
+					window.lobbyFrame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -40,19 +40,23 @@ public class lobbyPage {
 	public lobbyPage() {
 		initialize();
 	}
+	
+	public JFrame getFrame() {
+		return lobbyFrame;
+	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 1200, 800);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		lobbyFrame = new JFrame();
+		lobbyFrame.setBounds(100, 100, 1200, 800);
+		lobbyFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		lobbyFrame.getContentPane().setLayout(null);
 		
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 0, 400, 800);
-		frame.getContentPane().add(panel);
+		lobbyFrame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("");
@@ -62,7 +66,7 @@ public class lobbyPage {
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(400, 0, 400, 800);
-		frame.getContentPane().add(panel_1);
+		lobbyFrame.getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 		
 		JLabel lblSignUp = new JLabel("Home Breaks");
@@ -77,7 +81,7 @@ public class lobbyPage {
 			public void actionPerformed(ActionEvent e) {
 				registration regi = new registration();
 				regi.getFrame().setVisible(true);
-				frame.setVisible(false);
+				lobbyFrame.setVisible(false);
 			}
 		});
 		signupButton.setBackground(Color.BLACK);
@@ -90,8 +94,8 @@ public class lobbyPage {
 		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				login log1 = new login();
-				log1.frmLoginPage.setVisible(true);
-				frame.setVisible(false);
+				log1.getFrame().setVisible(true);
+				lobbyFrame.setVisible(false);
 			}
 		});
 		loginButton.setForeground(Color.WHITE);
@@ -107,7 +111,7 @@ public class lobbyPage {
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBounds(800, 0, 400, 800);
-		frame.getContentPane().add(panel_2);
+		lobbyFrame.getContentPane().add(panel_2);
 		panel_2.setLayout(null);
 		
 		JLabel lblNewLabel_1 = new JLabel("New label");

@@ -22,10 +22,6 @@ public class Host extends User{
 		return isSuperHost;
 	}
 	
-	public ArrayList<Property> getProperties() {
-		return properties;
-	}
-	
 	public double getAvrgRating() {
 		return avrgRating;
 	}
@@ -33,6 +29,7 @@ public class Host extends User{
 	//computes the average rating of host 
 	//gets sum of average review from each property
 	// and then takes average of that
+	/*
 	public double average(ArrayList<Property> p) {
 		double sum = 0;
 		if(!p.isEmpty()) {
@@ -43,6 +40,7 @@ public class Host extends User{
 		double average = sum/properties.size();
 		return average;
 	}
+	*/
 	
 	// set methods
 	public void setHostName(String hn) {
@@ -55,12 +53,11 @@ public class Host extends User{
 	
 	// constructor for host
 	public Host(String t, String f, String s, String e, String m,
-			Address ad, String hn, String p,ArrayList<Property> pr) {
+			Address ad, String hn, String p,int ar) {
 		super(t,f,s,e,m,ad);
 		HostName = hn;
 		password = p;
-		properties = pr;
-		avrgRating = average(properties);
+		avrgRating = ar;
 		isSuperHost = avrgRating >= 4.7;
 	}
 	
@@ -85,17 +82,9 @@ public class Host extends User{
 	
 	//create methods for listing property, accept req
 	
-	public void addProperty(Property p) {
-		properties.add(p);
-	}
-	
 	public String toString() {
 		String output = super.toString() + "\nHost Name: " + HostName + 
 				"\nPassword: " + password + "\nSuper Host: " + isSuperHost;
-		if(!properties.isEmpty()) {
-		output = output + "\nProperties: " + showProperties(properties) +
-				"\nAverage property rating: " + avrgRating;
-		}
 		return output;
 	}
 }

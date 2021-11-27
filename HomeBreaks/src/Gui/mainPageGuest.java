@@ -105,7 +105,14 @@ public class mainPageGuest {
 		});
 		mnNewMenu.add(mntmProfile);
 		
-		JMenuItem mntmProperties = new JMenuItem("Properties");
-		mnNewMenu.add(mntmProperties);
+		JMenuItem logout = new JMenuItem("LogOut");
+		logout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				lobbyPage lob = new lobbyPage();
+				lob.getFrame().setVisible(true);
+				guestFrame.setVisible(false);
+			}
+		});
+		mnNewMenu.add(logout);
 	}
 }

@@ -1,4 +1,5 @@
 package Gui;
+import businessLogic.*;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -10,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import classCode.*;
 import database.Database;
 
 import javax.swing.ImageIcon;
@@ -22,7 +24,7 @@ import java.awt.Window;
 import java.awt.Button;
 
 public class login  {
-	JFrame frmLoginPage;
+	private JFrame frmLoginPage;
 	private JPasswordField password;
 	private JTextField Email;
 
@@ -121,11 +123,15 @@ public class login  {
 					pass = pass + charPass[i];
 				}
 				Database.connectDB();
-				if(Database.exists(email)) {
+				if(Accounts.exists(email)) {
 					// checks if given email and password match
-					if(Database.loginUser(email, pass, "Hosts")) {
+					if(Accounts.loginUser(email, pass, "Hosts")) {
 						System.out.println("email and password matched!");
 						//take host to host page
+						User user = Accounts.getUser(email, "Host");
+						mainPageHost hostPage = new mainPageHost(user);
+						hostPage.getFrame().setVisible(true);
+						frmLoginPage.setVisible(false);
 					}
 					else {
 						System.out.println("username and password does not match");
@@ -157,11 +163,15 @@ public class login  {
 					pass = pass + charPass[i];
 				}
 				Database.connectDB();
-				if(Database.exists(email)) {
+				if(Accounts.exists(email)) {
 					// checks if given email and password match
-					if(Database.loginUser(email, pass, "Guests")) {
+					if(Accounts.loginUser(email, pass, "Guests")) {
 						System.out.println("email and password matched!");
 						//take guest to guest page
+						User user = Accounts.getUser(email, "Guest");
+						mainPageGuest guestPage = new mainPageGuest(user);
+						guestPage.getFrame().setVisible(true);
+						frmLoginPage.setVisible(false);
 					}
 					else {
 						System.out.println("username and password does not match");

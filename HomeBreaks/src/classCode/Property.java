@@ -19,8 +19,6 @@ public class Property{
 	private Living living;
 	private Utility utility;
 	private Outdoor outdoor;
-	private ArrayList<ChargeBand> bands; // list of charge bands, maybe for different periods in the year?
-	private ArrayList<Review> reviews; // list of reviews for each property
 	
 	//get methods for variables
 	public Address getAddress() {
@@ -58,62 +56,23 @@ public class Property{
 	public int getNumBathroom() {
 		return numBathroom;
 	}
-	
-	public Sleeping getSleeping() {
-		return sleeping;
-	}
-	
-	public Bathing getBathing() {
-		return bathing;
-	}
-	
-	public Kitchen getKitchen() {
-		return kitchen;
-	}
-	
-	public Living getLiving() {
-		return living;
-	}
-	
-	public Utility getUtility() {
-		return utility;
-	}
-	
-	public Outdoor getOutdoor() {
-		return outdoor;
-	}
-	
-	public ArrayList<ChargeBand> getBands(){
-		return bands;
-	}
-	
-	public ArrayList<Review> getReviews(){
-		return reviews;
-	}
+
 	
 	// constructor for property
-	public Property(Address ad, String n, String d, String gl,boolean bf,Sleeping s,Bathing b,
-			Kitchen k , Living l, Utility u, Outdoor o, 
-			ArrayList<ChargeBand>cb,ArrayList<Review> r) {
+	public Property(Address ad, String n, String d, String gl,boolean bf,int mg,int beds
+			,int bedrooms,int bathrooms) {
 		address = ad;
 		name = n;
 		description = d;
 		genLoc = gl;
 		breakfast = bf;
-		maxGuest = s.getTotalSleepers();
-		numBed = s.getTotalBeds();
-		numBedroom = s.getTotalBedrooms();
-		numBathroom = b.getTotalBathrooms();
-		sleeping = s;
-		bathing = b;
-		kitchen = k;
-		living = l;
-		utility = u;
-		outdoor = o;
-		bands = cb;
-		reviews = r;
+		maxGuest = mg;
+		numBed = beds;
+		numBedroom = bedrooms;
+		numBathroom = bathrooms;
 	}
 	
+	/*
 	//gets average review rating for 1 property
 	public double avrgReview() {
 		double sum,sum1,sum2,sum3,sum4,sum5;
@@ -135,10 +94,7 @@ public class Property{
 		
 		return totalSum/5;
 	}
-	
-	public void addReview(Review r) {
-		reviews.add(r);
-	}
+	*/
 	
 	
 	public String toString() {
@@ -146,20 +102,12 @@ public class Property{
 				"\nGeneral location: " + genLoc + "\nBreakfast incl: " + 
 				breakfast + "\nMax Guests: " + maxGuest + " No. beds: " + 
 				numBed +" No. bedrooms: " + numBedroom + "  No. bathrooms: " 
-				+ numBathroom + "\nNo. reviews:" + reviews.size();
+				+ numBathroom;
 	}
 	
 	public static void main (String [] args) {
 		// make addresss
 		Address ad = new Address("25","Green ln", "Sheffield", "s109ju");
-		
-		//make reviews
-		Review myRev = new Review("Happy",4,4,5,2,5,4);
-		Review myRev2 = new Review("Upset",1,2,1,1,1,2);
-		
-		ArrayList<Review> reviews = new ArrayList<>();
-		reviews.add(myRev);
-		reviews.add(myRev2);
 		
 		// make sleeping facility
 		Bedroom room1 = new Bedroom(new Bed("Double"),new Bed("Single"));
@@ -195,19 +143,10 @@ public class Property{
 		//outdoor facility
 		Outdoor outdoor = new Outdoor(false,false,true,true,false);
 		
-		//chargebands
-		ChargeBand band1 = new ChargeBand(LocalDate.of(2021, 11, 01), LocalDate.of(2021, 12, 01),10,25,5);
-		ChargeBand band2 = new ChargeBand(LocalDate.of(2021, 02, 01), LocalDate.of(2021, 11, 01),7,5,5);
-		ArrayList<ChargeBand> bands = new ArrayList<>();
-		bands.add(band1);
-		bands.add(band2);
-		
 		
 		Property myProp = new Property(ad,"small house", "long description",
-				"sheffield",false,sleeping,bathing,kitchen,living
-				,utility,outdoor,bands,reviews);
+				"sheffield",false,1,2,3,4);
 		
 		System.out.println(myProp);
-		System.out.println(myProp.avrgReview());
 	}
 }

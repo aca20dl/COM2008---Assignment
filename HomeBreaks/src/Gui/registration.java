@@ -1,5 +1,6 @@
 package Gui;
 
+import businessLogic.*;
 import java.awt.EventQueue;
 import classCode.*;
 import database.*;
@@ -302,8 +303,6 @@ public class registration {
 				for(int i = 0; i < password.length; i++) {
 					pass = pass + password[i];
 				}
-				//initially host will have no properties so empty property array
-				ArrayList<Property> properties = new ArrayList<>();
 				
 				//checks if any section is empty
 				if( house.isBlank() || street.isBlank() || city.isBlank() || postCode.isBlank() || title == null) {
@@ -312,15 +311,16 @@ public class registration {
 				else {
 					// creates the Address and Host objects if all fields not empty
 					Address ad = new Address(house,street,city,postCode); 
-					User host = new Host(title,name,surname,email,mobile,ad,username,pass,properties);
+					//initially average rating for host is 0
+					User host = new Host(title,name,surname,email,mobile,ad,username,pass,0);
 					//removes any possible SQL injection
 					host.cleanInputs();
 					
 					Database.connectDB();
 					//if user doesn't exist, add the user to all the tables
-					 if(!Database.exists(host.getEmail())) {
-						 Database.addUser(host);
-						 Database.addUserType(host);
+					 if(!Accounts.exists(host.getEmail())) {
+						 Accounts.addUser(host);
+						 Accounts.addUserType(host);
 						 
 						 //takes user to login page
 						 login log = new login();
@@ -330,11 +330,11 @@ public class registration {
 					 }
 					 else {
 						//check if given pdetails match the pdetails existing for that email
-						 if(Database.matchPdetails(host)) {
+						 if(Accounts.matchPdetails(host)) {
 							//if user exists and not already host add them to host table
-							 if(!Database.isHost(host.getEmail())) {
-								 Database.addUserType(host);
-								 Database.setUserType(host);
+							 if(!Accounts.isHost(host.getEmail())) {
+								 Accounts.addUserType(host);
+								 Accounts.setUserType(host);
 								 
 								 //take user to login page
 								 login log = new login();
@@ -433,9 +433,9 @@ public class registration {
 					
 					//if user doesn't exist, add them to all the tables
 					Database.connectDB();
-					 if(!Database.exists(guest.getEmail())) {
-						 Database.addUser(guest);
-						 Database.addUserType(guest);
+					 if(!Accounts.exists(guest.getEmail())) {
+						 Accounts.addUser(guest);
+						 Accounts.addUserType(guest);
 						 
 						//take user to login page
 						 login log = new login();
@@ -445,11 +445,11 @@ public class registration {
 					 }
 					 else {
 						 //check if given pdetails match the pdetails existing for that email
-						 if(Database.matchPdetails(guest)) {
+						 if(Accounts.matchPdetails(guest)) {
 							//if user exists and not already guest add them to host table
-							 if(!Database.isGuest(guest.getEmail())) {
-								 Database.addUserType(guest);
-								 Database.setUserType(guest);
+							 if(!Accounts.isGuest(guest.getEmail())) {
+								 Accounts.addUserType(guest);
+								 Accounts.setUserType(guest);
 								 
 								//take user to login page
 								 login log = new login();
