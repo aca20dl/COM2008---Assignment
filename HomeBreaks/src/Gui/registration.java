@@ -58,6 +58,13 @@ public class registration {
 			}
 		});
 	}
+	
+	public void goToPanel(JPanel p) {
+		layeredPane.removeAll();
+		layeredPane.add(p);
+		layeredPane.repaint();
+		layeredPane.revalidate();
+	}
 
 	/**
 	 * Create the application.
@@ -123,19 +130,13 @@ public class registration {
 		tPassword.setBounds(141, 430, 305, 37);
 		panel_1.add(tPassword);
 		
-		JLabel usedEmail = new JLabel("That email has already been used");
-		usedEmail.setBounds(17, 7, 331, 29);
-		panel_1.add(usedEmail);
-		usedEmail.setEnabled(false);
-		usedEmail.setFont(new Font("Arial", Font.BOLD, 20));
-		usedEmail.setForeground(Color.RED);
-		
 		JLabel errorMsg = new JLabel("Fill out all fields to register");
-		errorMsg.setBounds(18, 2, 331, 47);
+		errorMsg.setBounds(17, 83, 331, 47);
 		panel_1.add(errorMsg);
 		errorMsg.setEnabled(false);
 		errorMsg.setForeground(Color.RED);
 		errorMsg.setFont(new Font("Arial", Font.BOLD, 20));
+		errorMsg.setVisible(false);
 		
 		JLabel formTitle = new JLabel("Register");
 		formTitle.setBounds(140, 133, 310, 47);
@@ -143,10 +144,6 @@ public class registration {
 		formTitle.setFont(new Font("Arial", Font.BOLD, 40));
 		formTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		
-		
-		//initially hidden
-		errorMsg.setVisible(false);
-		usedEmail.setVisible(false);
 		
 		JButton next1Button = new JButton("Next");
 		
@@ -269,6 +266,23 @@ public class registration {
 		panel2.add(lTitle);
 		lTitle.setFont(new Font("Arial", Font.BOLD, 20));
 		
+		JLabel emptyFields1 = new JLabel("Fill out all fields to register");
+		emptyFields1.setFont(new Font("Arial", Font.BOLD, 20));
+		emptyFields1.setForeground(Color.GRAY);
+		emptyFields1.setBounds(56, 50, 280, 39);
+		panel2.add(emptyFields1);
+		
+		JButton back1 = new JButton("Back");
+		back1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				goToPanel(panel_1);
+			}
+		});
+		back1.setFont(new Font("Arial", Font.BOLD, 15));
+		back1.setBounds(521, 483, 93, 23);
+		panel2.add(back1);
+		emptyFields1.setVisible(false);
+		
 		
 		
 		
@@ -279,6 +293,28 @@ public class registration {
 		panel3.setBounds(0, 0, 855, 765);
 		layeredPane.add(panel3);
 		panel3.setLayout(null);
+		
+		JLabel emptyFields2 = new JLabel("Fill out all fields to register");
+		emptyFields2.setForeground(Color.GRAY);
+		emptyFields2.setFont(new Font("Arial", Font.BOLD, 20));
+		emptyFields2.setBounds(180, 139, 280, 37);
+		panel3.add(emptyFields2);
+		emptyFields2.setVisible(false);
+		
+		JLabel usedEmail = new JLabel("That email has already been registered as Host/Guest");
+		usedEmail.setBounds(10, 42, 526, 29);
+		panel3.add(usedEmail);
+		usedEmail.setEnabled(false);
+		usedEmail.setFont(new Font("Arial", Font.BOLD, 20));
+		usedEmail.setForeground(Color.RED);
+		usedEmail.setVisible(false);
+		
+		JLabel notMatch = new JLabel("Details do not match this existing email");
+		notMatch.setForeground(Color.GRAY);
+		notMatch.setFont(new Font("Arial", Font.BOLD, 20));
+		notMatch.setBounds(10, 82, 526, 29);
+		panel3.add(notMatch);
+		notMatch.setVisible(false);
 		
 		JButton hostReg = new JButton("HOST");
 		hostReg.setForeground(Color.WHITE);
@@ -306,9 +342,14 @@ public class registration {
 				
 				//checks if any section is empty
 				if( house.isBlank() || street.isBlank() || city.isBlank() || postCode.isBlank() || title == null) {
-					errorMsg.setVisible(true);
+					emptyFields2.setVisible(true);
+					usedEmail.setVisible(false);
+					notMatch.setVisible(false);
 				}
 				else {
+					emptyFields2.setVisible(false);
+					usedEmail.setVisible(false);
+					notMatch.setVisible(false);
 					// creates the Address and Host objects if all fields not empty
 					Address ad = new Address(house,street,city,postCode); 
 					//initially average rating for host is 0
@@ -343,11 +384,11 @@ public class registration {
 								 frmRegistration.setVisible(false);
 							 }
 							 else { // this means isHost == 1 so already registered as host
-								 System.out.println("User already registered as host!");
+								 usedEmail.setVisible(true);
 							 }
 						 }
 						 else
-							 System.out.println("Details do not match given email");
+							 notMatch.setVisible(true);
 					 }
 					Database.disconnectDB();
 						
@@ -356,7 +397,6 @@ public class registration {
 					
 					//remove error messages
 					//usedEmail.setVisible(false);
-					errorMsg.setVisible(false);
 
 				}
 			}
@@ -393,6 +433,7 @@ public class registration {
 		panel3.add(lCity);
 		lCity.setFont(new Font("Arial", Font.BOLD, 20));
 		
+		
 		JButton guestReg = new JButton("GUEST");
 		guestReg.setBackground(Color.BLACK);
 		guestReg.setForeground(Color.WHITE);
@@ -419,10 +460,14 @@ public class registration {
 				
 				//checks if any section is empty
 				if(house.isBlank() || street.isBlank() || city.isBlank() || postCode.isBlank() || title == null)  {
-					errorMsg.setVisible(true);
+					emptyFields2.setVisible(true);
+					usedEmail.setVisible(false);
+					notMatch.setVisible(false);
 				}
 				else {
-					
+					emptyFields2.setVisible(false);
+					usedEmail.setVisible(false);
+					notMatch.setVisible(false);
 					// creates the Address and Host objects if all fields not empty
 					Address ad = new Address(house,street,city,postCode);
 					//initially guest has zero bookings
@@ -458,11 +503,11 @@ public class registration {
 								 frmRegistration.setVisible(false);
 							 }
 							 else { // this means isGuest == 1 so already registered as host
-								 System.out.println("User already registered as guest");
+								 usedEmail.setVisible(true);
 							 }
 						 }
 						 else
-							 System.out.println("Details do not match given email");
+							 notMatch.setVisible(true);
 					 }
 					 Database.disconnectDB();
 					
@@ -472,7 +517,7 @@ public class registration {
 					
 					
 					//remove error messages
-					errorMsg.setVisible(false);
+					 emptyFields2.setVisible(false);
 				}
 			}
 		});
@@ -480,27 +525,23 @@ public class registration {
 		
 		next1Button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String email = tEmail.getText();
 				char [] password = tPassword.getPassword();
 				String pass = "";
 				for(int i = 0; i < password.length; i++) {
 					pass = pass + password[i];
-					}
-				String username = tUsername.getText();
-				if(email.isBlank() || username.isBlank() || pass.isBlank()) {
+				}
+				
+				if(tEmail.getText().isBlank()  || tUsername.getText().isBlank() || pass.isBlank()) {
 					errorMsg.setVisible(true);
 				}
 				else {
-					layeredPane.removeAll();
-					layeredPane.add(panel2);
-					layeredPane.repaint();
-					layeredPane.revalidate();
 					errorMsg.setVisible(false);
+					goToPanel(panel2);
 				}
 			}
 		});
 		next2Button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) { 
 				String name = tFirstname.getText();
 				String surname = tSurname.getText();
 				String email = tEmail.getText();
@@ -508,15 +549,12 @@ public class registration {
 				String username = tUsername.getText();
 				String pass = "";
 				String mobile = tMobile.getText();
-				if (name.isBlank() || surname.isBlank() || mobile.isBlank()) {
-					errorMsg.setVisible(true);
+				if (title == null || name.isBlank() || surname.isBlank() || mobile.isBlank()) {
+					emptyFields1.setVisible(true);
 				}
 				else {
-					layeredPane.removeAll();
-					layeredPane.add(panel3);
-					layeredPane.repaint();
-					layeredPane.revalidate();
-					errorMsg.setVisible(false);
+					emptyFields1.setVisible(false);
+					goToPanel(panel3);
 				}
 			}
 		});
@@ -528,27 +566,15 @@ public class registration {
 		panel3.add(tCity);
 		tCity.setColumns(10);
 		
-		JButton clear = new JButton("Clear all fields");
-		clear.setEnabled(false);
-		clear.setBounds(500, 683, 135, 25);
-		panel3.add(clear);
-		clear.addActionListener(new ActionListener() {
+		JButton back = new JButton("Go back");
+		back.setBounds(500, 683, 135, 25);
+		panel3.add(back);
+		back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// clears all text from text fields
-				buttonGroup.clearSelection();
-				tHouse.setText("");
-				tStreet.setText("");
-				tCity.setText("");
-				tPostCode.setText("");
-				tFirstname.setText("");
-				tSurname.setText("");
-				tEmail.setText("");
-				tMobile.setText("");
-				tUsername.setText("");
-				tPassword.setText("");
+				goToPanel(panel2);
 			}
 		});
-		clear.setFont(new Font("Arial", Font.BOLD, 12));
+		back.setFont(new Font("Arial", Font.BOLD, 12));
 		
 		tPostCode = new JTextField();
 		tPostCode.setBounds(320, 310, 140, 33);
@@ -564,6 +590,7 @@ public class registration {
 		lblRegisterAs.setFont(new Font("Dialog", Font.BOLD, 25));
 		lblRegisterAs.setBounds(232, 500, 204, 33);
 		panel3.add(lblRegisterAs);
+		
 		panel.setBackground(UIManager.getColor("OptionPane.questionDialog.border.background"));
 		panel.setBounds(0, -15, 509, 911);
 		frmRegistration.getContentPane().add(panel);

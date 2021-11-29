@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.Button;
+import javax.swing.SwingConstants;
 
 public class login  {
 	private JFrame frmLoginPage;
@@ -83,9 +84,10 @@ public class login  {
 		guestLoginButton.setForeground(Color.WHITE);
 		
 		JLabel lblEmailAdress = new JLabel("Login with email \n");
-		lblEmailAdress.setBounds(143, 171, 273, 31);
+		lblEmailAdress.setHorizontalAlignment(SwingConstants.CENTER);
+		lblEmailAdress.setBounds(122, 171, 305, 31);
 		panel.add(lblEmailAdress);
-		lblEmailAdress.setFont(new Font("DialogInput", Font.BOLD, 25));
+		lblEmailAdress.setFont(new Font("Arial", Font.BOLD, 25));
 		
 		password = new JPasswordField();
 		password.setFont(new Font("Dialog", Font.PLAIN, 20));
@@ -93,9 +95,10 @@ public class login  {
 		panel.add(password);
 		
 		JLabel lblPassword = new JLabel("Password");
-		lblPassword.setBounds(214, 273, 200, 22);
+		lblPassword.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPassword.setBounds(122, 273, 292, 22);
 		panel.add(lblPassword);
-		lblPassword.setFont(new Font("DialogInput", Font.BOLD, 25));
+		lblPassword.setFont(new Font("Arial", Font.BOLD, 25));
 		
 		Email = new JTextField();
 		Email.setFont(new Font("Dialog", Font.PLAIN, 20));
@@ -104,14 +107,39 @@ public class login  {
 		Email.setColumns(10);
 		
 		JLabel lblLogIn = new JLabel("Log In");
-		lblLogIn.setFont(new Font("Dialog", Font.BOLD, 50));
-		lblLogIn.setBounds(169, 12, 189, 100);
+		lblLogIn.setHorizontalAlignment(SwingConstants.CENTER);
+		lblLogIn.setFont(new Font("Arial", Font.BOLD, 50));
+		lblLogIn.setBounds(169, 12, 189, 81);
 		panel.add(lblLogIn);
 		
 		JButton signUpButton = new JButton("SIgn Up");
 		signUpButton.setBackground(Color.WHITE);
 		signUpButton.setBounds(310, 352, 117, 25);
 		panel.add(signUpButton);
+		
+		JLabel notMatch = new JLabel("Username and Password don't match");
+		notMatch.setHorizontalAlignment(SwingConstants.CENTER);
+		notMatch.setForeground(Color.GRAY);
+		notMatch.setFont(new Font("Arial", Font.BOLD, 15));
+		notMatch.setBounds(119, 80, 308, 37);
+		panel.add(notMatch);
+		notMatch.setVisible(false);
+		
+		JLabel notExist = new JLabel("User with that email doesn't exist");
+		notExist.setHorizontalAlignment(SwingConstants.CENTER);
+		notExist.setForeground(Color.GRAY);
+		notExist.setFont(new Font("Arial", Font.BOLD, 15));
+		notExist.setBounds(119, 110, 308, 37);
+		panel.add(notExist);
+		notExist.setVisible(false);
+		
+		JLabel emptyFields = new JLabel("Fill in all fields");
+		emptyFields.setForeground(Color.GRAY);
+		emptyFields.setHorizontalAlignment(SwingConstants.CENTER);
+		emptyFields.setFont(new Font("Arial", Font.BOLD, 15));
+		emptyFields.setBounds(115, 146, 312, 14);
+		panel.add(emptyFields);
+		emptyFields.setVisible(false);
 		
 		JButton hostLoginButton = new JButton("Log In as Host");
 		hostLoginButton.addActionListener(new ActionListener() {
@@ -122,24 +150,38 @@ public class login  {
 				for(int i = 0; i < charPass.length; i++) {
 					pass = pass + charPass[i];
 				}
-				Database.connectDB();
-				if(Accounts.exists(email)) {
-					// checks if given email and password match
-					if(Accounts.loginUser(email, pass, "Hosts")) {
-						System.out.println("email and password matched!");
-						//take host to host page
-						User user = Accounts.getUser(email, "Host");
-						mainPageHost hostPage = new mainPageHost(user);
-						hostPage.getFrame().setVisible(true);
-						frmLoginPage.setVisible(false);
+				if(email.isBlank() || pass.isBlank()) {
+					emptyFields.setVisible(true);
+					notExist.setVisible(false);
+					notMatch.setVisible(false);
+				}
+				else {
+					Database.connectDB();
+					if(Accounts.exists(email)) {
+						// checks if given email and password match
+						if(Accounts.loginUser(email, pass, "Hosts")) {
+							//take host to host page
+							User user = Accounts.getUser(email, "Host");
+							mainPageHost hostPage = new mainPageHost(user);
+							emptyFields.setVisible(false);
+							notExist.setVisible(false);
+							notMatch.setVisible(false);
+							hostPage.getFrame().setVisible(true);
+							frmLoginPage.setVisible(false);
+						}
+						else {
+							emptyFields.setVisible(false);
+							notExist.setVisible(false);
+							notMatch.setVisible(true);
+						}
 					}
 					else {
-						System.out.println("username and password does not match");
+						emptyFields.setVisible(false);
+						notExist.setVisible(true);
+						notMatch.setVisible(false);
 					}
+					Database.disconnectDB();
 				}
-				else
-					System.out.println("User with that email doesn't exist!");
-				Database.disconnectDB();
 			}
 		});
 		hostLoginButton.setForeground(Color.WHITE);
@@ -162,24 +204,38 @@ public class login  {
 				for(int i = 0; i < charPass.length; i++) {
 					pass = pass + charPass[i];
 				}
-				Database.connectDB();
-				if(Accounts.exists(email)) {
-					// checks if given email and password match
-					if(Accounts.loginUser(email, pass, "Guests")) {
-						System.out.println("email and password matched!");
-						//take guest to guest page
-						User user = Accounts.getUser(email, "Guest");
-						mainPageGuest guestPage = new mainPageGuest(user);
-						guestPage.getFrame().setVisible(true);
-						frmLoginPage.setVisible(false);
+				if(email.isBlank() || pass.isBlank()) {
+					emptyFields.setVisible(true);
+					notExist.setVisible(false);
+					notMatch.setVisible(false);
+				}
+				else {
+					Database.connectDB();
+					if(Accounts.exists(email)) {
+						// checks if given email and password match
+						if(Accounts.loginUser(email, pass, "Guests")) {
+							//take guest to guest page
+							User user = Accounts.getUser(email, "Guest");
+							mainPageGuest guestPage = new mainPageGuest(user);
+							emptyFields.setVisible(false);
+							notExist.setVisible(false);
+							notMatch.setVisible(false);
+							guestPage.getFrame().setVisible(true);
+							frmLoginPage.setVisible(false);
+						}
+						else {
+							emptyFields.setVisible(false);
+							notExist.setVisible(false);
+							notMatch.setVisible(true);
+						}
 					}
 					else {
-						System.out.println("username and password does not match");
+						emptyFields.setVisible(false);
+						notExist.setVisible(true);
+						notMatch.setVisible(false);
 					}
+					Database.disconnectDB();
 				}
-				else
-					System.out.println("User with that email doesn't exist!");
-				Database.disconnectDB();
 			}
 		});
 		signUpButton.addActionListener(new ActionListener() {

@@ -15,7 +15,7 @@ public class Database{
 		try {
 			con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team035", username, password);
 			//testing out on ur local db
-			//con = DriverManager.getConnection("jdbc:mysql://localhost:3306/urDBname", "root", urpassword);
+			//con = DriverManager.getConnection("jdbc:mysql://localhost:3306/urdbName", "root", "urpassword");
 			
 		}catch (SQLException e) {
 	        throw new Error("Problem", e);

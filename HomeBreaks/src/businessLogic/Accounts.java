@@ -141,18 +141,18 @@ public class Accounts{
 			ResultSet result = Database.getValue("*","Pdetails","Email",user.getEmail());
 			try {
 				while(result.next()) {
-					title = result.getString(2);
-					firstname = result.getString(3);
-					surname = result.getString(4);
-					email = result.getString(5);
-					mobile = result.getString(6);
+					title = result.getString("Title");
+					firstname = result.getString("Firstname");
+					surname = result.getString("Surname");
+					email = result.getString("Email");
+					mobile = result.getString("Mobile");
 				}
 				result = Database.getValue("*","Addresses", "PostCode",user.getAddress().getPostCode());
 				while(result.next()) {
-					home = result.getString(2);
-					street = result.getString(3);
-					city = result.getString(4);
-					postCode = result.getString(5);
+					home = result.getString("House");
+					street = result.getString("Street");
+					city = result.getString("Place");
+					postCode = result.getString("PostCode");
 				}
 				result.close();
 			} catch (SQLException e) {
@@ -179,7 +179,6 @@ public class Accounts{
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			System.out.println(password);
 			return actualPass.equals(password);
 		}
 		
