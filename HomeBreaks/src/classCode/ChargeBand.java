@@ -40,6 +40,7 @@ public class ChargeBand{
 			return false;
 	}
 	
+	// returns all dates, end date inclusive that are between 2 dates
 	public static ArrayList<LocalDate> getDatesBetween(LocalDate start, LocalDate end) {
 		int diff = (int) ChronoUnit.DAYS.between(start,end);
 		ArrayList<LocalDate> dates = new ArrayList<>();
@@ -60,6 +61,16 @@ public class ChargeBand{
 		return count;
 	}
 	
+	//checks if the dates overlap, assuming that s is before e and s1 is before e1
+	public static boolean overlaps(LocalDate s, LocalDate e, LocalDate s1, LocalDate e1) {
+		boolean overlaps = false;
+		if(((s1.isBefore(e) || s.equals(e)) && (s1.isAfter(s) || s1.equals(s))) || 
+				((s.isBefore(e1) || s.equals(e1)) && (s.isAfter(s1) || s.isEqual(s1))))
+			overlaps = true;
+		return overlaps;
+	}
+	
+	// get main charge band associated with a start and end date
 	public static ChargeBand getMain(LocalDate start, LocalDate end, ArrayList<ChargeBand> c) {
 		ArrayList<LocalDate> datesBetween = getDatesBetween(start,end);
 		ArrayList<Integer> numDayswithin = new ArrayList<>();
@@ -72,6 +83,7 @@ public class ChargeBand{
 		return c.get(maxIndex);
 	}
 	
+	//constructor
 	public ChargeBand(LocalDate s, LocalDate e, int ppn, int sc, int cc) {
 		start = s;
 		end = e;
@@ -91,8 +103,8 @@ public class ChargeBand{
 		LocalDate end = LocalDate.of(2021, 10, 01);
 		ChargeBand band = new ChargeBand(start,end,10,10,10);
 		
-		LocalDate start1 = LocalDate.of(2021, 10, 02);
-		LocalDate end1 = LocalDate.of(2021, 11, 02);
+		LocalDate start1 = LocalDate.of(2021, 11, 03);
+		LocalDate end1 = LocalDate.of(2021, 11, 03);
 		ChargeBand band1 = new ChargeBand(start1,end1,20,20,20);
 		
 		ArrayList<ChargeBand> bands = new ArrayList<>();
@@ -100,9 +112,12 @@ public class ChargeBand{
 		bands.add(band1);
 		
 		LocalDate sDate = LocalDate.of(2021, 9, 20);
-		LocalDate eDate = LocalDate.of(2021, 10, 11);
+		LocalDate eDate = LocalDate.of(2021, 11, 02);
 		
 		//System.out.println(getDatesBetween(sDate,eDate));
 		System.out.println(Booking.makeBooking(sDate, eDate, bands));
+		LocalDate test = LocalDate.parse("2002-04-01");
+		System.out.println(test);
+		System.out.println(overlaps(start1,end1,sDate,eDate));
 		}
 }

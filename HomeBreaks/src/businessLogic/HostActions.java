@@ -2,6 +2,8 @@ package businessLogic;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.*;
+import java.util.Date;
 
 import classCode.*;
 import database.*;
@@ -33,17 +35,48 @@ public class HostActions{
 		removeBookings(propertyID);
 	}
 	
-	//if booking accepted remove all other bookings for property
+	//if booking accepted remove all other overlapping bookings for property
 	public static void removeBookings(int propertyID) {
-		String conditions = "isAccepted = 0 && PropertyID = " + propertyID;
-		Database.removeValues("Bookings", conditions);
+		//
+		LocalDate start = null;
+		LocalDate end = null;
+		//get value of start and end date that is accepted
+		try {
+			ResultSet result = Database.allInfo("StartDate,EndDate", "Bookings", "IsAccepted = 1 && PropertyID = " + String.valueOf(propertyID));
+			while(result.next()) {
+				start = result.getDate("StartDate").toLocalDate();
+				end = result.getDate("EndDate").toLocalDate();
+			}
+			result.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		// get list of bookings for property that are not accepted + remove if dates overlapp
+		try {
+			ResultSet result = Database.allInfo("BookingID,StartDate,EndDate", "Bookings","IsAccepted = 0 && PropertyID = " + String.valueOf(propertyID));
+			while (result.next()) {
+				int bookingID = result.getInt("BookingID");
+				LocalDate start1 = result.getDate("StartDate").toLocalDate();
+				LocalDate end1 = result.getDate("EndDate").toLocalDate();
+				if(ChargeBand.overlaps(start, end, start1, end1)) {
+					// remove the bookings
+					String conditions = "isAccepted = 0 && BookingID = " + bookingID;
+					Database.removeValues("Bookings", conditions);
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	//checks if theres an accepted booking between guest and host
-	public static boolean isAccepted(int guestID) {
+	public static boolean isAccepted(int bookingID) {
 		int isAccepted = 0;
 		try {
-			ResultSet result = Database.getValue("IsAccepted", "Bookings", "GuestID", String.valueOf(guestID));
+			ResultSet result = Database.getValue("IsAccepted", "Bookings", "BookingID", String.valueOf(bookingID));
 			while(result.next()) {
 				 isAccepted = result.getInt("IsAccepted");
 			}
@@ -53,5 +86,11 @@ public class HostActions{
 		}
 		
 		return isAccepted == 1;
+	}
+	
+	public static void main (String [] args) {
+		Database.connectDB();
+		removeBookings(2);
+		Database.disconnectDB();
 	}
 }

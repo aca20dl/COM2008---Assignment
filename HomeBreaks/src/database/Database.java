@@ -15,7 +15,7 @@ public class Database{
 		try {
 			con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team035", username, password);
 			//testing out on ur local db
-			//con = DriverManager.getConnection("jdbc:mysql://localhost:3306/urDBname", "root", urPassword);
+			//con = DriverManager.getConnection("jdbc:mysql://localhost:3306/urDBname", "root", urpassword);
 			
 		}catch (SQLException e) {
 	        throw new Error("Problem", e);
@@ -39,7 +39,7 @@ public class Database{
 		ResultSet result = null;
 		try {
 			Statement getValue = con.createStatement();
-			String query = "Select " + target + " FROM " + table + " WHERE " + column + " = \"" + value + "\";"; 
+			String query = "Select DISTINCT " + target + " FROM " + table + " WHERE " + column + " = \"" + value + "\";"; 
 			result = getValue.executeQuery(query);
 		}catch (SQLException exx) {
 			exx.printStackTrace();
@@ -105,7 +105,7 @@ public class Database{
 		ResultSet result = null;
 		try {
 			Statement get = con.createStatement();
-			String query = "SELECT " + targets + " FROM " + tables + " Where " + conditions + ";";
+			String query = "SELECT Distinct " + targets + " FROM " + tables + " Where " + conditions + ";";
 			result = get.executeQuery(query);
 		} catch (SQLException e) {
 			e.printStackTrace();

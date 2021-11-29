@@ -32,6 +32,8 @@ public class guestActions{
 	
 	public static void addReview(User user, int propertyID, Review r) {
 		user = (Guest) user;
+		int pdID = Database.getID("PdID","Pdetails","Email",user.getEmail());
+		int guestID = Database.getID("GuestID","Guests","PdID",String.valueOf(pdID));
 		
 		String sat = r.getSatisfaction();
 		int clean = r.getCleanliness();
@@ -42,11 +44,31 @@ public class guestActions{
 		int val = r.getValue();
 		
 		String columns = "Satisfaction,Cleanliness,Communication"
-				+ ",CheckIn,Accuracy,Location,Value,PropertyID";
+				+ ",CheckIn,Accuracy,Location,Value,GuestID,PropertyID";
 		String values = "'" + sat + "'," + clean + "," + com +
-				"," + ch + "," + acc + "," + loc + "," + val;
+				"," + ch + "," + acc + "," + loc + "," + val + "," +
+				guestID + "," + propertyID ;
 		
 		Database.insertValues("Reviews", columns, values);
+		//update property and host average value
+		Houses.updateProperty(propertyID);
+		Houses.updateHost(propertyID);
+	}
+	
+	public static boolean reviewExists(int guestID, int propertyID) {
+		String conditions = "GuestID = " + guestID + " && PropertyID = " + propertyID;
+		boolean exists = false;
+		try {
+			ResultSet result = Database.allInfo("*", "Reviews", conditions);
+			while(result.next()) {
+				exists = true;
+			}
+			result.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return exists;
 	}
 	
 	public static ResultSet showBookings(User user) {

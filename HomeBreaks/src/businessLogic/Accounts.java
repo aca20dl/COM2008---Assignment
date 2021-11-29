@@ -56,10 +56,14 @@ public class Accounts{
 			String password = "";
 			String table = "";
 			String email = user.getEmail();
+			double averageRating = 0;
+			int isSuperHost = Houses.toInt(false);
 			
 			if(user.getClass().getName().equals("classCode.Host")) {
 				username = ((Host) user).getHostName();
 				password = ((Host) user).getPassword();
+				averageRating = ((Host) user).getAvrgRating();
+				isSuperHost =Houses.toInt(((Host)user).getIsSuperHost());
 				table = "Hosts";
 			}
 			else {
@@ -75,7 +79,14 @@ public class Accounts{
 					pdID = result.getInt(1);
 				}
 				result.close();
-				Database.insertValues(table,"Username,Password,pdID","'" + username + "','" + password + "','" + pdID + "'");
+				String columnValues = "'" + username + "','" + password + "','" + pdID + "'";
+				String columns = "Username,Password,PdID";
+				// if host add change query to match host table
+				if(user.getClass().getName().equals("classCode.Host")) {
+					columnValues = "'" + username + "','" + password + "','" + averageRating + "','" +isSuperHost + "','" + pdID + "'";
+					columns = "Username,Password,AverageRating,IsSuperHost,PdID";
+				}
+				Database.insertValues(table,columns,columnValues);
 				
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -162,7 +173,7 @@ public class Accounts{
 				String conditions = "Pdetails.Email = '" + email + "' && " + table + ".Password = '" + password + "'";
 				ResultSet result = Database.allInfo("*",table + ",Pdetails",conditions);
 				while(result.next()) {
-					actualPass = result.getString(3);
+					actualPass = result.getString("Password");
 				}
 				result.close();
 			} catch (SQLException e) {
@@ -197,16 +208,16 @@ public class Accounts{
 			try {
 				ResultSet result = Database.allInfo("*",tables,conditions);
 				while(result.next()) {
-					String title = result.getString(2);
-					String name = result.getString(3);
-					String sName = result.getString(4);
-					String mobile = result.getString(6);
-					String username = result.getString(11);
-					String password = result.getString(12);
-					String hNum = result.getString(15);
-					String street = result.getString(16);
-					String city = result.getString(17);
-					String postCode = result.getString(18);
+					String title = result.getString("Title");
+					String name = result.getString("FirstName");
+					String sName = result.getString("Surname");
+					String mobile = result.getString("Mobile");
+					String username = result.getString("Username");
+					String password = result.getString("Password");
+					String hNum = result.getString("House");
+					String street = result.getString("Street");
+					String city = result.getString("place");
+					String postCode = result.getString("PostCode");
 					ad = new Address(hNum,street,city,postCode);
 					if(userType.toLowerCase().equals("guest")) {
 						user = new Guest(title,name,sName,email,mobile,ad,username,password);

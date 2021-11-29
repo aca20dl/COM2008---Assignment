@@ -2,6 +2,7 @@ package businessLogic;
 
 import database.*;
 
+import java.sql.*;
 import java.util.ArrayList;
 
 import classCode.*;
@@ -40,11 +41,13 @@ public class Houses{
 		int nBeds = p.getNumBed();
 		int nBedr = p.getNumBedroom();
 		int nBath = p.getNumBathroom();
+		double averageRating = p.getAverageRating();
+		
 		String columns = "Name,Description,GenLocation,Breakfast,"
-				+ "MaxGuest,NumBeds,NumBedrooms,NumBathrooms,HostID,AdID";
+				+ "MaxGuest,NumBeds,NumBedrooms,NumBathrooms,AverageRating,HostID,AdID";
 		String values = "'" + name + "','" + des + "','" + gen + "'," +
 				breakfast + "," + maxG + "," + nBeds + "," + nBedr + "," +
-				nBath + "," + hostID + "," + adID;
+				nBath + "," + averageRating + "," + hostID + "," + adID;
 		
 		//insert the property into table
 		Database.insertValues("Properties",columns,values);
@@ -214,5 +217,66 @@ public class Houses{
 				 "," + sc + "," + cc + "," + propertyID;
 		 Database.insertValues("ChargeBands",columns,values);
 		 
+	 }
+	 
+	 //------------Get average values for a column in a review---------------//
+	 
+	 public static double getAverageReview(int propertyID, String column) {
+		 double numReviews = 0;
+		 int rating = 0;
+		 try {
+			ResultSet result = Database.getValue(column, "Reviews", "PropertyID",String.valueOf(propertyID));
+			while(result.next()) {
+				 rating = rating + result.getInt(column);
+				 numReviews ++ ;
+			 }
+			result.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		 return rating / numReviews;
+	 }
+	 
+	 //-----------------update property average value--------------//
+	 public static void updateProperty(int propertyID) {
+		 double clean = getAverageReview(propertyID, "Cleanliness");
+		 double com = getAverageReview(propertyID, "Communication");
+		 double check = getAverageReview(propertyID, "CheckIn");
+		 double acc = getAverageReview(propertyID, "Accuracy");
+		 double loc = getAverageReview(propertyID, "Location");
+		 double val = getAverageReview(propertyID, "Value");
+		 
+		 double average = (clean + com + check + acc + loc + val) / 6;
+		 
+		 // update property average rating value in database
+		 
+		 Database.setValue("Properties", "AverageRating", String.valueOf(average), "PropertyID", String.valueOf(propertyID));
+		 
+	 }
+	 
+	 //-------------update host average value-------------//
+	 public static void updateHost(int propertyID) {
+		 int hostID = Database.getID("HostID", "Properties", "PropertyID", String.valueOf(propertyID));
+		 double numProperties = 0;
+		 int rating = 0;
+		 try {
+			 ResultSet result = Database.getValue("AverageRating", "Properties", "HostID", String.valueOf(hostID));
+			 while(result.next()) {
+				rating = result.getInt("AverageRating");
+				numProperties ++;
+			 }
+			result.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		 double averageRating = rating/numProperties;
+		 
+		 //update Host average rating value in database
+		 
+		 Database.setValue("Hosts", "AverageRating", String.valueOf(averageRating), "HostID", String.valueOf(hostID));
+		 // if average rating for host is above 4.7 update isSuperHost aswell
+		 if(averageRating > 4.7) {
+			 Database.setValue("Hosts", "IsSuperHost", String.valueOf(1), "HostID", String.valueOf(hostID)); 
+		 }
 	 }
 }

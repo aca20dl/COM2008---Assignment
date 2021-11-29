@@ -11,6 +11,7 @@ import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.awt.event.ActionEvent;
 
 import javax.swing.table.DefaultTableModel;
@@ -25,6 +26,7 @@ public class mainPageGuest {
 	private JTable hostTable;
 	private DefaultTableModel hostsModel;
 	private DefaultTableModel bookingsModel;
+	private int propertyID;
 
 	/**
 	 * Launch the application.
@@ -136,6 +138,9 @@ public class mainPageGuest {
 		bookingsTable.getColumnModel().getColumn(4).setPreferredWidth(76);
 		scrollPane.setViewportView(bookingsTable);
 		bookingsModel = (DefaultTableModel) bookingsTable.getModel(); 
+		showHide(bookingsTable.getColumn("Booking ID"),0,0,0);
+		showHide(bookingsTable.getColumn("GuestID"),0,0,0);
+		showHide(bookingsTable.getColumn("PropertyID"),0,0,0);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(46, 412, 642, 198);
@@ -158,34 +163,76 @@ public class mainPageGuest {
 			});
 		scrollPane_1.setViewportView(hostTable);
 		hostsModel = (DefaultTableModel) hostTable.getModel(); 
-		//hide confidential details columns
-		 //hide confidential details columns
-		showHide(hostTable.getColumn("Title"),0,0,0);
-		showHide(hostTable.getColumn("Forename"),0,0,0);
-		showHide(hostTable.getColumn("Surname"),0,0,0);
-		showHide(hostTable.getColumn("Email"),0,0,0);
-		showHide(hostTable.getColumn("Mobile"),0,0,0);
 		
 		JLabel lblHostInformation = new JLabel("Host information:");
 		lblHostInformation.setFont(new Font("Arial", Font.BOLD, 20));
 		lblHostInformation.setBounds(10, 321, 189, 47);
 		guestFrame.getContentPane().add(lblHostInformation);
 		
+		JLabel notAccepted = new JLabel("Booking not yet Accepted");
+		notAccepted.setForeground(Color.RED);
+		notAccepted.setFont(new Font("Arial", Font.BOLD, 15));
+		notAccepted.setBounds(698, 442, 189, 23);
+		guestFrame.getContentPane().add(notAccepted);
+		notAccepted.setVisible(false);
+		
+		JLabel acceptedBooking = new JLabel("Booking is accepted");
+		acceptedBooking.setForeground(Color.GREEN);
+		acceptedBooking.setFont(new Font("Arial", Font.BOLD, 15));
+		acceptedBooking.setBounds(695, 413, 163, 18);
+		guestFrame.getContentPane().add(acceptedBooking);
+		acceptedBooking.setVisible(false);
+		
+		
+		JButton subReview = new JButton("Submit Review");
+		subReview.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ReviewProp rev = new ReviewProp(user ,propertyID);
+				rev.getFrame().setVisible(true);
+				guestFrame.setVisible(false);
+			}
+		});
+		subReview.setBounds(698, 587, 123, 23);
+		guestFrame.getContentPane().add(subReview);
+		subReview.setVisible(false);
+		
 		JButton showHost = new JButton("show Host for selected booking");
 		showHost.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int rowIndex = bookingsTable.getSelectedRow();
 				if(rowIndex >= 0) {
-					int propertyID = (int) Integer.parseInt(String.valueOf(bookingsTable.getValueAt(rowIndex, 9)));	
+					propertyID = (int) Integer.parseInt(String.valueOf(bookingsTable.getValueAt(rowIndex, 9)));
 					int guestID = (int) Integer.parseInt(String.valueOf(bookingsTable.getValueAt(rowIndex, 8)));
+					int bookingID = (int) Integer.parseInt(String.valueOf(bookingsTable.getValueAt(rowIndex, 0)));
+					LocalDate end = LocalDate.parse( String.valueOf(bookingsTable.getValueAt(rowIndex, 2)));
 					
 					Database.connectDB();
-					if(HostActions.isAccepted(guestID)) {
+					// hide private details column if not accepted
+					if(HostActions.isAccepted(bookingID)) {
 						showHide(hostTable.getColumn("Title"),0,700,90);
 						showHide(hostTable.getColumn("Forename"),0,700,90);
 						showHide(hostTable.getColumn("Surname"),0,700,90);
 						showHide(hostTable.getColumn("Email"),0,700,90);
 						showHide(hostTable.getColumn("Mobile"),0,700,90);
+						acceptedBooking.setVisible(true);
+						notAccepted.setVisible(false);
+						
+						// if accepted and current date is after end date, user can submit review
+						if(LocalDate.now().isAfter(end)) {
+							// and guest hasnt already made review
+							if(!guestActions.reviewExists(guestID, propertyID))
+								subReview.setVisible(true);
+						}
+					}
+					else {
+						showHide(hostTable.getColumn("Title"),0,0,0);
+						showHide(hostTable.getColumn("Forename"),0,0,0);
+						showHide(hostTable.getColumn("Surname"),0,0,0);
+						showHide(hostTable.getColumn("Email"),0,0,0);
+						showHide(hostTable.getColumn("Mobile"),0,0,0);
+						acceptedBooking.setVisible(false);
+						notAccepted.setVisible(true);
+						subReview.setVisible(false);
 					}
 					refreshHosts();
 					try {
@@ -221,8 +268,9 @@ public class mainPageGuest {
 				Database.disconnectDB();
 			}
 		});
-		showBooking.setBounds(716, 310, 132, 23);
+		showBooking.setBounds(642, 310, 206, 23);
 		guestFrame.getContentPane().add(showBooking);
+		
 		
 		
 		JMenuBar menuBar = new JMenuBar();

@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextArea;
 
+import businessLogic.guestActions;
 import classCode.*;
 import database.*;
 
@@ -21,6 +22,9 @@ public class ReviewProp {
 
 	private JFrame reviewPropFrame;
 
+	public JFrame getFrame() {
+		return reviewPropFrame;
+	}
 	/**
 	 * Launch the application.
 	 */
@@ -28,8 +32,8 @@ public class ReviewProp {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ReviewProp window = new ReviewProp();
-					window.reviewPropFrame.setVisible(true);
+				//	ReviewProp window = new ReviewProp();
+					//window.reviewPropFrame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -40,14 +44,14 @@ public class ReviewProp {
 	/**
 	 * Create the application.
 	 */
-	public ReviewProp() {
-		initialize();
+	public ReviewProp(User user, int propertyID) {
+		initialize(user,propertyID);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize(User user, int propertyID) {
 		reviewPropFrame = new JFrame();
 		reviewPropFrame.setBounds(100, 100, 764, 600);
 		reviewPropFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -139,6 +143,12 @@ public class ReviewProp {
 				int val = Integer.parseInt(value.getSelectedItem().toString());
 				Review review = new Review (satisf,clean,comm,ch,acc,loc,val);
 				// need guestID and property ID to review
+				Database.connectDB();
+				guestActions.addReview(user, propertyID, review);
+				Database.disconnectDB();
+				mainPageGuest guestPage = new mainPageGuest(user);
+				guestPage.getFrame().setVisible(true);
+				reviewPropFrame.setVisible(false);
 			}
 		});
 		submit.setFont(new Font("Arial", Font.BOLD, 15));

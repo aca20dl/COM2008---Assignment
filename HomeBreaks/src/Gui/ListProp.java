@@ -1375,7 +1375,7 @@ public class ListProp {
 				ArrayList<Review> reviews = new ArrayList<>();
 				Property property = new Property(ad,sName,des,genL,
 						bf,sleeping.getTotalSleepers(),sleeping.getTotalBeds()
-						,sleeping.getTotalBedrooms(),bathing.getTotalBathrooms());
+						,sleeping.getTotalBedrooms(),bathing.getTotalBathrooms(),0); // initially average rating is 0
 				//add add property function here
 				Database.connectDB();
 				Houses.addProperty((Host)user,property, sleeping, bathing, kitchen, living, utility, outdoor, chargeBands);

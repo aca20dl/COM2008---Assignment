@@ -13,12 +13,8 @@ public class Property{
 	private int numBed;
 	private int numBedroom;
 	private int numBathroom;
-	private Sleeping sleeping;
-	private Bathing bathing;
-	private Kitchen kitchen;
-	private Living living;
-	private Utility utility;
 	private Outdoor outdoor;
+	private double averageRating;
 	
 	//get methods for variables
 	public Address getAddress() {
@@ -57,10 +53,13 @@ public class Property{
 		return numBathroom;
 	}
 
+	public double getAverageRating() {
+		return averageRating;
+	}
 	
 	// constructor for property
 	public Property(Address ad, String n, String d, String gl,boolean bf,int mg,int beds
-			,int bedrooms,int bathrooms) {
+			,int bedrooms,int bathrooms,double ar) {
 		address = ad;
 		name = n;
 		description = d;
@@ -70,6 +69,7 @@ public class Property{
 		numBed = beds;
 		numBedroom = bedrooms;
 		numBathroom = bathrooms;
+		averageRating = ar;
 	}
 	
 	/*
@@ -145,7 +145,7 @@ public class Property{
 		
 		
 		Property myProp = new Property(ad,"small house", "long description",
-				"sheffield",false,1,2,3,4);
+				"sheffield",false,1,2,3,4,0);
 		
 		System.out.println(myProp);
 	}

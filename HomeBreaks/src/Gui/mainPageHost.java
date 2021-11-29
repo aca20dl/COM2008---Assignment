@@ -141,7 +141,9 @@ public class mainPageHost {
 		});
 		bookingsTable.getColumnModel().getColumn(2).setPreferredWidth(76);
 		scrollPane.setViewportView(bookingsTable);
-		bookingsModel = (DefaultTableModel) bookingsTable.getModel(); 
+		bookingsModel = (DefaultTableModel) bookingsTable.getModel();
+		showHide(bookingsTable.getColumn("Booking ID"),0,0,0);
+		showHide(bookingsTable.getColumn("GuestID"),0,0,0);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(10, 410, 610, 146);
@@ -166,11 +168,6 @@ public class mainPageHost {
 		guestsModel = (DefaultTableModel) guestTable.getModel();
 		 
 		 //hide confidential details columns
-		showHide(guestTable.getColumn("Title"),0,0,0);
-		showHide(guestTable.getColumn("Forename"),0,0,0);
-		showHide(guestTable.getColumn("Surname"),0,0,0);
-		showHide(guestTable.getColumn("Email"),0,0,0);
-		showHide(guestTable.getColumn("Mobile"),0,0,0);
 		 
 		 
 		JButton accept = new JButton("Accept Selected Request");
@@ -190,20 +187,46 @@ public class mainPageHost {
 		accept.setBounds(574, 344, 213, 23);
 		hostFrame.getContentPane().add(accept);
 		
+		JLabel acceptedBooking = new JLabel("Accepted Booking");
+		acceptedBooking.setForeground(Color.GREEN);
+		acceptedBooking.setFont(new Font("Arial", Font.BOLD, 15));
+		acceptedBooking.setBounds(669, 411, 163, 18);
+		hostFrame.getContentPane().add(acceptedBooking);
+		acceptedBooking.setVisible(false);
+		
+		JLabel notAccepted = new JLabel("Not Accepted");
+		notAccepted.setForeground(Color.RED);
+		notAccepted.setFont(new Font("Arial", Font.BOLD, 15));
+		notAccepted.setBounds(669, 458, 163, 23);
+		hostFrame.getContentPane().add(notAccepted);
+		notAccepted.setVisible(false);
+		
 		JButton showGuest = new JButton("show Guest Details");
 		showGuest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int rowIndex = bookingsTable.getSelectedRow();
 				if(rowIndex >= 0) {
-					int guestID = (int) Integer.parseInt(String.valueOf(bookingsTable.getValueAt(rowIndex, 8)));	
+					int guestID = (int) Integer.parseInt(String.valueOf(bookingsTable.getValueAt(rowIndex, 8)));
+					int bookingID = (int) Integer.parseInt(String.valueOf(bookingsTable.getValueAt(rowIndex, 0)));
 					//show confidential details if paired
 					Database.connectDB();
-					if(HostActions.isAccepted(guestID)) {
+					if(HostActions.isAccepted(bookingID)) {
 						showHide(guestTable.getColumn("Title"),0,700,90);
 						showHide(guestTable.getColumn("Forename"),0,700,90);
 						showHide(guestTable.getColumn("Surname"),0,700,90);
 						showHide(guestTable.getColumn("Email"),0,700,90);
 						showHide(guestTable.getColumn("Mobile"),0,700,90);
+						acceptedBooking.setVisible(true);
+						notAccepted.setVisible(false);
+					}
+					else {
+						showHide(guestTable.getColumn("Title"),0,0,0);
+						showHide(guestTable.getColumn("Forename"),0,0,0);
+						showHide(guestTable.getColumn("Surname"),0,0,0);
+						showHide(guestTable.getColumn("Email"),0,0,0);
+						showHide(guestTable.getColumn("Mobile"),0,0,0);
+						notAccepted.setVisible(true);
+						acceptedBooking.setVisible(false);
 					}
 					
 					refreshGuests();
