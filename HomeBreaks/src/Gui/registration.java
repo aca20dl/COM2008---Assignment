@@ -96,8 +96,13 @@ public class registration {
 		if (password == null) {
             return false;
         }
-	    String regex = "^(?=.*[0-9])" + "(?=.*[a-z])(?=.*[A-Z])" + "(?=.*[@#$%^&+=])" + "(?=\\S+$).{8,20}$";
+	    String regex = "^(?=.*[0-9])" + "(?=.*[a-z])(?=.*[A-Z])" + "(?=.*[@#$%^&+=._])" + "(?=\\S+$).{8,20}$";
 	    return password.matches(regex);
+	}
+	
+	static boolean isValidPhone(String mobile) {
+	    String regex = "(?=.*[+])" + "^(?=.*[0-9])" + "(?=\\S+$).{10,13}$";
+	    return mobile.matches(regex);
 	}
 	
 	private void initialize() {
@@ -198,7 +203,7 @@ public class registration {
 		
 		JPanel panel2 = new JPanel();
 		panel2.setBackground(Color.WHITE);
-		layeredPane.setLayer(panel2, 1);
+		layeredPane.setLayer(panel2, 3);
 		panel2.setBounds(0, 0, 865, 765);
 		layeredPane.add(panel2);
 		panel2.setLayout(null);
@@ -324,6 +329,13 @@ public class registration {
 		back1.setFont(new Font("Arial", Font.BOLD, 15));
 		back1.setBounds(521, 483, 93, 23);
 		panel2.add(back1);
+		
+		JLabel errorMsgPhone = new JLabel("Please enter a valid phone number starting with \"+\" and your country code");
+		errorMsgPhone.setEnabled(false);
+		errorMsgPhone.setVisible(false);
+		errorMsgPhone.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		errorMsgPhone.setBounds(43, 568, 598, 55);
+		panel2.add(errorMsgPhone);
 		emptyFields1.setVisible(false);
 		
 		
@@ -620,9 +632,16 @@ public class registration {
 					emptyFields1.setVisible(true);
 				}
 				else {
-					emptyFields1.setVisible(false);
-					goToPanel(panel3);
+					if( !isValidPhone(tMobile.getText()) ) {
+						errorMsgPhone.setVisible(true);
+					}
+					else {
+						emptyFields1.setVisible(false);
+						errorMsgPhone.setVisible(true);
+						goToPanel(panel3);
+					}
 				}
+				
 			}
 		});
 		
