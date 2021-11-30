@@ -165,7 +165,7 @@ public class Search {
 			}
 		) {
 			boolean[] columnEditables = new boolean[] {
-				false, false, false, true
+				false, false, false, false
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -175,6 +175,7 @@ public class Search {
 		propertiesTable.getColumnModel().getColumn(1).setResizable(false);
 		propertiesTable.getColumnModel().getColumn(2).setResizable(false);
 		propertiesTable.getColumnModel().getColumn(2).setPreferredWidth(95);
+		propertiesTable.getColumnModel().getColumn(3).setResizable(false);
 		scrollPane.setViewportView(propertiesTable);
 		propertiesModel = (DefaultTableModel) propertiesTable.getModel(); 
 		
