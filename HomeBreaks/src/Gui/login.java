@@ -144,12 +144,13 @@ public class login  {
 		JButton hostLoginButton = new JButton("Log In as Host");
 		hostLoginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String email = Email.getText().toLowerCase();
+				String email = User.removeSemiColon(Email.getText().toLowerCase());
 				char [] charPass = password.getPassword();
 				String pass = "";
 				for(int i = 0; i < charPass.length; i++) {
 					pass = pass + charPass[i];
 				}
+				pass = User.removeSemiColon(pass);
 				if(email.isBlank() || pass.isBlank()) {
 					emptyFields.setVisible(true);
 					notExist.setVisible(false);
@@ -201,7 +202,7 @@ public class login  {
 		
 		guestLoginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String email = Email.getText();
+				String email = User.removeSemiColon(Email.getText().toLowerCase());
 				char [] charPass = password.getPassword();
 				String pass = "";
 				for(int i = 0; i < charPass.length; i++) {

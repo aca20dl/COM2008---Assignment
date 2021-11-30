@@ -67,7 +67,7 @@ public class User{
 	}
 	
 	//removes section after semi colon in a given inpu
-	public String removeSemiColon(String input) {
+	public static String removeSemiColon(String input) {
 		String [] out = input.split(";");
 		String output = out[0];
 		return output;

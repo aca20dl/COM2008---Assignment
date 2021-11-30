@@ -1070,9 +1070,9 @@ public class ListProp {
 				int endDate = Integer.parseInt(endDay.getSelectedItem().toString());
 				int eMonth = Integer.parseInt(endMonth.getSelectedItem().toString());
 				
-				String ppnS = pricePerNight.getText().replace("£", "");
-				String scS = serviceCharge.getText().replace("£", "");
-				String ccS = cleaningCharge.getText().replace("£", "");
+				String ppnS = User.removeSemiColon(pricePerNight.getText().replace("£", ""));
+				String scS = User.removeSemiColon(serviceCharge.getText().replace("£", ""));
+				String ccS = User.removeSemiColon(cleaningCharge.getText().replace("£", ""));
 				
 				ChargeBand chargeb = null;
 				if(!ppnS.isBlank() && !scS.isBlank() && !ccS.isBlank()) {
@@ -1239,10 +1239,10 @@ public class ListProp {
 		//next button action listeners
 		p12.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String houseN = houseNum.getText().trim().toLowerCase();
-				String streetN = street.getText().trim().toLowerCase();
-				String cityN = city.getText().trim().toLowerCase();
-				String pc = postCode.getText().trim().toLowerCase();
+				String houseN = User.removeSemiColon(houseNum.getText().trim().toLowerCase());
+				String streetN = User.removeSemiColon(street.getText().trim().toLowerCase());
+				String cityN = User.removeSemiColon(city.getText().trim().toLowerCase());
+				String pc = User.removeSemiColon(postCode.getText().trim().toLowerCase());
 				String [] inputs = {houseN,streetN,cityN,pc};
 				if(noneEmpty(inputs)) {
 					emptyError1.setVisible(false);
@@ -1258,9 +1258,9 @@ public class ListProp {
 		
 		p23.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				sName = shortName.getText().trim().toLowerCase();
-				des = description.getText().trim().toLowerCase();
-				genL = genLoc.getText().trim().toLowerCase();
+				sName = User.removeSemiColon(shortName.getText().trim().toLowerCase());
+				des = User.removeSemiColon(description.getText().trim().toLowerCase());
+				genL = User.removeSemiColon(genLoc.getText().trim().toLowerCase());
 				bf = breakfast.isSelected();
 				String [] inputs = {sName,des,genL}; 
 				if(noneEmpty(inputs)) {

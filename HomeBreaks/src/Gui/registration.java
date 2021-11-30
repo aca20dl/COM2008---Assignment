@@ -182,7 +182,7 @@ public class registration {
 		errorMsgPass1.setEnabled(false);
 		errorMsgPass1.setVisible(false);
 		errorMsgPass1.setFont(new Font("Tahoma", Font.PLAIN, 17));
-		errorMsgPass1.setBounds(33, 567, 568, 59);
+		errorMsgPass1.setBounds(10, 567, 634, 59);
 		panel_1.add(errorMsgPass1);
 		
 		JLabel errorMsgPass2 = new JLabel("character, a number [0-9] and a special character [@#$%^&-+=()]");
@@ -203,7 +203,7 @@ public class registration {
 		
 		JPanel panel2 = new JPanel();
 		panel2.setBackground(Color.WHITE);
-		layeredPane.setLayer(panel2, 3);
+		layeredPane.setLayer(panel2, 1);
 		panel2.setBounds(0, 0, 865, 765);
 		layeredPane.add(panel2);
 		panel2.setLayout(null);
@@ -596,6 +596,9 @@ public class registration {
 				
 				if(tEmail.getText().isBlank()  || tUsername.getText().isBlank() || pass.isBlank()) {
 					errorMsg.setVisible(true);
+					errorMsgPass1.setVisible(false);
+					errorMsgPass2.setVisible(false);
+					errorMsgEmail.setVisible(false);
 				}
 				
 				else {
@@ -603,20 +606,27 @@ public class registration {
 						errorMsgEmail.setVisible(true);
 						errorMsgPass1.setVisible(true);
 						errorMsgPass2.setVisible(true);
+						errorMsg.setVisible(false);
 					}
 					else if(!(isValidPassword(pass))&& isValidEmail(tEmail.getText())) {
 						
 						errorMsgPass1.setVisible(true);
 						errorMsgPass2.setVisible(true);
+						errorMsgEmail.setVisible(false);
+						errorMsg.setVisible(false);
 					}
 					else if((isValidPassword(pass)) && !isValidEmail(tEmail.getText()) ) {
 						errorMsgEmail.setVisible(true);
+						errorMsgPass1.setVisible(false);
+						errorMsgPass2.setVisible(false);
+						errorMsg.setVisible(false);
 					}
 					else{
 						errorMsg.setVisible(false);
 						errorMsgPass1.setVisible(false);
 						errorMsgPass2.setVisible(false);
 						errorMsgEmail.setVisible(false);
+						errorMsg.setVisible(false);
 						goToPanel(panel2);
 					}
 				}
