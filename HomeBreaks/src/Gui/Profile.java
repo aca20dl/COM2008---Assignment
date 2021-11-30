@@ -147,7 +147,7 @@ public class Profile {
 		username.setBounds(240, 99, 109, 20);
 		panel.add(username);
 		
-		JLabel password = new JLabel(password1);
+		JLabel password = new JLabel("CONFIDENTIAL");
 		password.setFont(new Font("Arial", Font.BOLD, 15));
 		password.setBounds(485, 99, 109, 20);
 		panel.add(password);
