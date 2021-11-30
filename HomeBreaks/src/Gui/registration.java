@@ -1,6 +1,9 @@
 package Gui;
 
 import businessLogic.*;
+
+import java.util.regex.*;
+
 import java.awt.EventQueue;
 import classCode.*;
 import database.*;
@@ -80,6 +83,28 @@ public class registration {
 	/**
 	 * Initialize the contents of the frame.
 	 */
+	
+	/**
+	 * Checks if the password and email are valid
+	 */
+	static boolean isValidEmail(String email) {
+	    String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+	    return email.matches(regex);
+	}
+	
+	static boolean isValidPassword(String password) {
+		if (password == null) {
+            return false;
+        }
+	    String regex = "^(?=.*[0-9])" + "(?=.*[a-z])(?=.*[A-Z])" + "(?=.*[@#$%^&+=._])" + "(?=\\S+$).{8,20}$";
+	    return password.matches(regex);
+	}
+	
+	static boolean isValidPhone(String mobile) {
+	    String regex = "(?=.*[+])" + "^(?=.*[0-9])" + "(?=\\S+$).{10,13}$";
+	    return mobile.matches(regex);
+	}
+	
 	private void initialize() {
 		frmRegistration = new JFrame();
 		frmRegistration.getContentPane().setEnabled(false);
@@ -153,9 +178,32 @@ public class registration {
 		next1Button.setBounds(141, 490, 305, 37);
 		panel_1.add(next1Button);
 		
+		JLabel errorMsgPass1 = new JLabel("The password must contain at least one upper case character, a lower case ");
+		errorMsgPass1.setEnabled(false);
+		errorMsgPass1.setVisible(false);
+		errorMsgPass1.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		errorMsgPass1.setBounds(33, 567, 568, 59);
+		panel_1.add(errorMsgPass1);
+		
+		JLabel errorMsgPass2 = new JLabel("character, a number [0-9] and a special character [@#$%^&-+=()]");
+		errorMsgPass2.setEnabled(false);
+		errorMsgPass2.setVisible(false);
+		errorMsgPass2.setHorizontalAlignment(SwingConstants.CENTER);
+		errorMsgPass2.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		errorMsgPass2.setBounds(0, 601, 644, 59);
+		panel_1.add(errorMsgPass2);
+		
+		JLabel errorMsgEmail = new JLabel("Please enter a valid email");
+		errorMsgEmail.setHorizontalAlignment(SwingConstants.CENTER);
+		errorMsgEmail.setEnabled(false);
+		errorMsgEmail.setVisible(false);
+		errorMsgEmail.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		errorMsgEmail.setBounds(47, 538, 484, 37);
+		panel_1.add(errorMsgEmail);
+		
 		JPanel panel2 = new JPanel();
 		panel2.setBackground(Color.WHITE);
-		layeredPane.setLayer(panel2, 1);
+		layeredPane.setLayer(panel2, 3);
 		panel2.setBounds(0, 0, 865, 765);
 		layeredPane.add(panel2);
 		panel2.setLayout(null);
@@ -281,6 +329,13 @@ public class registration {
 		back1.setFont(new Font("Arial", Font.BOLD, 15));
 		back1.setBounds(521, 483, 93, 23);
 		panel2.add(back1);
+		
+		JLabel errorMsgPhone = new JLabel("Please enter a valid phone number starting with \"+\" and your country code");
+		errorMsgPhone.setEnabled(false);
+		errorMsgPhone.setVisible(false);
+		errorMsgPhone.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		errorMsgPhone.setBounds(43, 568, 598, 55);
+		panel2.add(errorMsgPhone);
 		emptyFields1.setVisible(false);
 		
 		
@@ -537,13 +592,37 @@ public class registration {
 					pass = pass + password[i];
 				}
 				
+				
+				
 				if(tEmail.getText().isBlank()  || tUsername.getText().isBlank() || pass.isBlank()) {
 					errorMsg.setVisible(true);
 				}
+				
 				else {
-					errorMsg.setVisible(false);
-					goToPanel(panel2);
+					if( !isValidEmail(tEmail.getText()) && !isValidPassword(pass)) {
+						errorMsgEmail.setVisible(true);
+						errorMsgPass1.setVisible(true);
+						errorMsgPass2.setVisible(true);
+					}
+					else if(!(isValidPassword(pass))&& isValidEmail(tEmail.getText())) {
+						
+						errorMsgPass1.setVisible(true);
+						errorMsgPass2.setVisible(true);
+					}
+					else if((isValidPassword(pass)) && !isValidEmail(tEmail.getText()) ) {
+						errorMsgEmail.setVisible(true);
+					}
+					else{
+						errorMsg.setVisible(false);
+						errorMsgPass1.setVisible(false);
+						errorMsgPass2.setVisible(false);
+						errorMsgEmail.setVisible(false);
+						goToPanel(panel2);
+					}
 				}
+				
+				
+				
 			}
 		});
 		next2Button.addActionListener(new ActionListener() {
@@ -559,9 +638,16 @@ public class registration {
 					emptyFields1.setVisible(true);
 				}
 				else {
-					emptyFields1.setVisible(false);
-					goToPanel(panel3);
+					if( !isValidPhone(tMobile.getText()) ) {
+						errorMsgPhone.setVisible(true);
+					}
+					else {
+						emptyFields1.setVisible(false);
+						errorMsgPhone.setVisible(true);
+						goToPanel(panel3);
+					}
 				}
+				
 			}
 		});
 		
