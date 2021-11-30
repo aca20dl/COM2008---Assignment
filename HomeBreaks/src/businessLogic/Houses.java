@@ -3,12 +3,14 @@ package businessLogic;
 import database.*;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import classCode.*;
 
 public class Houses{
 	
+	//helper method turns bool to int, 1 == true
 	public static int toInt(boolean b) {
 		if (b)
 			return 1;
@@ -278,5 +280,236 @@ public class Houses{
 		 if(averageRating > 4.7) {
 			 Database.setValue("Hosts", "IsSuperHost", String.valueOf(1), "HostID", String.valueOf(hostID)); 
 		 }
+	 }
+	 
+	 //--------------Functions to get facility details of property---------------------//
+	 
+	 //helper function turns int to boolean
+	 public static boolean toBool(int i) {
+		 return i == 1;
+	 }
+	 
+	 //get bedrooms for property
+	 public static ArrayList<Bedroom>  getBedrooms(int propertyID){
+		 int sleepingID = Database.getID("SleepingID", "Sleeping", "PropertyID", String.valueOf(propertyID));
+		 ResultSet result = Database.getValue("*", "Bedrooms", "SleepingID", String.valueOf(sleepingID));
+		 ArrayList<Bedroom> bedrooms = new ArrayList<>();
+		 try {
+			while(result.next()) {
+				 Bed bed1 = new Bed(result.getString("BedOne"));
+				 String bedTwo = result.getString("BedTwo");
+				 Bed bed2 = null;
+				 if(!bedTwo.isBlank()) {
+					 bed2 = new Bed(bedTwo);
+				 }
+				 bedrooms.add(new Bedroom(bed1,bed2));
+			 }
+			result.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		 return bedrooms;
+	 }
+	 
+	 //get sleeping facility info
+	 public static Sleeping getSleeping(int propertyID) {
+		 Sleeping sleeping = null;
+		 try {
+			 ResultSet result = Database.getValue("*", "Sleeping", "PropertyID", String.valueOf(propertyID));
+			 while(result.next()) {
+				 boolean bl = toBool(result.getInt("HasBedLinen"));
+				 boolean t = toBool(result.getInt("HasTowels"));
+				 sleeping = new Sleeping (bl,t,getBedrooms(propertyID));
+			 }
+			 result.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		 return sleeping;
+	 }
+	 
+	 //get bathrooms for property
+	 public static ArrayList<Bathroom>  getBathrooms(int propertyID){
+		 int bathingID = Database.getID("BathingID", "Bathing", "PropertyID", String.valueOf(propertyID));
+		 ResultSet result = Database.getValue("*", "Bathrooms", "BathingID", String.valueOf(bathingID));
+		 ArrayList<Bathroom> bathrooms = new ArrayList<>();
+		 try {
+			while(result.next()) {
+				 boolean t = toBool(result.getInt("HasToilet"));
+				 boolean b = toBool(result.getInt("HasBath"));
+				 boolean sho = toBool(result.getInt("HasShower"));
+				 boolean sha = toBool(result.getInt("IsShared"));
+				 bathrooms.add(new Bathroom(t,b,sho,sha));
+			 }
+			result.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		 return bathrooms;
+	 }
+	 
+	 // get bathing facility info for property
+	 public static Bathing getBathing(int propertyID) {
+		 Bathing bathing = null;
+		 try {
+			 ResultSet result = Database.getValue("*", "Bathing", "PropertyID", String.valueOf(propertyID));
+			 while(result.next()) {
+				 boolean h = toBool(result.getInt("HasHairdryer"));
+				 boolean s = toBool(result.getInt("HasShampoo"));
+				 boolean tp = toBool(result.getInt("HasToiletPaper"));
+				 bathing = new Bathing(h,s,tp,getBathrooms(propertyID));
+			 }
+			 result.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		 return bathing;
+	 }
+	 
+	 //get kitchen info 
+	 public static Kitchen getKitchen(int propertyID) {
+		 Kitchen kitchen = null;
+		 try {
+			 ResultSet result = Database.getValue("*", "Kitchen", "PropertyID", String.valueOf(propertyID));
+			 while(result.next()) {
+				 boolean f = toBool(result.getInt("HasFridge"));
+				 boolean m = toBool(result.getInt("HasMicrowave"));
+				 boolean o = toBool(result.getInt("HasOven"));
+				 boolean s = toBool(result.getInt("HasStove"));
+				 boolean d = toBool(result.getInt("HasDishwasher"));
+				 boolean tw = toBool(result.getInt("HasTableware"));
+				 boolean c = toBool(result.getInt("HasCookware"));
+				 boolean bp = toBool(result.getInt("HasBasicProv"));
+				kitchen = new Kitchen(f,m,o,s,d,tw,c,bp); 
+			 }
+			 result.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		 return kitchen;
+	 }
+	 
+	 //get living info 
+	 public static Living getLiving(int propertyID) {
+		 Living living = null;
+		 try {
+			 ResultSet result = Database.getValue("*", "Living", "PropertyID", String.valueOf(propertyID));
+			 while(result.next()) {
+				 boolean w = toBool(result.getInt("HasWifi"));
+				 boolean t = toBool(result.getInt("HasTV"));
+				 boolean sa = toBool(result.getInt("HasSat"));
+				 boolean st = toBool(result.getInt("HasStreaming"));
+				 boolean d = toBool(result.getInt("HasDVDPlayer"));
+				 boolean bg = toBool(result.getInt("HasBoardGames"));
+				living = new Living(w,t,sa,st,d,bg); 
+			 }
+			 result.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		 return living;
+	 }
+	 
+	 //get Utility info
+	 public static Utility getUtility(int propertyID) {
+		 Utility utility = null;
+		 try {
+			 ResultSet result = Database.getValue("*", "Utility", "PropertyID", String.valueOf(propertyID));
+			 while(result.next()) {
+				 boolean h = toBool(result.getInt("HasHeating"));
+				 boolean w = toBool(result.getInt("HasWashingMachine"));
+				 boolean d = toBool(result.getInt("HasDryingMachine"));
+				 boolean f = toBool(result.getInt("HasFireExtinguisher"));
+				 boolean s = toBool(result.getInt("HasSmokeAlarm"));
+				 boolean fak = toBool(result.getInt("HasFirstAidKit"));
+				utility = new Utility(h,w,d,f,s,fak); 
+			 }
+			 result.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		 return utility;
+	 }
+	 
+	 //outdoor information
+	 public static Outdoor getoutdoor(int propertyID) {
+		 Outdoor outdoor = null;
+		 try {
+			 ResultSet result = Database.getValue("*", "Outdoor", "PropertyID", String.valueOf(propertyID));
+			 while(result.next()) {
+				 boolean fp = toBool(result.getInt("HasFreeParking"));
+				 boolean rp = toBool(result.getInt("HasRoadParking"));
+				 boolean pp = toBool(result.getInt("HasPaidCarPark"));
+				 boolean p = toBool(result.getInt("HasPatio"));
+				 boolean b = toBool(result.getInt("HasBarbeque"));
+				outdoor = new Outdoor(fp,rp,pp,p,b); 
+			 }
+			 result.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		 return outdoor;
+	 }
+	 
+	 // get all chargebands
+	 public static ArrayList<ChargeBand> getBands(int propertyID){
+		 ArrayList <ChargeBand> bands = new ArrayList<>();
+		 
+		 try {
+			 ResultSet result = Database.getValue("*", "ChargeBands", "PropertyID", String.valueOf(propertyID));
+			while(result.next()) {
+				 LocalDate start = result.getDate("StartDate").toLocalDate();
+				 LocalDate end = result.getDate("EndDate").toLocalDate();
+				 int ppn = result.getInt("PricePerNight");
+				 int sc = result.getInt("ServiceCharge");
+				 int cc = result.getInt("CleaningCharge");
+				 ChargeBand band = new ChargeBand(start,end,ppn,sc,cc);
+				 bands.add(band);
+			 }
+			result.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		 return bands;
+	 }
+	 
+	 //get property public info
+	 public static String [] getProperty(int propertyID) {
+		 String [] pInfo = new String [5];
+		 try {
+			 ResultSet result = Database.getValue("*", "Properties", "PropertyID", String.valueOf(propertyID));
+			while(result.next()) {
+				 pInfo [0] = result.getString("Name");
+				 pInfo [1] = result.getString("Description");
+				 pInfo [2] = result.getString("GenLocation");
+				 pInfo [3] = String.valueOf(result.getInt("BreakFast"));
+				 pInfo [4] = String.valueOf(result.getDouble("AverageRating"));
+				 
+			 }
+			result.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		 return pInfo;
+	 }
+	 
+	 //get property public info
+	 public static String [] getAddress(int propertyID) {
+		 String [] cInfo = new String [4];
+		 int adID = Database.getID("AdID", "Properties", "PropertyID", String.valueOf(propertyID));
+		 try {
+			 ResultSet result = Database.getValue("*", "Addresses", "AdID", String.valueOf(adID));
+			while(result.next()) {
+				 cInfo [0] = result.getString("House");
+				 cInfo [1] = result.getString("Street");
+				 cInfo [2] = result.getString("Place");
+				 cInfo [3] = result.getString("PostCode");
+				 
+			 }
+			result.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		 return cInfo;
 	 }
 }

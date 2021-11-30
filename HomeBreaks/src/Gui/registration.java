@@ -185,7 +185,7 @@ public class registration {
 		tSurname.setColumns(10);
 		
 		tFirstname = new JTextField();
-		tFirstname.setHorizontalAlignment(SwingConstants.CENTER);
+		tFirstname.setHorizontalAlignment(SwingConstants.LEFT);
 		tFirstname.setBounds(56, 210, 200, 33);
 		panel2.add(tFirstname);
 		tFirstname.setColumns(10);

@@ -91,19 +91,22 @@ public class guestActions{
 		return result;
 		
 	}
-	//shows if booking request is accepted
-	public static boolean isAccepted(int guestID) {
-		int isAccepted = 0;
+	
+	public static String [] hostPubInfo(int propertyID) {
+		int hostID = Database.getID("HostID", "Properties", "PropertyID",String.valueOf(propertyID));
+		String username = "";
+		String sh = "";
 		try {
-			ResultSet result = Database.getValue("IsAccepted", "Bookings", "GuestID", String.valueOf(guestID));
+			ResultSet result = Database.getValue("Username,IsSuperHost", "Hosts", "HostID", String.valueOf(hostID));
 			while(result.next()) {
-				 isAccepted = result.getInt("IsAccepted");
+				username = result.getString("Username");
+				sh = String.valueOf(result.getInt("IsSuperHost"));
 			}
 			result.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		return isAccepted == 1;
+		String [] values = {username,sh};
+		return values;
 	}
 }

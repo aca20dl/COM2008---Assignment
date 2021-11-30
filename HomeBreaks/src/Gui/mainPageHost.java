@@ -25,6 +25,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.*;
 import javax.swing.JButton;
+import javax.swing.ListSelectionModel;
 
 public class mainPageHost {
 
@@ -125,23 +126,35 @@ public class mainPageHost {
 		hostFrame.getContentPane().add(scrollPane);
 		
 		bookingsTable = new JTable();
+		bookingsTable.setSurrendersFocusOnKeystroke(true);
+		bookingsTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		bookingsTable.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
 			new String[] {
 				"Booking ID", "Start Date", "End Date", "No. Nights", "Cost per night", "Service Cost", "Cleaning Cost", "Total Charge", "GuestID", "PropertyID"
 			}
-		) {
+		)
+		{
 			Class[] columnTypes = new Class[] {
 				Integer.class, Object.class, Object.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
+			
+			  @Override
+			    public boolean isCellEditable(int row, int column) {
+			       return false;
+			    }
 		});
+		
 		bookingsTable.getColumnModel().getColumn(2).setPreferredWidth(76);
 		scrollPane.setViewportView(bookingsTable);
 		bookingsModel = (DefaultTableModel) bookingsTable.getModel();
+		
+		
+		
 		showHide(bookingsTable.getColumn("Booking ID"),0,0,0);
 		showHide(bookingsTable.getColumn("GuestID"),0,0,0);
 		
@@ -163,6 +176,10 @@ public class mainPageHost {
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
+			@Override
+		    public boolean isCellEditable(int row, int column) {
+		       return false;
+		    }
 		});
 		scrollPane_1.setViewportView(guestTable);
 		guestsModel = (DefaultTableModel) guestTable.getModel();

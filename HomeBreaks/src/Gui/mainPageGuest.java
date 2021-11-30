@@ -134,6 +134,10 @@ public class mainPageGuest {
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
+			@Override
+		    public boolean isCellEditable(int row, int column) {
+		       return false;
+		    }
 		});
 		bookingsTable.getColumnModel().getColumn(4).setPreferredWidth(76);
 		scrollPane.setViewportView(bookingsTable);
@@ -160,6 +164,10 @@ public class mainPageGuest {
 				public Class getColumnClass(int columnIndex) {
 					return columnTypes[columnIndex];
 				}
+				@Override
+			    public boolean isCellEditable(int row, int column) {
+			       return false;
+			    }
 			});
 		scrollPane_1.setViewportView(hostTable);
 		hostsModel = (DefaultTableModel) hostTable.getModel(); 
