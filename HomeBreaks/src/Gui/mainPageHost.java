@@ -201,7 +201,7 @@ public class mainPageHost {
 				}
 			}
 		});
-		accept.setBounds(574, 344, 213, 23);
+		accept.setBounds(497, 344, 290, 23);
 		hostFrame.getContentPane().add(accept);
 		
 		JLabel acceptedBooking = new JLabel("Accepted Booking");
@@ -218,7 +218,7 @@ public class mainPageHost {
 		hostFrame.getContentPane().add(notAccepted);
 		notAccepted.setVisible(false);
 		
-		JButton showGuest = new JButton("show Guest Details");
+		JButton showGuest = new JButton("Show Guest");
 		showGuest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int rowIndex = bookingsTable.getSelectedRow();
@@ -271,7 +271,7 @@ public class mainPageHost {
 		showGuest.setBounds(10, 376, 129, 23);
 		hostFrame.getContentPane().add(showGuest);
 		
-		JButton showBooking = new JButton("Show All Bookings");
+		JButton showBooking = new JButton("Show Bookings");
 		showBooking.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				refreshBookings();
@@ -280,8 +280,23 @@ public class mainPageHost {
 				Database.disconnectDB();
 			}
 		});
-		showBooking.setBounds(574, 310, 213, 23);
+		showBooking.setBounds(497, 310, 290, 23);
 		hostFrame.getContentPane().add(showBooking);
+		
+		JButton showProp = new JButton("View Property");
+		showProp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int rowIndex = bookingsTable.getSelectedRow();
+				if(rowIndex >= 0) {
+					int propertyID = (int) Integer.parseInt(String.valueOf(bookingsTable.getValueAt(rowIndex, 9)));
+					showProp show = new showProp(user, propertyID);
+					show.getFrame().setVisible(true);
+				}
+				
+			}
+		});
+		showProp.setBounds(10, 310, 114, 23);
+		hostFrame.getContentPane().add(showProp);
 		
 		
 		JMenuBar menuBar = new JMenuBar();

@@ -170,12 +170,7 @@ public class mainPageGuest {
 			    }
 			});
 		scrollPane_1.setViewportView(hostTable);
-		hostsModel = (DefaultTableModel) hostTable.getModel(); 
-		
-		JLabel lblHostInformation = new JLabel("Host information:");
-		lblHostInformation.setFont(new Font("Arial", Font.BOLD, 20));
-		lblHostInformation.setBounds(10, 321, 189, 47);
-		guestFrame.getContentPane().add(lblHostInformation);
+		hostsModel = (DefaultTableModel) hostTable.getModel();
 		
 		JLabel notAccepted = new JLabel("Booking not yet Accepted");
 		notAccepted.setForeground(Color.RED);
@@ -279,7 +274,20 @@ public class mainPageGuest {
 		showBooking.setBounds(642, 310, 206, 23);
 		guestFrame.getContentPane().add(showBooking);
 		
-		
+		JButton showProp = new JButton("View Property");
+		showProp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int rowIndex = bookingsTable.getSelectedRow();
+				if(rowIndex >= 0) {
+					int propertyID = (int) Integer.parseInt(String.valueOf(bookingsTable.getValueAt(rowIndex, 9)));
+					showProp show = new showProp(user, propertyID);
+					show.getFrame().setVisible(true);
+				}
+				
+			}
+		});
+		showProp.setBounds(46, 328, 114, 23);
+		guestFrame.getContentPane().add(showProp);
 		
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBackground(Color.GRAY);

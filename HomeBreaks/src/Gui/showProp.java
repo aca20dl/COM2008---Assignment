@@ -37,6 +37,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Label;
+import javax.swing.JButton;
 
 public class showProp {
 
@@ -89,18 +90,18 @@ public class showProp {
 	private JTextField location;
 	private JTextField value;
 	//all the facilities and lists for property
-	String [] pInfo;
-	Sleeping sleeping;
-	ArrayList<Bedroom> bedrooms;
-	Bathing bathing;
-	ArrayList<Bathroom> bathrooms;
-	Kitchen kitchen;
-	Living living;
-	Utility utility;
-	Outdoor outdoor;
-	ArrayList<ChargeBand> bands;
-	String [] pubInfo;
-	String [] hostInfo;
+	private String [] pInfo;
+	private Sleeping sleeping;
+	private ArrayList<Bedroom> bedrooms;
+	private Bathing bathing;
+	private ArrayList<Bathroom> bathrooms;
+	private Kitchen kitchen;
+	private Living living;
+	private Utility utility;
+	private Outdoor outdoor;
+	private ArrayList<ChargeBand> bands;
+	private String [] pubInfo;
+	private String [] hostInfo;
 	private JTextField username;
 	private JTextField superHost;
 	
@@ -109,6 +110,10 @@ public class showProp {
 		layeredPane.add(p);
 		layeredPane.repaint();
 		layeredPane.revalidate();
+	}
+	
+	public JFrame getFrame() {
+		return frame;
 	}
 	
 	/**
@@ -1033,6 +1038,16 @@ public class showProp {
 		superHost.setBackground(Color.WHITE);
 		superHost.setBounds(181, 198, 170, 20);
 		frame.getContentPane().add(superHost);
+		
+		JButton btnNewButton = new JButton("Close");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.setVisible(false);
+			}
+		});
+		btnNewButton.setFont(new Font("Arial", Font.BOLD, 11));
+		btnNewButton.setBounds(10, 532, 93, 23);
+		frame.getContentPane().add(btnNewButton);
 	}
 	private static void addPopup(Component component, final JPopupMenu popup) {
 	}
