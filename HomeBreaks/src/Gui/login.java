@@ -157,6 +157,9 @@ public class login  {
 				}
 				else {
 					Database.connectDB();
+					//hash the password
+					pass = guestActions.hash(pass);
+					System.out.println(pass.length());
 					if(Accounts.exists(email)) {
 						// checks if given email and password match
 						if(Accounts.loginUser(email, pass, "Hosts")) {
@@ -210,6 +213,9 @@ public class login  {
 					notMatch.setVisible(false);
 				}
 				else {
+					//hash the password
+					pass = guestActions.hash(pass);
+					
 					Database.connectDB();
 					if(Accounts.exists(email)) {
 						// checks if given email and password match

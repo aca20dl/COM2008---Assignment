@@ -1,7 +1,17 @@
 package businessLogic;
 
+import java.nio.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.spec.KeySpec;
 import java.sql.*;
 import java.time.LocalDate;
+
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 
 import classCode.*;
 import database.*;
@@ -135,5 +145,34 @@ public class guestActions{
 		String conditions = "GenLocation LIKE '%" + location + "%'";
 		ResultSet result = Database.allInfo("*", "Properties", conditions);
 		return result;
+	}
+	
+
+	//hash a password
+	public static String hash(String password) {
+		char [] cPass = password.toCharArray();
+		String newPass = "";
+		MessageDigest md;
+		try {
+			md = MessageDigest.getInstance("SHA-512");
+			md.update(charsAsBB(cPass));
+			byte[] hashedPassword = md.digest(password.getBytes(StandardCharsets.UTF_8));
+			for(int i = 0; i < 16; i++) {//get first 16
+				newPass = newPass + hashedPassword[i];
+			}
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return newPass;
+	}
+	
+	private static ByteBuffer charsAsBB(char [] chars) {
+		CharBuffer cb = CharBuffer.wrap(chars);
+		Charset utfCharset = Charset.forName("UTF-8");
+		ByteBuffer bb = utfCharset.encode(cb);
+		return bb;
+	}
+	
+	public static void main (String [] args) {
 	}
 }

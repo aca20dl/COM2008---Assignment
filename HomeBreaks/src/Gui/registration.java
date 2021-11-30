@@ -347,6 +347,9 @@ public class registration {
 					notMatch.setVisible(false);
 				}
 				else {
+					//hash the password
+					pass = guestActions.hash(pass);
+					
 					emptyFields2.setVisible(false);
 					usedEmail.setVisible(false);
 					notMatch.setVisible(false);
@@ -468,6 +471,9 @@ public class registration {
 					emptyFields2.setVisible(false);
 					usedEmail.setVisible(false);
 					notMatch.setVisible(false);
+					//hash the password
+					pass = guestActions.hash(pass);
+					
 					// creates the Address and Host objects if all fields not empty
 					Address ad = new Address(house,street,city,postCode);
 					//initially guest has zero bookings
