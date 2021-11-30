@@ -275,9 +275,7 @@ public class mainPageHost {
 		showBooking.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				refreshBookings();
-				Database.connectDB();
 				showBookings(user,bookingsModel);
-				Database.disconnectDB();
 			}
 		});
 		showBooking.setBounds(497, 310, 290, 23);

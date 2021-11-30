@@ -1,6 +1,7 @@
 package businessLogic;
 
 import java.sql.*;
+import java.time.LocalDate;
 
 import classCode.*;
 import database.*;
@@ -24,10 +25,10 @@ public class guestActions{
 		
 		//insert into bookings table
 		String columns = "StartDate,EndDate,NumNights,PricePerNight,ServiceCharge,"
-				+ "CleaningCharge,TotalCharge,GuestID,PropertyID";
+				+ "CleaningCharge,TotalCharge,GuestID,PropertyID,IsAccepted";
 		String values = "'" + start + "','" + end + "'," + nn + "," + ppn + "," + sc + ","+ cc + "," +
-				total + "," + guestID + "," + propertyID;
-		Database.insertValues("Booking", columns, values);
+				total + "," + guestID + "," + propertyID + "," + 0;
+		Database.insertValues("Bookings", columns, values);
 	}
 	
 	public static void addReview(User user, int propertyID, Review r) {
@@ -108,5 +109,31 @@ public class guestActions{
 		}
 		String [] values = {username,sh};
 		return values;
+	}
+	
+	// checks if property is available to book
+	public static boolean available(int propertyID, LocalDate start, LocalDate end) {
+		boolean isAvailable = true;
+		try {
+			ResultSet result = Database.allInfo("*", "Bookings", "PropertyID = " + String.valueOf(propertyID) + " && isAccepted = 1");
+			while(result.next()) {
+				LocalDate start1 = result.getDate("StartDate").toLocalDate();
+				LocalDate end1 = result.getDate("EndDate").toLocalDate();
+				if(ChargeBand.overlaps(start, end, start1, end1)) {
+					isAvailable = false;
+				}
+			}
+			result.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return isAvailable;
+	}
+	
+	//Generates a list of all properties with a location
+	public static ResultSet getAllProps(String location) {
+		String conditions = "GenLocation LIKE '%" + location + "%'";
+		ResultSet result = Database.allInfo("*", "Properties", conditions);
+		return result;
 	}
 }

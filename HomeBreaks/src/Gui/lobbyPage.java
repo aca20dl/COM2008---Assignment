@@ -104,6 +104,20 @@ public class lobbyPage {
 		loginButton.setBounds(47, 505, 300, 35);
 		panel_1.add(loginButton);
 		
+		JButton search = new JButton("Property Search");
+		search.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				lobbyFrame.setVisible(false);
+				Search search = new Search(null);
+				search.getFrame().setVisible(true);
+			}
+		});
+		search.setForeground(Color.WHITE);
+		search.setFont(new Font("Dialog", Font.BOLD, 25));
+		search.setBackground(Color.BLACK);
+		search.setBounds(47, 601, 300, 35);
+		panel_1.add(search);
+		
 		JLabel lblNewLabel_2 = new JLabel("New label");
 		lblNewLabel_2.setBounds(0, -12, 400, 800);
 		panel_1.add(lblNewLabel_2);

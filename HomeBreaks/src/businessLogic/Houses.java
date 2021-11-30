@@ -493,7 +493,7 @@ public class Houses{
 		 return pInfo;
 	 }
 	 
-	 //get property public info
+	 //get property private info
 	 public static String [] getAddress(int propertyID) {
 		 String [] cInfo = new String [4];
 		 int adID = Database.getID("AdID", "Properties", "PropertyID", String.valueOf(propertyID));

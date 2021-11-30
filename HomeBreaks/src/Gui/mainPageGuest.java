@@ -57,7 +57,7 @@ public class mainPageGuest {
 	}
 	
 	//shows and hides columns
-	public void showHide(TableColumn t, int min, int max, int pref) {
+	public static void showHide(TableColumn t, int min, int max, int pref) {
 		t.setMinWidth(min);
 		t.setMaxWidth(max);
 		t.setPreferredWidth(pref);
@@ -266,9 +266,7 @@ public class mainPageGuest {
 		showBooking.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				refreshBookings();
-				Database.connectDB();
 				showBookings(user,bookingsModel);
-				Database.disconnectDB();
 			}
 		});
 		showBooking.setBounds(642, 310, 206, 23);
@@ -296,8 +294,15 @@ public class mainPageGuest {
 		JMenu mnNewMenu = new JMenu("Menu");
 		menuBar.add(mnNewMenu);
 		
-		JMenuItem mntmHome = new JMenuItem("Home");
-		mnNewMenu.add(mntmHome);
+		JMenuItem search = new JMenuItem("Search");
+		search.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Search searchPage = new Search(user);
+				guestFrame.setVisible(false);
+				searchPage.getFrame().setVisible(true);
+			}
+		});
+		mnNewMenu.add(search);
 		
 		JMenuItem mntmProfile = new JMenuItem("Profile");
 		mntmProfile.addActionListener(new ActionListener() {
