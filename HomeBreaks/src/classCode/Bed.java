@@ -33,7 +33,7 @@ public class Bed {
 	}
 	
 	public static void main (String [] args) {
-		Bed bed1 = new Bed("kingsize");
+		Bed bed1 = new Bed("SINGLE");
 		System.out.println(bed1);
 	}
 	

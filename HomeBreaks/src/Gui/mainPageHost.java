@@ -18,6 +18,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 
 import businessLogic.HostActions;
+import businessLogic.guestActions;
 import classCode.*;
 import database.Database;
 
@@ -74,6 +75,8 @@ public class mainPageHost {
 	
 	public static void showBookings(User user, DefaultTableModel bookingsModel ) {
 		Database.connectDB();
+		//clean finished bookings
+		guestActions.cleanBookings();
 		try {
 			ResultSet result = HostActions.showBookings(user);
 			while(result.next()) {

@@ -25,6 +25,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
 
 public class Search {
 
@@ -193,9 +194,26 @@ public class Search {
 		showProperty.setBounds(22, 413, 165, 23);
 		frame.getContentPane().add(showProperty);
 		
+		JLabel exists = new JLabel("You have already made a booking for this property");
+		exists.setForeground(Color.GRAY);
+		exists.setFont(new Font("Arial", Font.BOLD, 15));
+		exists.setBounds(438, 55, 418, 31);
+		frame.getContentPane().add(exists);
+		exists.setVisible(false);
+		
+		JLabel unavailable = new JLabel("property Unavailable");
+		unavailable.setHorizontalAlignment(SwingConstants.CENTER);
+		unavailable.setForeground(Color.GRAY);
+		unavailable.setFont(new Font("Arial", Font.BOLD, 15));
+		unavailable.setBounds(136, 365, 251, 31);
+		frame.getContentPane().add(unavailable);
+		unavailable.setVisible(false);
+		
 		JButton bookProperty = new JButton("Book Property");
 		bookProperty.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				unavailable.setVisible(false);
+				exists.setVisible(false);
 				int rowIndex = propertiesTable.getSelectedRow();
 				if(rowIndex >= 0) {
 					int propertyID = (int) Integer.parseInt(String.valueOf(propertiesTable.getValueAt(rowIndex, 0)));
@@ -216,10 +234,20 @@ public class Search {
 						// insert the booking if property is available
 						if(available) {
 							Database.connectDB();
-							bands = Houses.getBands(propertyID);
-							Booking booking = Booking.makeBooking(LocalDate.of(2022, startm, startd), LocalDate.of(2022, endm, endd), bands);
-							guestActions.addBooking(user, propertyID, booking);
+							if(guestActions.bookingExists(user, propertyID)) {
+								bands = Houses.getBands(propertyID);
+								Booking booking = Booking.makeBooking(LocalDate.of(2022, startm, startd), LocalDate.of(2022, endm, endd), bands);
+								guestActions.addBooking(user, propertyID, booking);
+							}
+							else {
+								exists.setVisible(true);
+								unavailable.setVisible(false);
+							}
 							Database.disconnectDB();
+						}
+						else {
+							unavailable.setVisible(true);
+							exists.setVisible(false);
 						}
 					}
 					
@@ -271,6 +299,7 @@ public class Search {
 		});
 		btnGoBack.setBounds(22, 468, 165, 23);
 		frame.getContentPane().add(btnGoBack);
+		
 		if(user == null) {
 			bookProperty.setVisible(false);
 		}

@@ -102,8 +102,10 @@ public class showProp {
 	private ArrayList<ChargeBand> bands;
 	private String [] pubInfo;
 	private String [] hostInfo;
+	private ArrayList<String> reviews;
 	private JTextField username;
 	private JTextField superHost;
+	private JTable reviewCom;
 	
 	public void goToPanel(JPanel p,JLayeredPane layeredPane) {
 		layeredPane.removeAll();
@@ -159,6 +161,7 @@ public class showProp {
 		pubInfo = Houses.getProperty(propertyID);
 		bands = Houses.getBands(propertyID);
 		hostInfo = guestActions.hostPubInfo(propertyID);
+		reviews = Houses.getReviews(propertyID);
 		Database.disconnectDB();
 		
 		frame = new JFrame();
@@ -222,7 +225,7 @@ public class showProp {
 		genLoc.setBounds(10, 282, 170, 20);
 		publicInfo.add(genLoc);
 		
-		breakfast = new JTextField(pubInfo[3]);
+		breakfast = new JTextField(String.valueOf(Houses.toBool(Integer.valueOf(pubInfo[3]))));
 		breakfast.setBackground(Color.WHITE);
 		breakfast.setEditable(false);
 		breakfast.setColumns(10);
@@ -1048,7 +1051,37 @@ public class showProp {
 		btnNewButton.setFont(new Font("Arial", Font.BOLD, 11));
 		btnNewButton.setBounds(10, 532, 93, 23);
 		frame.getContentPane().add(btnNewButton);
+		
+		JScrollPane scrollPane_2 = new JScrollPane();
+		scrollPane_2.setBounds(181, 260, 170, 145);
+		frame.getContentPane().add(scrollPane_2);
+		
+		reviewCom = new JTable();
+		reviewCom.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Comments"
+			}
+		) {
+			boolean[] columnEditables = new boolean[] {
+				false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		reviewCom.getColumnModel().getColumn(0).setResizable(false);
+		scrollPane_2.setViewportView(reviewCom);
+		// set bedrooms model and fill table
+			DefaultTableModel reviewsModel = (DefaultTableModel) reviewCom.getModel();
+			Object reviewsRow [] = new Object[1];
+			for(int i = 0; i < reviews.size(); i++) {
+				reviewsRow[0] = reviews.get(i);
+				reviewsModel.addRow(reviewsRow);
+			}
 	}
+			
 	private static void addPopup(Component component, final JPopupMenu popup) {
 	}
 }

@@ -66,6 +66,8 @@ public class mainPageGuest {
 	//generates booking table 
 	public static void showBookings(User user, DefaultTableModel bookingsModel ) {
 		Database.connectDB();
+		//clean finished bookings
+		guestActions.cleanBookings();
 		try {
 			ResultSet result = guestActions.showBookings(user);
 			while(result.next()) {

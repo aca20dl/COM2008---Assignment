@@ -512,4 +512,19 @@ public class Houses{
 		}
 		 return cInfo;
 	 }
+	 
+	 public static ArrayList<String> getReviews(int propertyID) {
+		 ArrayList<String> satis = new ArrayList<>();
+		 try {
+			 ResultSet result = Database.getValue("Satisfaction", "Reviews", "PropertyID", String.valueOf(propertyID));
+			while(result.next()) {
+				 String sat = result.getString("Satisfaction");
+				 satis.add(sat);
+			 }
+			result.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		 return satis;
+	 }
 }

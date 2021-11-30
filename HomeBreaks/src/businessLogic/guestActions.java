@@ -147,6 +147,32 @@ public class guestActions{
 		return result;
 	}
 	
+	//delete bookings if date now is 5 days after their end date
+	public static void cleanBookings() {
+		LocalDate now = LocalDate.now().minusDays(5);
+		Database.removeValues("Bookings", "EndDate > '" + now + "'");
+	}
+	
+	//checks if guest has already submitted booking for a property
+	public static boolean bookingExists(User user, int propertyID) {
+		boolean exists = false;
+		// get guest ID
+		int pdID = Database.getID("PdID","Pdetails","Email",user.getEmail());
+		int guestID = Database.getID("GuestID", "Guests", "PdID", String.valueOf(pdID));
+		String conditions = "PropertyID = " + propertyID + " && GuestID = " + guestID;
+		try {
+			ResultSet result = Database.allInfo("*", "Bookings", conditions);
+			while(result.next()) {
+				exists = true;
+			}
+			result.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return exists;
+		
+	}
 
 	//hash a password
 	public static String hash(String password) {

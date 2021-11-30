@@ -134,7 +134,7 @@ public class ReviewProp {
 		JButton submit = new JButton("Submit Review");
 		submit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String satisf = satisfaction.getText().trim();
+				String satisf = User.removeSemiColon(satisfaction.getText().trim());
 				int clean = Integer.parseInt(cleanliness.getSelectedItem().toString());
 				int comm = Integer.parseInt(communication.getSelectedItem().toString());
 				int ch = Integer.parseInt(checkIn.getSelectedItem().toString());
