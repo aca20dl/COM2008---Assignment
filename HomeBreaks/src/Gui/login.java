@@ -62,17 +62,16 @@ public class login  {
 	 */
 	private void initialize() {
 		frmLoginPage = new JFrame();
-		frmLoginPage.setResizable(false);
 		frmLoginPage.setIconImage(Toolkit.getDefaultToolkit().getImage(login.class.getResource("/Images/chalet.jpg")));
 		frmLoginPage.setTitle("Login Page");
-		frmLoginPage.setBounds(100, 100, 1200, 800);
+		frmLoginPage.setBounds(100, 100, 990, 687);
 		frmLoginPage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmLoginPage.getContentPane().setLayout(null);
 		
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
-		panel.setBounds(337, 118, 532, 522);
+		panel.setBounds(270, 51, 532, 522);
 		frmLoginPage.getContentPane().add(panel);
 		panel.setLayout(null);
 		
@@ -112,10 +111,10 @@ public class login  {
 		lblLogIn.setBounds(169, 12, 189, 81);
 		panel.add(lblLogIn);
 		
-		JButton signUpButton = new JButton("SIgn Up");
-		signUpButton.setBackground(Color.WHITE);
-		signUpButton.setBounds(310, 352, 117, 25);
-		panel.add(signUpButton);
+		JButton homeButton = new JButton("Home");
+		homeButton.setBackground(Color.WHITE);
+		homeButton.setBounds(310, 451, 117, 25);
+		panel.add(homeButton);
 		
 		JLabel notMatch = new JLabel("Username and Password don't match");
 		notMatch.setHorizontalAlignment(SwingConstants.CENTER);
@@ -195,7 +194,7 @@ public class login  {
 		
 		JLabel label = new JLabel("");
 		label.setBackground(new Color(0, 0, 0));
-		label.setBounds(0, -15, 1200, 800);
+		label.setBounds(0, 0, 984, 659);
 		frmLoginPage.getContentPane().add(label);
 		label.setIcon(new ImageIcon(login.class.getResource("/Images/costa.jpg")));
 		
@@ -244,15 +243,11 @@ public class login  {
 				}
 			}
 		});
-		signUpButton.addActionListener(new ActionListener() {
+		homeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				registration regi = new registration();
-				JFrame register = regi.getFrame();
-				register.setVisible(true);
-				frmLoginPage.setVisible(false);
-				
-				
-				
+				lobbyPage lobby = new lobbyPage();
+				lobby.getFrame().setVisible(true);
+				frmLoginPage.setVisible(false);	
 			}
 		});
 		

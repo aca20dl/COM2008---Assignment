@@ -37,7 +37,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Label;
+
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.JList;
 
 public class showProp {
 
@@ -105,7 +109,7 @@ public class showProp {
 	private ArrayList<String> reviews;
 	private JTextField username;
 	private JTextField superHost;
-	private JTable reviewCom;
+	DefaultListModel reviewsModel;
 	
 	public void goToPanel(JPanel p,JLayeredPane layeredPane) {
 		layeredPane.removeAll();
@@ -1056,30 +1060,26 @@ public class showProp {
 		scrollPane_2.setBounds(181, 260, 170, 145);
 		frame.getContentPane().add(scrollPane_2);
 		
-		reviewCom = new JTable();
-		reviewCom.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"Comments"
+		JList reviewList = new JList();
+		scrollPane_2.setViewportView(reviewList);
+		
+		reviewsModel = new DefaultListModel();
+		if(!reviews.isEmpty()) {
+			for(String review: reviews) {
+				reviewsModel.addElement(review);
 			}
-		) {
-			boolean[] columnEditables = new boolean[] {
-				false
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
-			}
-		});
-		reviewCom.getColumnModel().getColumn(0).setResizable(false);
-		scrollPane_2.setViewportView(reviewCom);
-		// set bedrooms model and fill table
-			DefaultTableModel reviewsModel = (DefaultTableModel) reviewCom.getModel();
-			Object reviewsRow [] = new Object[1];
-			for(int i = 0; i < reviews.size(); i++) {
-				reviewsRow[0] = reviews.get(i);
-				reviewsModel.addRow(reviewsRow);
-			}
+		}
+		else {
+			reviewsModel.addElement("No Reviews yet");
+		}
+		
+		reviewList.setModel(reviewsModel);
+		
+		JLabel lblNewLabel_3 = new JLabel("Reviews:");
+		lblNewLabel_3.setFont(new Font("Arial", Font.BOLD, 15));
+		lblNewLabel_3.setForeground(new Color(0, 0, 0));
+		lblNewLabel_3.setBounds(181, 229, 73, 20);
+		frame.getContentPane().add(lblNewLabel_3);
 	}
 			
 	private static void addPopup(Component component, final JPopupMenu popup) {

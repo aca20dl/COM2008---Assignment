@@ -103,6 +103,8 @@ public class guestActions{
 		
 	}
 	
+	
+	
 	public static String [] hostPubInfo(int propertyID) {
 		int hostID = Database.getID("HostID", "Properties", "PropertyID",String.valueOf(propertyID));
 		String username = "";
@@ -150,7 +152,7 @@ public class guestActions{
 	//delete bookings if date now is 5 days after their end date
 	public static void cleanBookings() {
 		LocalDate now = LocalDate.now().minusDays(5);
-		Database.removeValues("Bookings", "EndDate > '" + now + "'");
+		Database.removeValues("Bookings", "EndDate < '" + now + "'");
 	}
 	
 	//checks if guest has already submitted booking for a property

@@ -67,8 +67,8 @@ public class ListProp {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					//ListProp window = new ListProp();
-					//window.listPropFrm.setVisible(true);
+					ListProp window = new ListProp(null);
+					window.listPropFrm.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -289,9 +289,12 @@ public class ListProp {
 		lblNewLabel_4_2.setBounds(10, 234, 122, 24);
 		publicInfoP.add(lblNewLabel_4_2);
 		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(142, 238, 171, 98);
+		publicInfoP.add(scrollPane);
+		
 		JTextArea description = new JTextArea();
-		description.setBounds(142, 238, 171, 98);
-		publicInfoP.add(description);
+		scrollPane.setViewportView(description);
 		
 		JLabel lblNewLabel_4_1_1 = new JLabel("Offers Breakfast ");
 		lblNewLabel_4_1_1.setFont(new Font("Arial", Font.BOLD, 20));

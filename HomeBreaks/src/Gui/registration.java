@@ -108,17 +108,16 @@ public class registration {
 	private void initialize() {
 		frmRegistration = new JFrame();
 		frmRegistration.getContentPane().setEnabled(false);
-		frmRegistration.setResizable(false);
 		frmRegistration.setTitle("Registration");
-		frmRegistration.setBounds(100, 100, 1171, 793);
+		frmRegistration.setBounds(100, 100, 1165, 659);
 		frmRegistration.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmRegistration.getContentPane().setLayout(null);
-		layeredPane.setBounds(510, 2, 869, 765);
+		layeredPane.setBounds(510, 2, 649, 600);
 		frmRegistration.getContentPane().add(layeredPane);
 		
 		JPanel panel_1 = new JPanel();
 		layeredPane.setLayer(panel_1, 2);
-		panel_1.setBounds(0, 0, 865, 765);
+		panel_1.setBounds(0, 0, 639, 600);
 		layeredPane.add(panel_1);
 		panel_1.setLayout(null);
 		
@@ -156,7 +155,7 @@ public class registration {
 		panel_1.add(tPassword);
 		
 		JLabel errorMsg = new JLabel("Fill out all fields to register");
-		errorMsg.setBounds(17, 83, 331, 47);
+		errorMsg.setBounds(150, 182, 331, 47);
 		panel_1.add(errorMsg);
 		errorMsg.setEnabled(false);
 		errorMsg.setForeground(Color.RED);
@@ -182,7 +181,7 @@ public class registration {
 		errorMsgPass1.setEnabled(false);
 		errorMsgPass1.setVisible(false);
 		errorMsgPass1.setFont(new Font("Tahoma", Font.PLAIN, 17));
-		errorMsgPass1.setBounds(10, 567, 634, 59);
+		errorMsgPass1.setBounds(10, 38, 634, 59);
 		panel_1.add(errorMsgPass1);
 		
 		JLabel errorMsgPass2 = new JLabel("character, a number [0-9] and a special character [@#$%^&-+=()]");
@@ -190,7 +189,7 @@ public class registration {
 		errorMsgPass2.setVisible(false);
 		errorMsgPass2.setHorizontalAlignment(SwingConstants.CENTER);
 		errorMsgPass2.setFont(new Font("Tahoma", Font.PLAIN, 17));
-		errorMsgPass2.setBounds(0, 601, 644, 59);
+		errorMsgPass2.setBounds(0, 63, 644, 59);
 		panel_1.add(errorMsgPass2);
 		
 		JLabel errorMsgEmail = new JLabel("Please enter a valid email");
@@ -201,10 +200,22 @@ public class registration {
 		errorMsgEmail.setBounds(47, 538, 484, 37);
 		panel_1.add(errorMsgEmail);
 		
+		JButton btnNewButton = new JButton("Home");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				lobbyPage lobby = new lobbyPage();
+				lobby.getFrame().setVisible(true);
+				frmRegistration.setVisible(false);
+			}
+		});
+		btnNewButton.setBounds(536, 566, 93, 23);
+		panel_1.add(btnNewButton);
+		btnNewButton.setFont(new Font("Arial", Font.BOLD, 15));
+		
 		JPanel panel2 = new JPanel();
-		panel2.setBackground(Color.WHITE);
+		panel2.setBackground(UIManager.getColor("Button.background"));
 		layeredPane.setLayer(panel2, 1);
-		panel2.setBounds(0, 0, 865, 765);
+		panel2.setBounds(0, 0, 865, 600);
 		layeredPane.add(panel2);
 		panel2.setLayout(null);
 		
@@ -334,7 +345,7 @@ public class registration {
 		errorMsgPhone.setEnabled(false);
 		errorMsgPhone.setVisible(false);
 		errorMsgPhone.setFont(new Font("Tahoma", Font.PLAIN, 17));
-		errorMsgPhone.setBounds(43, 568, 598, 55);
+		errorMsgPhone.setBounds(20, 506, 598, 55);
 		panel2.add(errorMsgPhone);
 		emptyFields1.setVisible(false);
 		
@@ -345,7 +356,7 @@ public class registration {
 		
 		JPanel panel3 = new JPanel();
 		layeredPane.setLayer(panel3, 0);
-		panel3.setBounds(0, 0, 855, 765);
+		panel3.setBounds(0, 0, 855, 600);
 		layeredPane.add(panel3);
 		panel3.setLayout(null);
 		
@@ -669,7 +680,7 @@ public class registration {
 		tCity.setColumns(10);
 		
 		JButton back = new JButton("Go back");
-		back.setBounds(500, 683, 135, 25);
+		back.setBounds(506, 549, 135, 25);
 		panel3.add(back);
 		back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -694,13 +705,13 @@ public class registration {
 		panel3.add(lblRegisterAs);
 		
 		panel.setBackground(UIManager.getColor("OptionPane.questionDialog.border.background"));
-		panel.setBounds(0, -15, 509, 911);
+		panel.setBounds(0, 2, 509, 600);
 		frmRegistration.getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setIcon(new ImageIcon(registration.class.getResource("/Images/chalet.jpg")));
-		lblNewLabel.setBounds(-242, -11, 751, 858);
+		lblNewLabel.setBounds(0, 0, 509, 624);
 		panel.add(lblNewLabel);
 	}
 }

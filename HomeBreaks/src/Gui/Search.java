@@ -234,7 +234,7 @@ public class Search {
 						// insert the booking if property is available
 						if(available) {
 							Database.connectDB();
-							if(guestActions.bookingExists(user, propertyID)) {
+							if(!guestActions.bookingExists(user, propertyID)) {
 								bands = Houses.getBands(propertyID);
 								Booking booking = Booking.makeBooking(LocalDate.of(2022, startm, startd), LocalDate.of(2022, endm, endd), bands);
 								guestActions.addBooking(user, propertyID, booking);

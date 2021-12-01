@@ -26,7 +26,10 @@ public class mainPageGuest {
 	private JTable hostTable;
 	private DefaultTableModel hostsModel;
 	private DefaultTableModel bookingsModel;
+	private DefaultTableModel addressModel;
 	private int propertyID;
+	private JTable addressTable;
+	private String [] address;
 
 	/**
 	 * Launch the application.
@@ -38,6 +41,10 @@ public class mainPageGuest {
 	
 	public void refreshBookings() {
 		bookingsModel.setRowCount(0);
+	}
+	
+	public void refreshAddress() {
+		addressModel.setRowCount(0);
 	}
 	
 	public static void main(String[] args) {
@@ -149,7 +156,7 @@ public class mainPageGuest {
 		showHide(bookingsTable.getColumn("PropertyID"),0,0,0);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(46, 412, 642, 198);
+		scrollPane_1.setBounds(46, 412, 481, 198);
 		guestFrame.getContentPane().add(scrollPane_1);
 		
 		hostTable = new JTable();
@@ -177,14 +184,14 @@ public class mainPageGuest {
 		JLabel notAccepted = new JLabel("Booking not yet Accepted");
 		notAccepted.setForeground(Color.RED);
 		notAccepted.setFont(new Font("Arial", Font.BOLD, 15));
-		notAccepted.setBounds(698, 442, 189, 23);
+		notAccepted.setBounds(338, 378, 189, 23);
 		guestFrame.getContentPane().add(notAccepted);
 		notAccepted.setVisible(false);
 		
 		JLabel acceptedBooking = new JLabel("Booking is accepted");
 		acceptedBooking.setForeground(Color.GREEN);
 		acceptedBooking.setFont(new Font("Arial", Font.BOLD, 15));
-		acceptedBooking.setBounds(695, 413, 163, 18);
+		acceptedBooking.setBounds(335, 349, 163, 18);
 		guestFrame.getContentPane().add(acceptedBooking);
 		acceptedBooking.setVisible(false);
 		
@@ -197,11 +204,34 @@ public class mainPageGuest {
 				guestFrame.setVisible(false);
 			}
 		});
-		subReview.setBounds(698, 587, 123, 23);
+		subReview.setBounds(404, 624, 123, 23);
 		guestFrame.getContentPane().add(subReview);
 		subReview.setVisible(false);
 		
-		JButton showHost = new JButton("show Host for selected booking");
+		JScrollPane scrollPane_2 = new JScrollPane();
+		scrollPane_2.setBounds(548, 412, 300, 198);
+		guestFrame.getContentPane().add(scrollPane_2);
+		scrollPane_2.setVisible(false);
+		
+		addressTable = new JTable();
+		addressTable.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"House No.", "Steet", "City", "Post Code"
+			}
+		) {
+			boolean[] columnEditables = new boolean[] {
+				false, false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		scrollPane_2.setViewportView(addressTable);
+		addressTable.setVisible(false);
+		
+		JButton showHost = new JButton("Show Details");
 		showHost.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int rowIndex = bookingsTable.getSelectedRow();
@@ -221,6 +251,15 @@ public class mainPageGuest {
 						showHide(hostTable.getColumn("Mobile"),0,700,90);
 						acceptedBooking.setVisible(true);
 						notAccepted.setVisible(false);
+						
+						//if accepted show property address
+						// fill address table
+						addressModel = (DefaultTableModel) addressTable.getModel();
+						address = Houses.getAddress(propertyID);
+						addressModel.addRow(address);
+						addressTable.setVisible(true);
+						scrollPane_2.setVisible(true);
+						
 						
 						// if accepted and current date is after end date, user can submit review
 						if(LocalDate.now().isAfter(end)) {
@@ -264,7 +303,7 @@ public class mainPageGuest {
 		showHost.setBounds(44, 379, 197, 23);
 		guestFrame.getContentPane().add(showHost);
 		
-		JButton showBooking = new JButton("Show all bookings");
+		JButton showBooking = new JButton("Show Bookings");
 		showBooking.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				refreshBookings();
@@ -288,6 +327,7 @@ public class mainPageGuest {
 		});
 		showProp.setBounds(46, 328, 114, 23);
 		guestFrame.getContentPane().add(showProp);
+		
 		
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBackground(Color.GRAY);

@@ -3,6 +3,7 @@ package businessLogic;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.*;
+import java.util.ArrayList;
 import java.util.Date;
 
 import classCode.*;
@@ -14,9 +15,32 @@ public class HostActions{
 		user = (Host) user;
 		int pdID = Database.getID("PdID","Pdetails","Email",user.getEmail());
 		int hostID = Database.getID("HostID","Hosts","PdID",String.valueOf(pdID));
-		String conditions = "Hosts.HostID = " + hostID + " && Properties.HostID = " + hostID;
-		ResultSet result = Database.allInfo("Bookings.*", "Bookings,Hosts,Properties",conditions);
-		return result;
+		//get all the property IDs of a host
+		ArrayList<Integer> propertyIDs = new ArrayList<>();
+		try {
+			ResultSet  result = Database.getValue("PropertyID", "Properties", "HostID", String.valueOf(hostID));
+			while(result.next()) {
+				int id = result.getInt("PropertyID");
+				propertyIDs.add(id);
+			}
+			result.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		// create query
+		String ids = "";
+		for(int i = 0; i < propertyIDs.size(); i++) {
+			if(i == propertyIDs.size() -1) {
+				ids = ids + propertyIDs.get(i);
+			}
+			else
+				ids = ids + propertyIDs.get(i) + ",";
+		}
+		
+		String conditions = "PropertyID in (" + ids + ")";
+		ResultSet result2 = Database.allInfo("*", "Bookings",conditions);
+		return result2;
 	}
 	
 	public static ResultSet showGuestDetails(int guestID) {
