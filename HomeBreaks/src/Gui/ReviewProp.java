@@ -17,6 +17,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
 
 public class ReviewProp {
 
@@ -32,8 +33,8 @@ public class ReviewProp {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-				//	ReviewProp window = new ReviewProp();
-					//window.reviewPropFrame.setVisible(true);
+					ReviewProp window = new ReviewProp(null,7);
+					window.reviewPropFrame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -67,9 +68,12 @@ public class ReviewProp {
 		lblCommentYourStaisfaction.setBounds(227, 58, 255, 43);
 		reviewPropFrame.getContentPane().add(lblCommentYourStaisfaction);
 		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(227, 112, 255, 57);
+		reviewPropFrame.getContentPane().add(scrollPane);
+		
 		JTextArea satisfaction = new JTextArea();
-		satisfaction.setBounds(227, 112, 255, 57);
-		reviewPropFrame.getContentPane().add(satisfaction);
+		scrollPane.setViewportView(satisfaction);
 		
 		JLabel lblRateClean = new JLabel("Cleanliness:");
 		lblRateClean.setFont(new Font("Arial", Font.BOLD, 20));

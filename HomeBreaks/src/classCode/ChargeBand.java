@@ -9,9 +9,9 @@ import java.util.Collections;
 public class ChargeBand{
 	LocalDate start; // (yyyy-mm-dd) format
 	LocalDate end;
-	int pricePerNight;
-	int serviceCharge;
-	int cleaningCharge;
+	double pricePerNight;
+	double serviceCharge;
+	double cleaningCharge;
 	
 	public LocalDate getStart() {
 		return start;
@@ -21,15 +21,15 @@ public class ChargeBand{
 		return end;
 	}
 	
-	public int getPricePerNight() {
+	public double getPricePerNight() {
 		return pricePerNight;
 	}
 	
-	public int getServiceCharge() {
+	public double getServiceCharge() {
 		return serviceCharge;
 	}
 	
-	public int getCleaningCharge() {
+	public double getCleaningCharge() {
 		return cleaningCharge;
 	}
 	
@@ -84,7 +84,7 @@ public class ChargeBand{
 	}
 	
 	//constructor
-	public ChargeBand(LocalDate s, LocalDate e, int ppn, int sc, int cc) {
+	public ChargeBand(LocalDate s, LocalDate e, double ppn, double sc, double cc) {
 		start = s;
 		end = e;
 		pricePerNight = ppn;
@@ -97,27 +97,4 @@ public class ChargeBand{
 	            "\nPrice per night: " + pricePerNight + "\nService Charge: " +
 				serviceCharge + "\nCleaningCharge" + cleaningCharge;
 	}
-	
-	public static void main (String [] args ) {
-		LocalDate start = LocalDate.of(2021, 9, 01);
-		LocalDate end = LocalDate.of(2021, 10, 01);
-		ChargeBand band = new ChargeBand(start,end,10,10,10);
-		
-		LocalDate start1 = LocalDate.of(2021, 03, 01);
-		LocalDate end1 = LocalDate.of(2021, 03, 01);
-		ChargeBand band1 = new ChargeBand(start1,end1,20,20,20);
-		
-		ArrayList<ChargeBand> bands = new ArrayList<>();
-		bands.add(band);
-		bands.add(band1);
-		
-		LocalDate sDate = LocalDate.of(2021, 03, 05 );
-		LocalDate eDate = LocalDate.of(2021, 04, 02);
-		
-		//System.out.println(getDatesBetween(sDate,eDate));
-		System.out.println(Booking.makeBooking(sDate, eDate, bands));
-		LocalDate test = LocalDate.parse("2002-04-01");
-		System.out.println(test);
-		System.out.println(overlaps(start1,end1,sDate,eDate));
-		}
 }

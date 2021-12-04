@@ -1079,9 +1079,9 @@ public class ListProp {
 				
 				ChargeBand chargeb = null;
 				if(!ppnS.isBlank() && !scS.isBlank() && !ccS.isBlank()) {
-					int ppn = Integer.parseInt(pricePerNight.getText().replace("£", ""));
-					int sc = Integer.parseInt(serviceCharge.getText().replace("£", ""));
-					int cc = Integer.parseInt(cleaningCharge.getText().replace("£", ""));
+					double ppn = Double.parseDouble(pricePerNight.getText().replace("£", ""));
+					double sc = Double.parseDouble(serviceCharge.getText().replace("£", ""));
+					double cc = Double.parseDouble(cleaningCharge.getText().replace("£", ""));
 					
 					if(validDate(2022,sMonth,startDate) && validDate(2022,eMonth,endDate)) {
 						LocalDate start = LocalDate.of(2022, sMonth, startDate);

@@ -27,11 +27,11 @@ public class guestActions{
 		
 		String start = b.getStart().toString();
 		String end = b.getEnd().toString();
-		int nn = b.getNumNights();
-		int ppn = b.getPricePerNight();
-		int sc = b.getServiceCharge();
-		int cc = b.getCleaningCharge();
-		int total = b.getTotalCharge();
+		double nn = b.getNumNights();
+		double ppn = b.getPricePerNight();
+		double sc = b.getServiceCharge();
+		double cc = b.getCleaningCharge();
+		double total = b.getTotalCharge();
 		
 		//insert into bookings table
 		String columns = "StartDate,EndDate,NumNights,PricePerNight,ServiceCharge,"

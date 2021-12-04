@@ -210,9 +210,9 @@ public class Houses{
 	 public static void addChargeBand(ChargeBand c, int propertyID) {
 		 String start = c.getStart().toString();
 		 String end = c.getEnd().toString();
-		 int ppn = c.getPricePerNight();
-		 int sc = c.getServiceCharge();
-		 int cc = c.getCleaningCharge();
+		 double ppn = c.getPricePerNight();
+		 double sc = c.getServiceCharge();
+		 double cc = c.getCleaningCharge();
 		 String columns = "StartDate,EndDate,PricePerNight,ServiceCharge,"
 		 		+ "CleaningCharge,PropertyID";
 		 String values = "'" + start + "','" + end + "'," + ppn +
