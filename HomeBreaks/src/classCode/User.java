@@ -6,6 +6,7 @@ public class User{
 	private String surname;
 	private String email;
 	private String mobile;
+	private String password;
 	private Address address;
 	
 	// get methods 
@@ -28,6 +29,10 @@ public class User{
 	
 	public String getMobile() {
 		return mobile;
+	}
+	
+	public String getPassword() {
+		return password;
 	}
 	
 	public Address getAddress() {
@@ -57,12 +62,13 @@ public class User{
 	}
 	
 	// constructor for person
-	public User(String t, String f, String s, String e, String m, Address a) {
+	public User(String t, String f, String s, String e, String m, String p, Address a) {
 		title = t;
 		forename = f;
 		surname = s;
 		email = e;
 		mobile = m;
+		password = p;
 		address = a;
 	}
 	
@@ -84,21 +90,15 @@ public class User{
 		forename = removeSemiColon(forename.strip());
 		surname = removeSemiColon(surname.strip());
 		email = removeSemiColon(email);
-		mobile = removeSemiColon(mobile.strip());		
+		mobile = removeSemiColon(mobile.strip());	
+		password = removeSemiColon(password.strip());	
 	}
 	
 	
 	public String toString() {
 		return "Title: " + title + "\nForename: " + forename + 
 				"\nSurname: " + surname + "\nEmail: " + email
-				+ "\nMobile Number: " + mobile + "\n" + address;
-	}
-	public static void main (String [] args) {
-		Address ad = new Address("25","Green ln;Drop table Guests", "Sheffield", "s109ju");
-		User salma = new User("Miss","Salma;Drop table Hosts;","Hassan","s.h@email.com",
-				"07946658987",ad);
-		System.out.println(salma);
-		salma.cleanInputs();
-		System.out.println(salma);
+				+ "\nMobile Number: " + mobile + "\nPassword: " + password
+				+ "\n" + address;
 	}
 }

@@ -51,10 +51,7 @@ public class mainPageGuest {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Address ad = new Address("25","Green ln", "Sheffield", "s109ju");
-					Guest salma = new Guest ("Miss","Salma","Hassan","s.h@email.com",
-							"0114",ad,"Sal","password");
-					mainPageGuest window = new mainPageGuest(salma);
+					mainPageGuest window = new mainPageGuest(null);
 					window.guestFrame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

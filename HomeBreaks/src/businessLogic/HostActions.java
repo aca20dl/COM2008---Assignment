@@ -37,9 +37,11 @@ public class HostActions{
 			else
 				ids = ids + propertyIDs.get(i) + ",";
 		}
-		
-		String conditions = "PropertyID in (" + ids + ")";
-		ResultSet result2 = Database.allInfo("*", "Bookings",conditions);
+		ResultSet result2 = null;
+		if(!ids.isBlank()) {
+			String conditions = "PropertyID in (" + ids + ")";
+			result2 = Database.allInfo("*", "Bookings",conditions);
+		}
 		return result2;
 	}
 	

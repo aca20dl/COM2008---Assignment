@@ -27,10 +27,7 @@ public class Profile {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Address ad = new Address("25","Green ln", "Sheffield", "s109ju");
-					Guest salma = new Guest ("Miss","Salma","Hassan","s.h@email.com",
-							"0114",ad,"Sal","password");
-					Profile window = new Profile(salma);
+					Profile window = new Profile(null);
 					window.profileFrame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

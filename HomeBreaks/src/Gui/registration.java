@@ -41,7 +41,7 @@ public class registration {
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private String title;
 	private JTextField tHouse;
-	private JTextField tStreet;
+	private JTextField tStreet; 
 	private JTextField tCity;
 	private JTextField tPostCode;
 	private final JPanel panel = new JPanel();
@@ -385,7 +385,7 @@ public class registration {
 		JButton hostReg = new JButton("HOST");
 		hostReg.setForeground(Color.WHITE);
 		hostReg.setBackground(Color.BLACK);
-		hostReg.setBounds(180, 545, 130, 25);
+		hostReg.setBounds(120, 544, 130, 25);
 		panel3.add(hostReg);
 		hostReg.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -422,7 +422,7 @@ public class registration {
 					// creates the Address and Host objects if all fields not empty
 					Address ad = new Address(house,street,city,postCode); 
 					//initially average rating for host is 0
-					User host = new Host(title,name,surname,email,mobile,ad,username,pass,0);
+					User host = new Host(title,name,surname,email,mobile,pass,ad,username,0);
 					//removes any possible SQL injection
 					host.cleanInputs();
 					
@@ -506,7 +506,7 @@ public class registration {
 		JButton guestReg = new JButton("GUEST");
 		guestReg.setBackground(Color.BLACK);
 		guestReg.setForeground(Color.WHITE);
-		guestReg.setBounds(330, 545, 130, 25);
+		guestReg.setBounds(270, 544, 130, 25);
 		panel3.add(guestReg);
 		guestReg.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -543,7 +543,7 @@ public class registration {
 					// creates the Address and Host objects if all fields not empty
 					Address ad = new Address(house,street,city,postCode);
 					//initially guest has zero bookings
-					User guest = new Guest(title,name,surname,email,mobile,ad,username,pass);
+					User guest = new Guest(title,name,surname,email,mobile,pass,ad,username);
 					
 					//removes any possible SQL injection
 					guest.cleanInputs();
@@ -680,7 +680,7 @@ public class registration {
 		tCity.setColumns(10);
 		
 		JButton back = new JButton("Go back");
-		back.setBounds(506, 549, 135, 25);
+		back.setBounds(503, 575, 135, 25);
 		panel3.add(back);
 		back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -703,6 +703,78 @@ public class registration {
 		lblRegisterAs.setFont(new Font("Dialog", Font.BOLD, 25));
 		lblRegisterAs.setBounds(232, 500, 204, 33);
 		panel3.add(lblRegisterAs);
+		
+		JButton both = new JButton("BOTH");
+		both.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//collects address info
+				String house = tHouse.getText().toLowerCase();
+				String street = tStreet.getText().toLowerCase();
+				String city = tCity.getText().toLowerCase();
+				String postCode = tPostCode.getText().toLowerCase();
+				//collects user info
+				String name = tFirstname.getText().toLowerCase();
+				String surname = tSurname.getText().toLowerCase();
+				String email = tEmail.getText().toLowerCase();
+				char [] password = tPassword.getPassword();
+				String username = tUsername.getText().toLowerCase();
+				String pass = "";
+				for(int i = 0; i < password.length; i++) {
+					pass = pass + password[i];
+				}
+				String mobile = tMobile.getText().toLowerCase();
+				
+				//checks if any section is empty
+				if(house.isBlank() || street.isBlank() || city.isBlank() || postCode.isBlank() || title == null)  {
+					emptyFields2.setVisible(true);
+					usedEmail.setVisible(false);
+					notMatch.setVisible(false);
+				}
+				else {
+					emptyFields2.setVisible(false);
+					usedEmail.setVisible(false);
+					notMatch.setVisible(false);
+					//hash the password
+					pass = guestActions.hash(pass);
+					
+					// creates the Address and Host objects if all fields not empty
+					Address ad = new Address(house,street,city,postCode);
+					//initially guest has zero bookings
+					User guest = new Guest(title,name,surname,email,mobile,pass,ad,username);
+					//initially average rating for host is 0
+					User host = new Host(title,name,surname,email,mobile,pass,ad,username,0);
+					
+					//removes any possible SQL injection
+					guest.cleanInputs();
+					host.cleanInputs();
+					
+					//if user doesn't exist, add them to all the tables
+					Database.connectDB();
+					 if(!Accounts.exists(guest.getEmail())) {
+						 //add to both guest and host table
+						 Accounts.addUser(guest);
+						 Accounts.addUserType(guest);
+						 Accounts.addUserType(host);
+						 Accounts.setUserType(host);
+						 
+						//take user to login page
+						 login log = new login();
+						 JFrame login = log.getFrame();
+						 login.setVisible(true);
+						 frmRegistration.setVisible(false);
+					 }
+					 else {
+						 usedEmail.setVisible(true);
+					 }
+					 Database.disconnectDB();
+				}
+			}
+		});
+		both.setForeground(Color.WHITE);
+		both.setFont(new Font("Dialog", Font.BOLD, 20));
+		both.setBackground(Color.BLACK);
+		both.setBounds(418, 544, 130, 25);
+		panel3.add(both);
 		
 		panel.setBackground(UIManager.getColor("OptionPane.questionDialog.border.background"));
 		panel.setBounds(0, 2, 509, 600);

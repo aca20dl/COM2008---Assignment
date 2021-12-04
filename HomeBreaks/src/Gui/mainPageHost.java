@@ -51,9 +51,7 @@ public class mainPageHost {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Address ad1 = new Address("salma","salma","salma","salma");
-					User salma =new Host("Miss","salma","salma","salma","salma",ad1,"salma","salma",0);
-					mainPageHost window = new mainPageHost(salma);
+					mainPageHost window = new mainPageHost(null);
 					window.hostFrame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -79,24 +77,26 @@ public class mainPageHost {
 		guestActions.cleanBookings();
 		try {
 			ResultSet result = HostActions.showBookings(user);
-			while(result.next()) {
-			String id = String.valueOf(result.getInt("BookingID"));
-			String sDate = result.getDate("StartDate").toString();
-			String eDate = result.getDate("EndDate").toString();
-			String numNights =String.valueOf(result.getInt("NumNights"));
-			String ppn = String.valueOf(result.getInt("PricePerNight"));
-			String sc =String.valueOf(result.getInt("ServiceCharge"));
-			String cc = String.valueOf(result.getInt("CleaningCharge"));
-			String tc = String.valueOf(result.getInt("TotalCharge"));
-			String guestID = String.valueOf(result.getInt("GuestID"));
-			String propertyID = String.valueOf(result.getInt("PropertyID"));
-			
-			String booking [] = {id,sDate,eDate,numNights,ppn,sc,cc,tc,guestID,propertyID};
-			
-			bookingsModel.addRow(booking);
-			
+			if(result != null) {
+				while(result.next()) {
+					String id = String.valueOf(result.getInt("BookingID"));
+					String sDate = result.getDate("StartDate").toString();
+					String eDate = result.getDate("EndDate").toString();
+					String numNights =String.valueOf(result.getInt("NumNights"));
+					String ppn = String.valueOf(result.getInt("PricePerNight"));
+					String sc =String.valueOf(result.getInt("ServiceCharge"));
+					String cc = String.valueOf(result.getInt("CleaningCharge"));
+					String tc = String.valueOf(result.getInt("TotalCharge"));
+					String guestID = String.valueOf(result.getInt("GuestID"));
+					String propertyID = String.valueOf(result.getInt("PropertyID"));
+					
+					String booking [] = {id,sDate,eDate,numNights,ppn,sc,cc,tc,guestID,propertyID};
+					
+					bookingsModel.addRow(booking);
+					
+					}
+				result.close();
 			}
-			result.close();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}

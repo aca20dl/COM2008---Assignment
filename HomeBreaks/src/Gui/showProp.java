@@ -128,10 +128,8 @@ public class showProp {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				Address ad = new Address("guest","guest","guest","guest");
-				User user = new Guest("Miss","guest","guest","guest","guest",ad,"guest","guest");
 				try {
-					showProp window = new showProp(user,4);
+					showProp window = new showProp(null,4);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

@@ -23,6 +23,7 @@ public class Accounts{
 		String surname = user.getSurname();
 		String email = user.getEmail();
 		String mobile = user.getMobile();
+		String password = user.getPassword();
 		//getting address details
 		Address ad = user.getAddress();
 		
@@ -39,9 +40,9 @@ public class Accounts{
 				adID = result.getInt(1);
 			result.close();
 			
-			Database.insertValues("Pdetails","Title,Firstname,Surname,Email,Mobile,IsHost,IsGuest,AdID",
+			Database.insertValues("Pdetails","Title,Firstname,Surname,Email,Mobile,Password,IsHost,IsGuest,AdID",
 					"'" + title + "','" + name + "','" + surname + "','" + email + "','" + mobile +
-					"'," + isHost + "," + isGuest + "," + adID);
+					"','" + password + "'," + isHost + "," + isGuest + "," + adID);
 
 			
 		}catch (SQLException exx) {
@@ -53,7 +54,6 @@ public class Accounts{
 	//adds the user to either the Guest/host table
 		public static void addUserType(User user) {
 			String username = "";
-			String password = "";
 			String table = "";
 			String email = user.getEmail();
 			double averageRating = 0;
@@ -61,14 +61,12 @@ public class Accounts{
 			
 			if(user.getClass().getName().equals("classCode.Host")) {
 				username = ((Host) user).getHostName();
-				password = ((Host) user).getPassword();
 				averageRating = ((Host) user).getAvrgRating();
 				isSuperHost =Houses.toInt(((Host)user).getIsSuperHost());
 				table = "Hosts";
 			}
 			else {
 				username = ((Guest) user).getGuestName();
-				password = ((Guest) user).getPassword();
 				table = "Guests";
 			}
 			
@@ -79,12 +77,12 @@ public class Accounts{
 					pdID = result.getInt(1);
 				}
 				result.close();
-				String columnValues = "'" + username + "','" + password + "','" + pdID + "'";
-				String columns = "Username,Password,PdID";
+				String columnValues = "'" + username + "','"  + pdID + "'";
+				String columns = "Username,PdID";
 				// if host add change query to match host table
 				if(user.getClass().getName().equals("classCode.Host")) {
-					columnValues = "'" + username + "','" + password + "','" + averageRating + "','" +isSuperHost + "','" + pdID + "'";
-					columns = "Username,Password,AverageRating,IsSuperHost,PdID";
+					columnValues = "'" + username + "','" + averageRating + "','" +isSuperHost + "','" + pdID + "'";
+					columns = "Username,AverageRating,IsSuperHost,PdID";
 				}
 				Database.insertValues(table,columns,columnValues);
 				
@@ -135,6 +133,7 @@ public class Accounts{
 			String street = "";
 			String city = "";
 			String postCode = "";
+			String password = "";
 			boolean matches = false;
 			
 			// get personal info from database
@@ -146,6 +145,7 @@ public class Accounts{
 					surname = result.getString("Surname");
 					email = result.getString("Email");
 					mobile = result.getString("Mobile");
+					password = result.getString("Password");
 				}
 				result = Database.getValue("*","Addresses", "PostCode",user.getAddress().getPostCode());
 				while(result.next()) {
@@ -161,7 +161,8 @@ public class Accounts{
 			Address ad = new Address(home,street,city,postCode);
 			if(title.equals(user.getTitle()) && firstname.equals(user.getForename()) 
 					&& surname.equals(user.getSurname()) && email.equals(user.getEmail())
-					&& mobile.equals(user.getMobile()) && ad.equals(user.getAddress()))
+					&& mobile.equals(user.getMobile()) && password.equals(user.getPassword()) 
+					&& ad.equals(user.getAddress()))
 				matches = true;
 			return matches;
 		}
@@ -170,7 +171,7 @@ public class Accounts{
 		public static boolean loginUser(String email, String password, String table) {
 			String actualPass = "";
 			try {
-				String conditions = "Pdetails.Email = '" + email + "' && " + table + ".Password = '" + password + "'";
+				String conditions = "Pdetails.Email = '" + email + "' && Pdetails.Password = '" + password + "'";
 				ResultSet result = Database.allInfo("*",table + ",Pdetails",conditions);
 				while(result.next()) {
 					actualPass = result.getString("Password");
@@ -182,7 +183,7 @@ public class Accounts{
 			return actualPass.equals(password);
 		}
 		
-		//genereate user from email
+		//generate user from email
 		public static User getUser(String email, String userType) {
 			User user = null;
 			Address ad = null;
@@ -219,10 +220,10 @@ public class Accounts{
 					String postCode = result.getString("PostCode");
 					ad = new Address(hNum,street,city,postCode);
 					if(userType.toLowerCase().equals("guest")) {
-						user = new Guest(title,name,sName,email,mobile,ad,username,password);
+						user = new Guest(title,name,sName,email,mobile,password,ad,username);
 					}
 					else
-						user = new Host(title,name,sName,email,mobile,ad,username,password,0); //get avr rvw func here
+						user = new Host(title,name,sName,email,mobile,password,ad,username,0); 
 				}
 				result.close();
 			} catch (SQLException e) {
