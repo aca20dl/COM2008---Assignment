@@ -277,6 +277,8 @@ public class mainPageGuest {
 						acceptedBooking.setVisible(false);
 						notAccepted.setVisible(true);
 						subReview.setVisible(false);
+						addressTable.setVisible(false);
+						scrollPane_2.setVisible(false);
 					}
 					refreshHosts();
 					try {
