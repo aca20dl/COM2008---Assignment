@@ -173,7 +173,7 @@ public class ListProp {
 	private void initialize(User user) {
 		listPropFrm = new JFrame();
 		listPropFrm.setTitle("List Property");
-		listPropFrm.setBounds(100, 100, 1200, 800);
+		listPropFrm.setBounds(100, 100, 897, 604);
 		listPropFrm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		listPropFrm.getContentPane().setLayout(null);
 		layeredPane.setBounds(10, 11, 878, 550);
