@@ -58,10 +58,4 @@ public class Address{
 		return "House Name/number: " + house + "\nStreet: " + street +
 				"\nTown/City/Village: " + place + "\nPost Code: " + postCode;
 	}
-	
-	public static void main (String [] args) {
-		Address ad = new Address("25","Green ln", "Sheffield", "s109ju");
-		Address ad2 = new Address("25","Green ln", "Sheffield", "s109ju");
-		System.out.println(ad.equals(ad2));
-	}
 }

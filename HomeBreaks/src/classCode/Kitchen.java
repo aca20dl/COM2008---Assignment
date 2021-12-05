@@ -59,9 +59,4 @@ public class Kitchen{
 				 "\nHas Dishwasher: " + hasDishwasher + "\nHas Tableware: " + hasTableware +
 				 "\nHas Cookware: " + hasCookware + "\nHas basic provisions: " + hasBasicProv;
 	 }
-	 
-	 public static void main (String [] args ) {
-		 Kitchen kitchen = new Kitchen(true,false,true,true,false,true,true,false);
-		 System.out.println(kitchen);
-	 }
 }

@@ -55,7 +55,6 @@ public class Host extends User{
 		HostName = removeSemiColon(HostName.strip());	
 	}
 	
-	//create methods for listing property, accept req
 	
 	public String toString() {
 		String output = super.toString() + "\nHost Name: " + HostName + 

@@ -113,10 +113,4 @@ public class HostActions{
 		
 		return isAccepted == 1;
 	}
-	
-	public static void main (String [] args) {
-		Database.connectDB();
-		removeBookings(2);
-		Database.disconnectDB();
-	}
 }

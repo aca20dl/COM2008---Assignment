@@ -48,9 +48,4 @@ public class Living{
 				hasStreaming + "\nHas Dvd Player: " + hasDvdPlayer
 				+ "\nHas Board Games: " + hasBoardGames;
 	}
-	
-	public static void main (String [] args) {
-		Living living = new Living(true,false,false,false,true,true);
-		System.out.println(living);
-	}
 }

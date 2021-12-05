@@ -55,17 +55,4 @@ public class Sleeping{ // sleeping facility
 				+ "\nTotal bedrooms: " + bedrooms.size() + "\nTotal Beds: " + 
 				totalBeds + "\nTotal Sleepers: " + totalSleepers;
 	}
-	public static void main (String [] args) {
-		Bedroom room1 = new Bedroom(new Bed("Double"),new Bed("Single"));
-		Bedroom room2 = new Bedroom(new Bed("Bunk"),new Bed("Kingsize"));
-		Bedroom room3 = new Bedroom(new Bed("Bunk"),null);
-		
-		ArrayList<Bedroom> rooms = new ArrayList<>();
-		rooms.add(room1);
-		rooms.add(room2);
-		rooms.add(room3);
-		
-		Sleeping sleeping = new Sleeping(true,false,rooms);
-		System.out.println(sleeping);
-	}
 }

@@ -33,9 +33,4 @@ public class Bathroom{
 		return "Has Toilet: " + hasToilet + "\nHas Bath: " + hasBath
 				+ "\nHas Shower: " + hasShower + "\nIs Shared with host: " + isShared;
 	}
-	
-	public static void main (String [] args) {
-		Bathroom room1 = new Bathroom(true,false,false,true);
-		System.out.println(room1);
-	}
 }

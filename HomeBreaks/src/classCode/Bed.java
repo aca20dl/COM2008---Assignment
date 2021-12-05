@@ -31,11 +31,4 @@ public class Bed {
 		return "bedType: " + type.name().toLowerCase() + 
 				"\nNo. Sleepers in bed: " + numSleepers;
 	}
-	
-	public static void main (String [] args) {
-		Bed bed1 = new Bed("SINGLE");
-		System.out.println(bed1);
-	}
-	
-	
 }

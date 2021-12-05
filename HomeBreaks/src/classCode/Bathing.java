@@ -42,16 +42,5 @@ public class Bathing {
 				+ hasShampoo +  "\nHas toilet paper: " +
 				hasToiletPaper + "\nTotal Bathrooms: " + totalBathrooms;
 	}
-	
-	public static void main (String [] args) {
-		Bathroom room1 = new Bathroom(true,false,false,true);
-		Bathroom room2 = new Bathroom(false,false,true,true);
-		
-		ArrayList<Bathroom> rooms = new ArrayList<>();
-		rooms.add(room1);
-		rooms.add(room2);
-		
-		Bathing bathing = new Bathing(true,true,false,rooms);
-		System.out.println(bathing);
-	}
+
 }

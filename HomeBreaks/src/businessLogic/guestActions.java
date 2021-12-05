@@ -200,7 +200,4 @@ public class guestActions{
 		ByteBuffer bb = utfCharset.encode(cb);
 		return bb;
 	}
-	
-	public static void main (String [] args) {
-	}
 }

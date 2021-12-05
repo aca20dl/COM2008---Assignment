@@ -58,8 +58,4 @@ public class Review{
 				"\nAccuracy: "+ accuracy + "\nLocation: " + location + 
 				"\nValue: " + value;
 	}
-	public static void main( String [] args) {
-		Review myRev = new Review("Very Happy",1,3,5,2,5,6);
-		System.out.println(myRev);
-	}
 }

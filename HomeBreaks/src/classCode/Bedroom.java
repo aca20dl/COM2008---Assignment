@@ -44,9 +44,4 @@ public class Bedroom{
 		return "bed1\n" + bed1 + "\nBed2\n" + bed2 + "\nNumber of beds in bedroom: " + numBeds
 				+ "\nNumber of sleepers in bedroom: " + numSleepers;
 	}
-	
-	public static void main (String [] args) {
-		Bedroom room1 = new Bedroom(new Bed("Double"),null);
-		System.out.println(room1.getBed1().getType().toString());
-	}
 }

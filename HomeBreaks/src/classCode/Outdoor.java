@@ -43,10 +43,4 @@ public class Outdoor{
 				hasBarbeque;
 	}
 	
-	public static void main (String [] args) {
-		Outdoor outdoors = new Outdoor(false,true,true,true,false);
-		System.out.println(outdoors);
-	}
-	
-	
 }

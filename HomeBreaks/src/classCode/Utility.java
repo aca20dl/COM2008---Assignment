@@ -48,9 +48,4 @@ public class Utility{
 				hasFireExtinguisher + "\nHas a Smoke alarm: " + hasSmokeAlarm
 				+ "\nHas a First Aid Kit: " + hasFirstAidKit;
 	}
-	
-	public static void main (String [] args) {
-		Utility utility = new Utility(false,false,true,true,true,false);
-		System.out.println(utility);
-	}
 }

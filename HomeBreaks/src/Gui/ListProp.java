@@ -1373,9 +1373,8 @@ public class ListProp {
 		
 		listProperty.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				// clean text inputs
 				// make property 
-				
-				ArrayList<Review> reviews = new ArrayList<>();
 				Property property = new Property(ad,sName,des,genL,
 						bf,sleeping.getTotalSleepers(),sleeping.getTotalBeds()
 						,sleeping.getTotalBedrooms(),bathing.getTotalBathrooms(),0); // initially average rating is 0
