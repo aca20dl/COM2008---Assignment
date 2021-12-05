@@ -115,7 +115,7 @@ public class mainPageHost {
 	 */
 	private void initialize(User user) {
 		hostFrame = new JFrame();
-		hostFrame.setBounds(100, 100, 1200, 800);
+		hostFrame.setBounds(100, 100, 927, 652);
 		hostFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		hostFrame.getContentPane().setLayout(null);
 		
@@ -210,14 +210,14 @@ public class mainPageHost {
 		JLabel acceptedBooking = new JLabel("Accepted Booking");
 		acceptedBooking.setForeground(Color.GREEN);
 		acceptedBooking.setFont(new Font("Arial", Font.BOLD, 15));
-		acceptedBooking.setBounds(669, 411, 163, 18);
+		acceptedBooking.setBounds(248, 349, 163, 18);
 		hostFrame.getContentPane().add(acceptedBooking);
 		acceptedBooking.setVisible(false);
 		
 		JLabel notAccepted = new JLabel("Not Accepted");
 		notAccepted.setForeground(Color.RED);
 		notAccepted.setFont(new Font("Arial", Font.BOLD, 15));
-		notAccepted.setBounds(669, 458, 163, 23);
+		notAccepted.setBounds(248, 376, 163, 23);
 		hostFrame.getContentPane().add(notAccepted);
 		notAccepted.setVisible(false);
 		

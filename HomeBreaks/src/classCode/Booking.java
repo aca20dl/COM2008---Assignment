@@ -58,9 +58,9 @@ public class Booking{
 		
 		double ppn = 0;
 		for(int i = 0; i < dates.size(); i++) {
-			ppn = ChargeBand.getMain(dates.get(i), dates.get(i), c).pricePerNight;
+			ppn = ppn + ChargeBand.getMain(dates.get(i), dates.get(i), c).pricePerNight;
 		}
-		ppn = ppn/c.size();
+		ppn = ppn/dates.size();
 		return new Booking(start,end,ppn,sc,cc);
 	}
 	

@@ -113,7 +113,7 @@ public class mainPageGuest {
 	 */
 	private void initialize(User user) {
 		guestFrame = new JFrame();
-		guestFrame.setBounds(100, 100, 1200, 800);
+		guestFrame.setBounds(100, 100, 894, 680);
 		guestFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		guestFrame.getContentPane().setLayout(null);
 		
@@ -181,17 +181,16 @@ public class mainPageGuest {
 		JLabel notAccepted = new JLabel("Booking not yet Accepted");
 		notAccepted.setForeground(Color.RED);
 		notAccepted.setFont(new Font("Arial", Font.BOLD, 15));
-		notAccepted.setBounds(338, 378, 189, 23);
+		notAccepted.setBounds(541, 373, 189, 23);
 		guestFrame.getContentPane().add(notAccepted);
 		notAccepted.setVisible(false);
 		
 		JLabel acceptedBooking = new JLabel("Booking is accepted");
 		acceptedBooking.setForeground(Color.GREEN);
 		acceptedBooking.setFont(new Font("Arial", Font.BOLD, 15));
-		acceptedBooking.setBounds(335, 349, 163, 18);
+		acceptedBooking.setBounds(538, 344, 163, 18);
 		guestFrame.getContentPane().add(acceptedBooking);
 		acceptedBooking.setVisible(false);
-		
 		
 		JButton subReview = new JButton("Submit Review");
 		subReview.addActionListener(new ActionListener() {
@@ -201,7 +200,7 @@ public class mainPageGuest {
 				guestFrame.setVisible(false);
 			}
 		});
-		subReview.setBounds(404, 624, 123, 23);
+		subReview.setBounds(298, 378, 123, 23);
 		guestFrame.getContentPane().add(subReview);
 		subReview.setVisible(false);
 		
