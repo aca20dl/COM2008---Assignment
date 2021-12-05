@@ -11,7 +11,6 @@ import database.*;
 
 public class HostActions{
 	public static ResultSet showBookings(User user) {
-		//select Bookings.* from Bookings,Hosts,Properties where Hosts.HostID = 3 && Properties.HostID = 3;
 		user = (Host) user;
 		int pdID = Database.getID("PdID","Pdetails","Email",user.getEmail());
 		int hostID = Database.getID("HostID","Hosts","PdID",String.valueOf(pdID));
@@ -47,7 +46,6 @@ public class HostActions{
 	
 	public static ResultSet showGuestDetails(int guestID) {
 		int pdID = Database.getID("PdID","Guests","GuestId",String.valueOf(guestID));
-		//select Pdetails.*,Guests.Username from Pdetails,Guests where Guests.PdID = 4 && Pdetails.PdID = 4;
 		String conditions = "Guests.PdID = " + pdID + " && Pdetails.PdID = " + pdID;
 		ResultSet result = Database.allInfo("Pdetails.*,Guests.Username","Pdetails,Guests",conditions);
 		return result;

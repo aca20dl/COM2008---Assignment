@@ -13,6 +13,8 @@ import java.awt.Color;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JTextField;
+import javax.swing.UIManager;
 
 public class Profile {
 
@@ -52,7 +54,7 @@ public class Profile {
 	 */
 	private void initialize(User user) {
 		profileFrame = new JFrame();
-		profileFrame.setBounds(100, 100, 1200, 800);
+		profileFrame.setBounds(100, 100, 898, 612);
 		profileFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		profileFrame.getContentPane().setLayout(null);
 		
@@ -78,7 +80,7 @@ public class Profile {
 		
 		JLabel lblEmail = new JLabel("Email:");
 		lblEmail.setFont(new Font("Arial", Font.BOLD, 20));
-		lblEmail.setBounds(686, 0, 92, 20);
+		lblEmail.setBounds(485, 68, 92, 20);
 		panel.add(lblEmail);
 		
 		JLabel lblMobile = new JLabel("Mobile:");
@@ -91,36 +93,40 @@ public class Profile {
 		lblUsername.setBounds(240, 68, 109, 20);
 		panel.add(lblUsername);
 		
-		JLabel lblPassword = new JLabel("Password:");
-		lblPassword.setFont(new Font("Arial", Font.BOLD, 20));
-		lblPassword.setBounds(485, 68, 109, 20);
-		panel.add(lblPassword);
-		
-		JLabel title = new JLabel(user.getTitle());
+		JTextField title = new JTextField(user.getTitle());
+		title.setEditable(false);
 		title.setForeground(Color.DARK_GRAY);
-		title.setBackground(Color.BLACK);
-		title.setFont(new Font("Arial", Font.BOLD, 15));
-		title.setBounds(10, 31, 109, 20);
+		title.setBackground(Color.WHITE);
+		title.setFont(new Font("Arial", Font.BOLD, 11));
+		title.setBounds(10, 31, 149, 20);
 		panel.add(title);
 		
-		JLabel forename = new JLabel(user.getForename());
-		forename.setFont(new Font("Arial", Font.BOLD, 15));
-		forename.setBounds(240, 31, 109, 20);
+		JTextField forename = new JTextField(user.getForename());
+		forename.setBackground(Color.WHITE);
+		forename.setEditable(false);
+		forename.setFont(new Font("Arial", Font.BOLD, 11));
+		forename.setBounds(240, 31, 143, 20);
 		panel.add(forename);
 		
-		JLabel Surname = new JLabel(user.getSurname());
-		Surname.setFont(new Font("Arial", Font.BOLD, 15));
+		JTextField Surname = new JTextField(user.getSurname());
+		Surname.setBackground(Color.WHITE);
+		Surname.setEditable(false);
+		Surname.setFont(new Font("Arial", Font.BOLD, 11));
 		Surname.setBounds(485, 31, 109, 20);
 		panel.add(Surname);
 		
-		JLabel email = new JLabel(user.getEmail());
-		email.setFont(new Font("Arial", Font.BOLD, 15));
-		email.setBounds(686, 31, 154, 20);
+		JTextField email = new JTextField(user.getEmail());
+		email.setBackground(Color.WHITE);
+		email.setEditable(false);
+		email.setFont(new Font("Arial", Font.BOLD, 11));
+		email.setBounds(485, 99, 291, 20);
 		panel.add(email);
 		
-		JLabel mobile = new JLabel(user.getMobile());
-		mobile.setFont(new Font("Arial", Font.BOLD, 15));
-		mobile.setBounds(10, 99, 109, 20);
+		JTextField mobile = new JTextField(user.getMobile());
+		mobile.setBackground(Color.WHITE);
+		mobile.setEditable(false);
+		mobile.setFont(new Font("Arial", Font.BOLD, 11));
+		mobile.setBounds(10, 99, 149, 20);
 		panel.add(mobile);
 		
 		// differenced between host and guest
@@ -139,15 +145,12 @@ public class Profile {
 		}
 		
 		
-		JLabel username = new JLabel(username1);
-		username.setFont(new Font("Arial", Font.BOLD, 15));
-		username.setBounds(240, 99, 109, 20);
+		JTextField username = new JTextField(username1);
+		username.setBackground(Color.WHITE);
+		username.setEditable(false);
+		username.setFont(new Font("Arial", Font.BOLD, 11));
+		username.setBounds(240, 99, 143, 20);
 		panel.add(username);
-		
-		JLabel password = new JLabel("CONFIDENTIAL");
-		password.setFont(new Font("Arial", Font.BOLD, 15));
-		password.setBounds(485, 99, 109, 20);
-		panel.add(password);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(10, 313, 850, 147);
@@ -174,24 +177,32 @@ public class Profile {
 		lblCity.setBounds(32, 92, 101, 20);
 		panel_1.add(lblCity);
 		
-		JLabel number = new JLabel(user.getAddress().getHouse());
-		number.setFont(new Font("Arial", Font.BOLD, 15));
-		number.setBounds(32, 55, 352, 20);
+		JTextField number = new JTextField(user.getAddress().getHouse());
+		number.setBackground(Color.WHITE);
+		number.setEditable(false);
+		number.setFont(new Font("Arial", Font.BOLD, 11));
+		number.setBounds(32, 55, 176, 20);
 		panel_1.add(number);
 		
-		JLabel street = new JLabel(user.getAddress().getStreet());
-		street.setFont(new Font("Arial", Font.BOLD, 15));
-		street.setBounds(574, 55, 266, 20);
+		JTextField street = new JTextField(user.getAddress().getStreet());
+		street.setBackground(Color.WHITE);
+		street.setEditable(false);
+		street.setFont(new Font("Arial", Font.BOLD, 11));
+		street.setBounds(574, 55, 162, 20);
 		panel_1.add(street);
 		
-		JLabel city = new JLabel(user.getAddress().getPlace());
-		city.setFont(new Font("Arial", Font.BOLD, 15));
-		city.setBounds(32, 116, 352, 20);
+		JTextField city = new JTextField(user.getAddress().getPlace());
+		city.setBackground(Color.WHITE);
+		city.setEditable(false);
+		city.setFont(new Font("Arial", Font.BOLD, 11));
+		city.setBounds(32, 116, 177, 20);
 		panel_1.add(city);
 		
-		JLabel postCode = new JLabel(user.getAddress().getPostCode());
-		postCode.setFont(new Font("Arial", Font.BOLD, 15));
-		postCode.setBounds(574, 116, 266, 20);
+		JTextField postCode = new JTextField(user.getAddress().getPostCode());
+		postCode.setBackground(Color.WHITE);
+		postCode.setEditable(false);
+		postCode.setFont(new Font("Arial", Font.BOLD, 11));
+		postCode.setBounds(574, 116, 162, 20);
 		panel_1.add(postCode);
 		
 		JLabel lblProfileDetails = new JLabel("Profile Details:");
